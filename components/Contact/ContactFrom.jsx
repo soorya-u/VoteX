@@ -9,9 +9,9 @@ const ContactFrom = () => {
           <div className="col-12 col-lg-5 col-xl-5">
             <div className="submissions-area d-flex flex-column gap-8 gap-lg-10">
               <div className="submissions">
-                <h3>Business submissions</h3>
+                <h3>Any Queries ?</h3>
                 <p className="fs-six-up mt-4">
-                  For business plan submissions. Please submit using this
+                  Contact us
                 </p>
               </div>
               <div className="contact__mail d-flex flex-column gap-5 gap-lg-6 pb-8 pb-lg-10 border-bottom border-color four">
@@ -25,7 +25,7 @@ const ContactFrom = () => {
                       className="__cf_email__"
                       data-cfemail="9df9f8fcf3f3fcb3fee8efe9f4eeddf8e5fcf0edf1f8b3fef2f0"
                     >
-                      [email&#160;protected]
+                      [dchain@gmail.com&#160;protected]
                     </a>
                   </span>
                 </div>
@@ -33,7 +33,7 @@ const ContactFrom = () => {
                   <span className="box_12 p1-bg rounded-circle d-center">
                     <i className="ti ti-phone fs-four-up nb4-color"></i>
                   </span>
-                  <span className="fs-six-up">(555) 555-555</span>
+                  <span className="fs-six-up">7019188609</span>
                 </div>
               </div>
               <div className="submissions">
