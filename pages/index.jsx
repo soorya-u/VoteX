@@ -15,6 +15,7 @@ import {
 } from "../components/index";
 
 import { VOTING_DAPP_CONTEXT } from "../context/context";
+import ChatBot from "../components/Global/ChatBot";
 
 const index = () => {
   const [initialData, setInitialData] = useState();
@@ -42,6 +43,7 @@ const index = () => {
     <>
       {loading && <Preloader />}
       <ScrollToTop />
+      <ChatBot />
       <Cursor />
       <Header />
       <HeroSection initialData={initialData} higest={higest} />
