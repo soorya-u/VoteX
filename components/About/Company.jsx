@@ -29,7 +29,7 @@ const Company = () => {
                   <span className="heading p1-color fs-five">
                     Our Team Story
                   </span>
-                  <h3 className="mb-3 mt-5">What We Do</h3>
+                  <h3 className="mb-3 mt-5">Who We Are</h3>
                   <p>
                   A group of students from Sai Angels who dreamt to be in IIT but ended up in AIT !!!
                   </p>
@@ -46,8 +46,9 @@ const Company = () => {
                     </Link>
                   </div>
                   <div className="content">
-                    <h3 className="mb-3">Who We Are</h3>
+                    <h3 className="mb-3">What We Do</h3>
                     <p>
+                      A group of students from Sai Angels who dreamt to be in IIT but ended up in AIT !!!
                     Our team, the "mad devs," started with a passion for tech and a knack for chaos. From late-night coding to wild brainstorming sessions, we blend genius with a touch of madness to create groundbreaking solutions—and have a lot of fun doing it!
                     </p>
                   </div>
