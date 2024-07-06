@@ -37,3 +37,4 @@ context/*.json
 
 .env*
 !.env.example
+localhost*
