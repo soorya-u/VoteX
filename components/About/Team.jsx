@@ -5,22 +5,22 @@ import { shuffleArray } from "../../utils";
 const devsInfo = [
   {
     name: "Soorya U",
-    description: "When I first started trading But with time and experience.",
+    description: "Anonymus dev",
     imageUrl: "assets/images/devs/soorya.png",
   },
   {
     name: "Saanvi M J",
-    description: "When I first started trading But with time and experience.",
+    description: "Short in height not in Talent !!",
     imageUrl: "assets/images/devs/saanvi.jpg",
   },
   {
     name: "Likhith S V",
-    description: "When I first started trading But with time and experience.",
+    description: "Hell world !!",
     imageUrl: "assets/images/devs/likhith.jpg",
   },
   {
     name: "Hamsa C S",
-    description: "When I first started trading But with time and experience.",
+    description: "ERROR 22/09 ",
     imageUrl: "assets/images/devs/hamsa.jpg",
   },
 ];
@@ -51,8 +51,7 @@ const Team = () => {
             <span className="heading p1-color fs-five mb-5">Team</span>
             <h3>Our Team</h3>
             <p className="mt-5 mt-xxl-6 mx-ch mx-auto">
-              Trading has always been a passion, but it wasn't until I refined
-              my strategy and embraced risk management.
+            Innovative 'mad devs' pushing tech limits with creativity and camaraderie.
             </p>
           </div>
         </div>

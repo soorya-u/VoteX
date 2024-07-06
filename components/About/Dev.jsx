@@ -19,28 +19,28 @@ export default function Dev({ name, description, imageUrl }) {
           <div className="social-area alt">
             <ul className="d-flex align-items-center justify-content-center gap-2 gap-md-3">
               <li>
-                <Link href="/">
+                <Link href="https://facebook.com/">
                   <a className="d-center fs-four">
                     <i className="ti ti-brand-facebook" />
                   </a>
                 </Link>
               </li>
               <li>
-                <Link href="/">
+                <Link href="https://twitch.com/">
                   <a className="d-center fs-four">
                     <i className="ti ti-brand-twitch" />
                   </a>
                 </Link>
               </li>
               <li>
-                <Link href="/">
+                <Link href="https://instagram.com/">
                   <a className="d-center fs-four">
                     <i className="ti ti-brand-instagram" />
                   </a>
                 </Link>
               </li>
               <li>
-                <Link href="/">
+                <Link href="https://discord.com/">
                   <a className="d-center fs-four">
                     <i className="ti ti-brand-discord-filled" />
                   </a>

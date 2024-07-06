@@ -32,9 +32,9 @@ const Footer = () => {
           </div>
           <div className="row gy-6 w-100 text-center text-sm-start align-items-center justify-content-sm-between">
             <div className="col-sm-8">
-              <h2>Start earning with only $20</h2>
+              <h2>Join our community</h2>
               <p className="fs-six-up fw_500 mt-5">
-                Try our super easy portal for free
+                Be a part & help us to build this community
               </p>
             </div>
             <div className="col-sm-4 text-sm-end">
@@ -42,7 +42,7 @@ const Footer = () => {
                 href="/"
                 className="cmn-btn secondary-alt ms-auto fs-five nb4-xxl-bg gap-2 align-items-center  py-2 px-4 py-lg-3 px-lg-5"
               >
-                Register <i className="ti ti-arrow-right fs-four"></i>
+                Join <i className="ti ti-arrow-right fs-four"></i>
               </a>
             </div>
           </div>
@@ -125,9 +125,9 @@ const Footer = () => {
               <h4 className="mb-6 mb-lg-8">Contact Us</h4>
               <div className="d-flex flex-column gap-2 gap-sm-3 gap-md-4">
                 <Link href="/">
-                  <span className="__cf_email__">randomemail@mail.co</span>
+                  <span className="__cf_email__">dchain@gmail.com</span>
                 </Link>
-                <a href="tel:+123456789">+0123 456 789</a>
+                <a href="tel:+123456789">7019188609</a>
               </div>
             </div>
           </div>
