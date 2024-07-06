@@ -144,7 +144,7 @@ const signup = () => {
                         <div className="col-sm-6 col-md-12 col-xl-6">
                           <Input
                             name={"Name"}
-                            placeholder={"_name"}
+                            placeholder={"Name"}
                             type={"text"}
                             handleClick={(e) =>
                               setUpdateCandidate({
@@ -157,7 +157,7 @@ const signup = () => {
                         <div className="col-sm-6 col-md-12 col-xl-6">
                           <Input
                             name={"Nomination Form"}
-                            placeholder={"_nominationForm"}
+                            placeholder={"Nomination Form"}
                             type={"text"}
                             handleClick={(e) =>
                               setUpdateCandidate({
@@ -171,7 +171,7 @@ const signup = () => {
 
                       <Input
                         name={"Affidavit"}
-                        placeholder={"_affidavit"}
+                        placeholder={"Affidavit"}
                         type={"text"}
                         handleClick={(e) =>
                           setUpdateCandidate({
@@ -183,7 +183,7 @@ const signup = () => {
 
                       <Input
                         name={"Criminal Antecedents"}
-                        placeholder={"_criminalAntecedents"}
+                        placeholder={"Criminal Antecedents"}
                         type={"text"}
                         handleClick={(e) =>
                           setUpdateCandidate({
@@ -293,7 +293,7 @@ const signup = () => {
                       />
                       <Input
                         name={"Pan Card Details"}
-                        placeholder={"Pan CardDetails"}
+                        placeholder={"Pan Card Details"}
                         type={"text"}
                         handleClick={(e) =>
                           setUpdateCandidate({
@@ -304,7 +304,7 @@ const signup = () => {
                       />
                       <Input
                         name={"VoterIdCardDetails"}
-                        placeholder={"_voterIdCardDetails"}
+                        placeholder={"Voter Id Card etails"}
                         type={"text"}
                         handleClick={(e) =>
                           setUpdateCandidate({
