@@ -125,9 +125,9 @@ const Footer = () => {
               <h4 className="mb-6 mb-lg-8">Contact Us</h4>
               <div className="d-flex flex-column gap-2 gap-sm-3 gap-md-4">
                 <Link href="/">
-                  <span className="__cf_email__">randomemail@mail.co</span>
+                  <span className="__cf_email__">dchain@gmail.com</span>
                 </Link>
-                <a href="tel:+123456789">+0123 456 789</a>
+                <a href="tel:+123456789">7019188609</a>
               </div>
             </div>
           </div>
