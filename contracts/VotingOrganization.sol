@@ -35,8 +35,14 @@ contract VotingOrganization {
         string message;
     }
 
+    struct Donator {
+        address donatorAddress;
+        uint256 amount;
+    }
+
     mapping(address => Voter) public voters;
     mapping(address => Candidate) public candidates;
+    mapping(address => Donator[]) donators;
     address[] public registeredVoters;
     address[] public registeredCandidates;
     address[] public approvedVoters;
@@ -293,5 +299,26 @@ contract VotingOrganization {
     function getWinningCandidate() public view returns (Candidate memory) {
         require(block.timestamp > endTime, "Voting period is not over yet.");
         return getCurrentVotingStatus();
+    }
+
+    function donateToCandidate(
+        address payable candidateAddress
+    ) public payable {
+        uint256 amount = msg.value;
+        (bool sent, ) = candidateAddress.call{value: amount}("");
+        require(sent, "Transaction failed");
+        Donator memory donator = Donator(msg.sender, amount);
+        donators[candidateAddress].push(donator);
+    }
+
+    function getDonators(
+        address candidateAddress
+    ) public view returns (Donator[] memory) {
+        uint length = donators[candidateAddress].length;
+        Donator[] memory d = new Donator[](length);
+        for (uint i = 0; i < length; i++) {
+            d[i] = donators[candidateAddress][i];
+        }
+        return d;
     }
 }

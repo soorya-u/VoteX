@@ -10,6 +10,7 @@ import {
   VOTING_CONTRACT,
   OWNER_ADDRESS,
 } from "./constants";
+import { ethers } from "ethers";
 
 export const VOTING_DAPP_CONTEXT = React.createContext();
 
@@ -410,6 +411,23 @@ export const VOTER_DAPP_PROVIDER = ({ children }) => {
       setLoader(false);
       notifySuccess("Update failed, kindly connect to ellection commission");
       console.log(error);
+    }
+  };
+
+  const DONATE_TO_CANDIDATE = async (candidateAddress, amount) => {
+    setLoader(true);
+    try {
+      const CONTRACT = await VOTING_CONTRACT();
+      const transaction = await CONTRACT.donateToCandidate(candidateAddress, {
+        value: ethers.utils.parseEther(`${amount}`),
+      });
+
+      await transaction.wait();
+      console.log("Done");
+    } catch (e) {
+      console.log(e.message);
+    } finally {
+      setLoader(false);
     }
   };
 
@@ -1151,6 +1169,7 @@ export const VOTER_DAPP_PROVIDER = ({ children }) => {
         REJECT_CANDIDATE,
         REGISTER_VOTER,
         REJECT_VOTER,
+        DONATE_TO_CANDIDATE,
       }}
     >
       {children}
