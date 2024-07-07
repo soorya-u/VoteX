@@ -219,7 +219,7 @@ function ChatBot() {
         <div id="test" className={styles.chatContainer}>
           <div className={styles.chatHeader}>
             <img
-              src="chatbot.jpg"
+              src="assets/images/chatbot.png"
               alt="Profile"
               className={styles.profileImage}
             />
