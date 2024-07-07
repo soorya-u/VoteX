@@ -42,7 +42,7 @@ const data = {
   feedback: {
     title: [
       "Please email your feedback to dchain@gmail.com.",
-      "Refresh the button for other queries",
+     
     ],
     options: [],
   },
@@ -59,7 +59,7 @@ const data = {
   update: {
     title: [
       "To update your profile, open your profile page. At the bottom, you will find a button to change your information.",
-      "Refresh the button for other queries",
+     
     ],
     options: [],
   },
@@ -67,7 +67,7 @@ const data = {
     title: [
       "Account verification: After filling in all your information with the required valid proofs for voting, your account will be verified. You can later update your profile as needed.",
       "Post vote verification: You will receive a verified sticker after casting your vote.",
-      "Refresh the button for other queries",
+      
     ],
     options: [],
   },
