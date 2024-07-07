@@ -20,7 +20,7 @@ const voter = () => {
     setLoader,
     loader,
     checkIfWalletIsConnected,
-    REGISTER_VOTER,
+    registerVoter,
     GET_SINGLE_VOTER,
   } = useContext(VOTING_DAPP_CONTEXT);
 
@@ -278,7 +278,7 @@ const voter = () => {
                     <div className=" mt-7 mt-lg-8">
                       <button
                         className="cmn-btn py-3 px-5 px-lg-6 mt-7 mt-lg-8 w-100 d-center"
-                        onClick={() => REGISTER_VOTER(updateVoter, image, pdf)}
+                        onClick={() => registerVoter(updateVoter, image, pdf)}
                       >
                         Register
                       </button>

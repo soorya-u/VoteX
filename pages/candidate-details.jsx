@@ -25,12 +25,12 @@ const candidateDetails = () => {
     address,
     checkIfWalletIsConnected,
     GET_SINGLE_CANDIDATE,
-    APPROVE_CANDIDATE,
-    GIVE_VOTE,
+    approveCandidate,
+    giveVote,
     OWNER_ADDRESS,
     ALL_VOTERS_VOTED,
     checkVote,
-    REJECT_CANDIDATE,
+    rejectCandidate,
     GET_SINGLE_VOTER,
     INITIAL_CONTRACT_DATA,
   } = useContext(VOTING_DAPP_CONTEXT);
@@ -66,11 +66,11 @@ const candidateDetails = () => {
   }, [router.isReady]);
 
   const approveCandidate = async (address, message) => {
-    await APPROVE_CANDIDATE(address, message);
+    await approveCandidate(address, message);
   };
 
   const rejectCandidate = async (address, message) => {
-    await REJECT_CANDIDATE(address, message);
+    await rejectCandidate(address, message);
   };
   //
   return (
@@ -84,7 +84,7 @@ const candidateDetails = () => {
         path={"candidate"}
         handleClickApprove={approveCandidate}
         handleClickReject={rejectCandidate}
-        GIVE_VOTE={GIVE_VOTE}
+        giveVote={giveVote}
         OWNER_ADDRESS={OWNER_ADDRESS}
         address={address}
         checkVote={checkVote}

@@ -10,7 +10,7 @@ const Details = ({
   candidate,
   path,
   handleClick,
-  GIVE_VOTE,
+  giveVote,
   OWNER_ADDRESS,
   address,
   checkVote,
@@ -263,7 +263,7 @@ const Details = ({
                       <div className="custom-actions">
                         <a
                           className="custom-read"
-                          onClick={() => GIVE_VOTE(candidate?.address)}
+                          onClick={() => giveVote(candidate?.address)}
                         >
                           Give Vote
                         </a>

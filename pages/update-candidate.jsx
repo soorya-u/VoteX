@@ -19,7 +19,7 @@ const signup = () => {
     notifyError,
     setLoader,
     loader,
-    UPDATE_CANDIDATE,
+    updateCandidate,
     GET_SINGLE_CANDIDATE,
     checkIfWalletIsConnected,
   } = useContext(VOTING_DAPP_CONTEXT);
@@ -327,7 +327,7 @@ const signup = () => {
                   <div className=" mt-7 mt-lg-8">
                     <button
                       onClick={() =>
-                        UPDATE_CANDIDATE(updateCandidate, image, pdf)
+                        updateCandidate(updateCandidate, image, pdf)
                       }
                       className="cmn-btn py-3 px-5 px-lg-6 mt-7 mt-lg-8 w-100 d-center"
                     >

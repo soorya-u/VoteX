@@ -12,12 +12,12 @@ import { VOTING_DAPP_CONTEXT } from "../context/context";
 const registerVoters = () => {
   const [candidates, setCandidates] = useState();
   const [loading, setLoading] = useState();
-  const { GET_REGISTER_VOTERS } = useContext(VOTING_DAPP_CONTEXT);
+  const { GET_registerVoterS } = useContext(VOTING_DAPP_CONTEXT);
 
   useEffect(() => {
     setLoading(true);
     const fetchData = async () => {
-      const items = await GET_REGISTER_VOTERS();
+      const items = await GET_registerVoterS();
       setCandidates(items);
       console.log(items);
     };

@@ -19,8 +19,8 @@ const registerCandidate = () => {
 
   const {
     loader,
-    GET_REGISTER_CANDIDATES,
-    GIVE_VOTE,
+    GET_registerCandidateS,
+    giveVote,
     checkVote,
     INITIAL_CONTRACT_DATA,
     GET_SINGLE_VOTER,
@@ -30,7 +30,7 @@ const registerCandidate = () => {
   useEffect(() => {
     setLoading(true);
     const fetchData = async () => {
-      const items = await GET_REGISTER_CANDIDATES();
+      const items = await GET_registerCandidateS();
       setCandidates(items);
 
       const votingStatus = await INITIAL_CONTRACT_DATA();
@@ -60,7 +60,7 @@ const registerCandidate = () => {
       <Team
         candidates={candidates}
         path={"candidate"}
-        GIVE_VOTE={GIVE_VOTE}
+        giveVote={giveVote}
         checkVote={checkVote}
         votingTime={votingTime}
         currentVotingTime={currentVotingTime}

@@ -6,7 +6,7 @@ import Member from "./Member";
 const Team = ({
   candidates,
   path,
-  GIVE_VOTE,
+  giveVote,
   checkVote,
   votingTime,
   currentVotingTime,
@@ -18,7 +18,7 @@ const Team = ({
       <Member
         candidates={candidates}
         path={path}
-        GIVE_VOTE={GIVE_VOTE}
+        giveVote={giveVote}
         checkVote={checkVote}
         votingTime={votingTime}
         currentVotingTime={currentVotingTime}

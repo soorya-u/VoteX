@@ -1,33 +1,106 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
-import toast from "react-hot-toast";
+import { setAllowed, isConnected } from "@stellar/freighter-api";
 
-//INTERNAL  IMPORT
+import { retrievePublicKey, connectWallet, signTransaction } from "./wallet";
+import { numberToU64, stringToScValString } from "./value-converter";
 import {
-  checkIfWalletIsConnected,
-  connectWallet,
-  VOTING_CONTRACT,
-  OWNER_ADDRESS,
-} from "./constants";
-import { ethers } from "ethers";
+  BASE_FEE,
+  TransactionBuilder,
+  Address,
+  scValToNative,
+  Keypair,
+} from "@stellar/stellar-sdk";
+import { getUserInfo } from "@stellar/freighter-api";
+import { contract, server } from "./constants";
+import { ownerPublicKey, notifyError, notifySuccess } from "./constants";
 
-export const VOTING_DAPP_CONTEXT = React.createContext();
+export const VotingDappConext = React.createContext();
 
-export const VOTER_DAPP_PROVIDER = ({ children }) => {
-  const VOTING_DAPP = "Voting Dapp";
-  const currency = "MATIC";
-  const network = "Polygon";
-
+export const VotingDappProvider = ({ children }) => {
   const router = useRouter();
+  const [isWalletConnected, setIsWalletConnected] = useState(false);
   const [loader, setLoader] = useState(false);
-  const [address, setAddress] = useState();
+  const [publicKey, setPublicKey] = useState("");
   const [checkVote, setCheckVote] = useState(false);
 
-  const notifySuccess = (msg) => toast.success(msg, { duration: 2000 });
-  const notifyError = (msg) => toast.error(msg, { duration: 2000 });
+  useEffect(() => {
+    const initFn = async () => {
+      if (!(await isConnected())) return;
+      await setAllowed().then(async () => setIsWalletConnected(true));
+      const pk = await retrievePublicKey();
+      setPublicKey(pk);
+    };
+    initFn();
+  }, []);
 
-  const REGISTER_CANDIDATE = async (updateCandidate, image, pdf) => {
+  const callContract = async (functionName, values = null, fee = BASE_FEE) => {
+    if (!isWalletConnected) return;
+
+    const { publicKey } = await getUserInfo();
+
+    const account = await server.getAccount(publicKey);
+
+    const params = {
+      fee,
+      networkPassphrase: "Test SDF Network ; September 2015",
+    };
+
+    let buildTx;
+
+    if (values === null) {
+      buildTx = new TransactionBuilder(account, params)
+        .addOperation(contract.call(functionName))
+        .setTimeout(30)
+        .build();
+    } else if (Array.isArray(values)) {
+      buildTx = new TransactionBuilder(account, params)
+        .addOperation(contract.call(functionName, ...values))
+        .setTimeout(30)
+        .build();
+    } else {
+      buildTx = new TransactionBuilder(account, params)
+        .addOperation(contract.call(functionName, values))
+        .setTimeout(30)
+        .build();
+    }
+
+    const prepareTx = await server.prepareTransaction(buildTx);
+
+    const xdrTx = prepareTx.toXDR();
+    const signedTx = await signTransaction(xdrTx, "TESTNET", publicKey);
+    const tx = TransactionBuilder.fromXDR(
+      signedTx,
+      "Test SDF Network ; September 2015"
+    );
+
+    try {
+      let sendTx = await server.sendTransaction(tx).catch((err) => {
+        console.log("Catch-1", err);
+        return err;
+      });
+      if (sendTx.errorResult) {
+        throw new Error("Unable to submit transaction");
+      }
+      if (sendTx.status === "PENDING") {
+        let txResponse = await server.getTransaction(sendTx.hash);
+        while (txResponse.status === "NOT_FOUND") {
+          txResponse = await server.getTransaction(sendTx.hash);
+          await new Promise((resolve) => setTimeout(resolve, 100));
+        }
+        if (txResponse.status === "SUCCESS") {
+          let result = txResponse.returnValue;
+          return result;
+        }
+      }
+    } catch (err) {
+      console.log("Catch-2", err);
+      return;
+    }
+  };
+
+  const registerCandidate = async (updateCandidate, image, pdf) => {
     const {
       _name,
       _nominationForm,
@@ -69,8 +142,6 @@ export const VOTER_DAPP_PROVIDER = ({ children }) => {
     notifySuccess("Registering Candidate, kindly wait...");
     setLoader(true);
 
-    const CONTRACT = await VOTING_CONTRACT();
-
     const data = JSON.stringify({
       _name,
       _nominationForm,
@@ -104,11 +175,14 @@ export const VOTER_DAPP_PROVIDER = ({ children }) => {
       });
 
       const url = `https://gateway.pinata.cloud/ipfs/${response.data.IpfsHash}`;
-      console.log(url);
 
-      const transaction = await CONTRACT.registerCandidate(_name, url);
-
-      await transaction.wait();
+      const publicKey = await retrievePublicKey();
+      const publicKeyAddr = new Address(publicKey);
+      await callContract("registerCandidate", [
+        stringToScValString(_name),
+        stringToScValString(url),
+        publicKeyAddr.toScVal(),
+      ]);
 
       notifySuccess("Successfully Registered Candidate");
       setLoader(false);
@@ -122,7 +196,7 @@ export const VOTER_DAPP_PROVIDER = ({ children }) => {
     }
   };
 
-  const REGISTER_VOTER = async (updateVoter, image, pdf) => {
+  const registerVoter = async (updateVoter, image, pdf) => {
     const {
       _name,
       _voterAddress,
@@ -158,8 +232,6 @@ export const VOTER_DAPP_PROVIDER = ({ children }) => {
     notifySuccess("Registering Voter, kindly wait...");
     setLoader(true);
 
-    const CONTRACT = await VOTING_CONTRACT();
-
     const data = JSON.stringify({
       _name,
       _voterAddress,
@@ -190,35 +262,41 @@ export const VOTER_DAPP_PROVIDER = ({ children }) => {
       });
 
       const url = `https://gateway.pinata.cloud/ipfs/${response.data.IpfsHash}`;
-      console.log(url);
 
-      const transaction = await CONTRACT.registerVoter(_name, url);
+      const publicKey = await retrievePublicKey();
+      const publicKeyAddr = new Address(publicKey).toScVal();
+      contract.call("registerVoter", _name, url);
+      await callContract("registerVoter", [
+        stringToScValString(_name),
+        stringToScValString(url),
+        publicKeyAddr,
+      ]);
 
-      await transaction.wait();
-
-      notifySuccess("Successfully Registered Candidate");
+      notifySuccess("Successfully Registered Voters");
       setLoader(false);
-      router.push("/all-voters");
+      router.push("/");
     } catch (error) {
       setLoader(false);
       notifySuccess(
-        "Registration failed, kindly connect to ellection commission"
+        "Registration failed, kindly connect to election commission"
       );
       console.log(error);
     }
   };
 
-  const APPROVE_CANDIDATE = async (address, message) => {
+  const approveCandidate = async (address, message) => {
     if (!address || !message) return notifyError("Data Is Missing");
     notifySuccess("kindly wait, approving candidate...");
     setLoader(true);
 
-    const CONTRACT = await VOTING_CONTRACT();
-
     try {
-      const transaction = await CONTRACT.approveCandidate(address, message);
+      const pka = new Address(address);
 
-      await transaction.wait();
+      await callContract("approveCandidate", [
+        pka.toScVal(),
+        stringToScValString(message),
+      ]);
+
       setLoader(false);
       notifySuccess("Successfully approve Candidate");
       router.push("/approve-candidates");
@@ -229,19 +307,21 @@ export const VOTER_DAPP_PROVIDER = ({ children }) => {
     }
   };
 
-  const APPROVE_VOTER = async (address, message) => {
+  const approveVoter = async (address, message) => {
     if (!address || !message) return notifyError("Data Is Missing");
     notifySuccess("kindly wait, approving voter...");
     setLoader(true);
 
-    const CONTRACT = await VOTING_CONTRACT();
+    const pka = new Address(address);
 
     try {
-      const transaction = await CONTRACT.approveVoter(address, message);
+      await callContract("approve_voter", [
+        pka.toScVal(),
+        stringToScValString(message),
+      ]);
 
-      await transaction.wait();
       setLoader(false);
-      notifySuccess("Successfully aapprove voter");
+      notifySuccess("Successfully approved voter");
       router.push("/approve-voters");
     } catch (error) {
       setLoader(false);
@@ -250,17 +330,19 @@ export const VOTER_DAPP_PROVIDER = ({ children }) => {
     }
   };
 
-  const REJECT_CANDIDATE = async (address, message) => {
+  const rejectCandidate = async (address, message) => {
     if (!address || !message) return notifyError("Data Is Missing");
     notifySuccess("kindly wait, approving candidate...");
     setLoader(true);
 
-    const CONTRACT = await VOTING_CONTRACT();
-
     try {
-      const transaction = await CONTRACT.rejectCandidate(address, message);
+      const pka = new Address(address);
 
-      await transaction.wait();
+      await callContract("rejectCandidate", [
+        pka.toScVal(),
+        stringToScValString(message),
+      ]);
+
       setLoader(false);
       notifySuccess(" Candidate Rejected");
       router.push("/all-candidates");
@@ -271,18 +353,20 @@ export const VOTER_DAPP_PROVIDER = ({ children }) => {
     }
   };
 
-  const REJECT_VOTER = async (address, message) => {
+  const rejectVoting = async (address, message) => {
     console.log(address, message);
     if (!address || !message) return notifyError("Data Is Missing");
     notifySuccess("kindly wait, approving voter...");
     setLoader(true);
 
-    const CONTRACT = await VOTING_CONTRACT();
-
     try {
-      const transaction = await CONTRACT.rejectVoter(address, message);
+      const pka = new Address(address);
 
-      await transaction.wait();
+      await callContract("reject_voter", [
+        pka.toScVal(),
+        stringToScValString(message),
+      ]);
+
       setLoader(false);
       notifySuccess("Successfully Rejected");
       router.push("/all-voters");
@@ -293,7 +377,7 @@ export const VOTER_DAPP_PROVIDER = ({ children }) => {
     }
   };
 
-  const SET_VOTING_PREIOD = async (voteTime) => {
+  const setVotingPeriod = async (voteTime) => {
     const { startTime, endTime } = voteTime;
 
     if (!startTime || !endTime) return notifyError("Data Is Missing");
@@ -309,15 +393,12 @@ export const VOTER_DAPP_PROVIDER = ({ children }) => {
     const startTimeSeconds = Math.floor(startTimeMilliseconds / 1000);
     const endTimeSeconds = Math.floor(endTimeMilliseconds / 1000);
 
-    const CONTRACT = await VOTING_CONTRACT();
-
     try {
-      const transaction = await CONTRACT.setVotingPeriod(
-        startTimeSeconds,
-        endTimeSeconds
-      );
+      await callContract("set_voting_period", [
+        numberToU64(startTimeSeconds),
+        numberToU64(endTimeSeconds),
+      ]);
 
-      await transaction.wait();
       setLoader(false);
       notifySuccess("Successfully set voting period ");
       window.location.href = "/";
@@ -330,7 +411,7 @@ export const VOTER_DAPP_PROVIDER = ({ children }) => {
     }
   };
 
-  const UPDATE_VOTER = async (updateVoter, image, pdf) => {
+  const updateVoter = async (updateVoter, image, pdf) => {
     const {
       _name,
       _voterAddress,
@@ -366,8 +447,6 @@ export const VOTER_DAPP_PROVIDER = ({ children }) => {
     notifySuccess("Upadate Voter, kindly wait...");
     setLoader(true);
 
-    const CONTRACT = await VOTING_CONTRACT();
-
     const data = JSON.stringify({
       _name,
       _voterAddress,
@@ -398,11 +477,14 @@ export const VOTER_DAPP_PROVIDER = ({ children }) => {
       });
 
       const url = `https://gateway.pinata.cloud/ipfs/${response.data.IpfsHash}`;
-      console.log(url);
 
-      const transaction = await CONTRACT.updateVoter(_name, url);
-
-      await transaction.wait();
+      const pk = await retrievePublicKey();
+      const pka = new Address(pk);
+      await callContract("update_voter", [
+        stringToScValString(_name),
+        stringToScValString(url),
+        pka.toScVal(),
+      ]);
 
       notifySuccess("Successfully updated voter");
       setLoader(false);
@@ -414,24 +496,7 @@ export const VOTER_DAPP_PROVIDER = ({ children }) => {
     }
   };
 
-  const DONATE_TO_CANDIDATE = async (candidateAddress, amount) => {
-    setLoader(true);
-    try {
-      const CONTRACT = await VOTING_CONTRACT();
-      const transaction = await CONTRACT.donateToCandidate(candidateAddress, {
-        value: ethers.utils.parseEther(`${amount}`),
-      });
-
-      await transaction.wait();
-      console.log("Done");
-    } catch (e) {
-      console.log(e.message);
-    } finally {
-      setLoader(false);
-    }
-  };
-
-  const UPDATE_CANDIDATE = async (updateCandidate, image, pdf) => {
+  const updateCandidate = async (updateCandidate, image, pdf) => {
     const {
       _name,
       _nominationForm,
@@ -473,8 +538,6 @@ export const VOTER_DAPP_PROVIDER = ({ children }) => {
     notifySuccess("Updating Candidate, kindly wait...");
     setLoader(true);
 
-    const CONTRACT = await VOTING_CONTRACT();
-
     const data = JSON.stringify({
       _name,
       _nominationForm,
@@ -508,11 +571,14 @@ export const VOTER_DAPP_PROVIDER = ({ children }) => {
       });
 
       const url = `https://gateway.pinata.cloud/ipfs/${response.data.IpfsHash}`;
-      console.log(url);
 
-      const transaction = await CONTRACT.updateCandidate(_name, url);
-
-      await transaction.wait();
+      const pk = await retrievePublicKey();
+      const pka = new Address(pk);
+      await callContract("update_candidate", [
+        stringToScValString(_name),
+        stringToScValString(url),
+        pka.toScVal(),
+      ]);
 
       notifySuccess("Successfully Updated Candidate");
       setLoader(false);
@@ -524,17 +590,18 @@ export const VOTER_DAPP_PROVIDER = ({ children }) => {
     }
   };
 
-  const CHANGE_OWNER = async (_newOwner) => {
+  const changeOwner = async (_newOwner) => {
     if (!_newOwner) return notifyError("Data Is Missing");
     notifySuccess("kindly wait...");
     setLoader(true);
 
-    const CONTRACT = await VOTING_CONTRACT();
+    const newOwner = new Address(_newOwner);
+    const pk = await retrievePublicKey();
+    const pka = new Address(pk);
 
     try {
-      const transaction = await CONTRACT.changeOwner(_newOwner);
+      await callContract("change_owner", [newOwner.toScVal(), pka.toScVal()]);
 
-      await transaction.wait();
       setLoader(false);
       notifySuccess("Successfully updated ");
       window.location.href = "/";
@@ -545,37 +612,36 @@ export const VOTER_DAPP_PROVIDER = ({ children }) => {
     }
   };
 
-  const RESET_CONTRACT = async () => {
+  const resetContract = async () => {
     notifySuccess("kindly wait...");
     setLoader(true);
 
-    const CONTRACT = await VOTING_CONTRACT();
-
     try {
-      const transaction = await CONTRACT.resetContract();
+      const pk = await retrievePublicKey();
+      const pka = new Address(pk);
+      await callContract("reset_contract", pka.toScVal());
 
-      await transaction.wait();
       setLoader(false);
       notifySuccess("Successfully RESET ");
-      window.location.href = "/";
+      router.push("/");
     } catch (error) {
       setLoader(false);
       notifySuccess("RESET failed, kindly connect to ellection commission");
-      console.log(error);
+      console.log(error.message);
     }
   };
 
-  const GIVE_VOTE = async (_candidateAddress) => {
+  const giveVote = async (_candidateAddress) => {
     if (!_candidateAddress) return notifyError("Data Is Missing");
     notifySuccess("kindly wait...");
     setLoader(true);
 
-    const CONTRACT = await VOTING_CONTRACT();
-
     try {
-      const transaction = await CONTRACT.vote(_candidateAddress);
+      const candidateAddress = new Address(_candidateAddress);
+      const pk = await retrievePublicKey();
+      const pka = new Address(pk);
+      await callContract("vote", [candidateAddress.toScVal(), pka.toScVal()]);
 
-      await transaction.wait();
       setLoader(false);
       notifySuccess("Successfully voted ");
       router.push("/approve-candidates");
@@ -586,17 +652,10 @@ export const VOTER_DAPP_PROVIDER = ({ children }) => {
     }
   };
 
-  //READ DATA FUNCTIONS
-  const INITIAL_CONTRACT_DATA = async () => {
+  const initContractData = async () => {
     try {
-      const userAddress = await checkIfWalletIsConnected();
-
-      setAddress(userAddress);
-      if (userAddress) {
-        const CONTRACT = await VOTING_CONTRACT();
-
-        const startDateN = await CONTRACT.startTime();
-        const endDateN = await CONTRACT.endTime();
+      if (isWalletConnected) {
+        const [startDateN, endDateN] = await callContract("get_voting_time");
 
         const timestamp1 = startDateN;
         const timestamp2 = endDateN;
@@ -628,22 +687,15 @@ export const VOTER_DAPP_PROVIDER = ({ children }) => {
     }
   };
 
-  const GET_REGISTER_CANDIDATES = async () => {
+  const getRegisteredCandidate = async () => {
     try {
-      const userAddress = await checkIfWalletIsConnected();
-
-      setAddress(userAddress);
-      if (userAddress) {
-        const CONTRACT = await VOTING_CONTRACT();
-
-        const candidates = await CONTRACT.getAllRegisteredCandidates();
-        // console.log(candidates);
-
+      if (isWalletConnected) {
+        const candidates = await callContract("get_all_registered_candidates");
         const items = await Promise.all(
-          candidates.map(
+          await scValToNative(candidates).map(
             async ({
               ipfs,
-              candidateAddress,
+              candidate_address,
               registerId,
               status,
               voteCount,
@@ -672,7 +724,7 @@ export const VOTER_DAPP_PROVIDER = ({ children }) => {
               } = await axios.get(ipfs, {});
 
               return {
-                address: candidateAddress,
+                address: candidate_address,
                 registerId: registerId?.toNumber(),
                 status,
                 voteCount: voteCount?.toNumber(),
@@ -708,19 +760,14 @@ export const VOTER_DAPP_PROVIDER = ({ children }) => {
     }
   };
 
-  const GET_REGISTER_VOTERS = async () => {
+  const getRegisteredVoters = async () => {
     try {
-      const userAddress = await checkIfWalletIsConnected();
-
-      setAddress(userAddress);
-      if (userAddress) {
-        const CONTRACT = await VOTING_CONTRACT();
-
-        const candidates = await CONTRACT.getAllRegisteredVoters();
-        // console.log(candidates);
+      if (isWalletConnected) {
+        const voters = await callContract("get_all_registered_voters");
+        console.log(voters);
 
         const items = await Promise.all(
-          candidates.map(
+          scValToNative(voters).map(
             async ({
               ipfs,
               voterAddress,
@@ -782,19 +829,14 @@ export const VOTER_DAPP_PROVIDER = ({ children }) => {
     }
   };
 
-  const ALL_VOTERS_VOTED = async () => {
+  const votedVoters = async () => {
     try {
-      const userAddress = await checkIfWalletIsConnected();
-
-      setAddress(userAddress);
-      if (userAddress) {
-        const CONTRACT = await VOTING_CONTRACT();
-
-        const candidates = await CONTRACT.getAllVotersWhoVoted();
-        // console.log(candidates);
+      if (isWalletConnected) {
+        const voters = callContract("get_all_voters_who_voted");
+        console.log(voters);
 
         const items = await Promise.all(
-          candidates.map(
+          voters.map(
             async ({
               ipfs,
               voterAddress,
@@ -848,9 +890,8 @@ export const VOTER_DAPP_PROVIDER = ({ children }) => {
           )
         );
 
-        //CHECK CURRENT USER VOTING STATE
         items?.filter((user) =>
-          user.address.toLowerCase() == userAddress
+          user.address.toLowerCase() === publicKey
             ? setCheckVote(true)
             : setCheckVote(false)
         );
@@ -863,18 +904,19 @@ export const VOTER_DAPP_PROVIDER = ({ children }) => {
     }
   };
 
-  const HIGHEST_VOTED_CANDIDATE = async () => {
+  const initFunction = async (val = BASE_FEE) => {
+    const pk = await retrievePublicKey();
+    const addres = new Address(pk).toScVal();
+    callContract("init", addres, val);
+  };
+
+  const highestVotedCandidate = async () => {
     try {
-      const userAddress = await checkIfWalletIsConnected();
-      setAddress(userAddress);
+      if (isWalletConnected) {
+        const candidate = await callContract("get_current_voting_status");
 
-      if (userAddress) {
-        const CONTRACT = await VOTING_CONTRACT();
-        const candidates = await CONTRACT.getCurrentVotingStatus();
+        console.log(candidate);
 
-        console.log(candidates);
-
-        const zeroAddress = "0x0000000000000000000000000000000000000000";
         if (candidates?.candidateAddress.toLowerCase() === zeroAddress) return;
 
         const {
@@ -925,8 +967,6 @@ export const VOTER_DAPP_PROVIDER = ({ children }) => {
           pdf,
         };
 
-        console.log(candidateData);
-
         return candidateData;
       }
     } catch (error) {
@@ -935,19 +975,55 @@ export const VOTER_DAPP_PROVIDER = ({ children }) => {
     }
   };
 
-  const WINNER = async () => {
+  const addTransaction = async (destinationId, amount) => {
+    var transaction;
+    var sourceKeys = Keypair.fromSecret(
+      "SCXX7GGIJEYGBL2H4JKSPR3VJXCYUT7KDQHKD2QIDGOMI566SJWEGWZS"
+    );
+    await server
+      .loadAccount(destinationId)
+      .catch(function (error) {
+        if (error instanceof StellarSdk.NotFoundError) {
+          throw new Error("The destination account does not exist!");
+        } else return error;
+      })
+      .then(function () {
+        return server.loadAccount(sourceKeys.publicKey());
+      })
+      .then(function (sourceAccount) {
+        transaction = new StellarSdk.TransactionBuilder(sourceAccount, {
+          fee: StellarSdk.BASE_FEE,
+          networkPassphrase: StellarSdk.Networks.TESTNET,
+        })
+          .addOperation(
+            StellarSdk.Operation.payment({
+              destination: destinationId,
+              asset: StellarSdk.Asset.native(),
+              amount,
+            })
+          )
+          .addMemo(StellarSdk.Memo.text("Test Transaction"))
+          .setTimeout(180)
+          .build();
+        transaction.sign(sourceKeys);
+        return server.submitTransaction(transaction);
+      })
+      .then(function (result) {
+        console.log("Success! Results:", result);
+      })
+      .catch(function (error) {
+        console.error("Something went wrong!", error);
+      });
+  };
+
+  const getWinner = async () => {
     try {
-      const userAddress = await checkIfWalletIsConnected();
-
-      setAddress(userAddress);
-      if (userAddress) {
-        const CONTRACT = await VOTING_CONTRACT();
-
-        const candidates = await CONTRACT.getWinningCandidate();
-        // console.log(candidates);
+      if (isWalletConnected) {
+        const candidate = await callContract("get_winning_candidate");
+        console.log(candidate);
 
         const items = await Promise.all(
-          candidates.map(
+          candidate.map(
             async ({
               ipfs,
               voterAddress,
@@ -1009,16 +1085,11 @@ export const VOTER_DAPP_PROVIDER = ({ children }) => {
     }
   };
 
-  const GET_SINGLE_VOTER = async (address) => {
+  const getSingleVoter = async (address) => {
     try {
-      const userAddress = await checkIfWalletIsConnected();
-
-      setAddress(userAddress);
       if (!address) return notifyError("Kindly provide address");
-
-      const CONTRACT = await VOTING_CONTRACT();
-
-      const data = await CONTRACT.getVoter(address);
+      const pka = new Address(address);
+      const data = await callContract("get_voter", pka.toScVal());
       const {
         data: {
           _name,
@@ -1064,20 +1135,20 @@ export const VOTER_DAPP_PROVIDER = ({ children }) => {
       return voter;
     } catch (error) {
       notifySuccess("Failed to get data, kindly reload page");
-      console.log(error);
+      console.log(error.message);
     }
   };
 
-  const GET_SINGLE_CANDIDATE = async (address) => {
+  const getSingleCandidate = async (address) => {
     try {
-      const userAddress = await checkIfWalletIsConnected();
-
-      setAddress(userAddress);
       if (!address) return notifyError("Kindly provide address");
 
-      const CONTRACT = await VOTING_CONTRACT();
+      const pk = await retrievePublicKey();
+      const pka = new Address(pk);
 
-      const data = await CONTRACT.getCandidate(address);
+      const data = await scValToNative(
+        await callContract("get_candidate", pka.toScVal())
+      );
 
       const {
         data: {
@@ -1135,44 +1206,45 @@ export const VOTER_DAPP_PROVIDER = ({ children }) => {
   };
 
   return (
-    <VOTING_DAPP_CONTEXT.Provider
+    <VotingDappConext.Provider
       value={{
-        GET_SINGLE_CANDIDATE,
-        GET_SINGLE_VOTER,
-        GET_REGISTER_CANDIDATES,
-        GET_REGISTER_VOTERS,
-        HIGHEST_VOTED_CANDIDATE,
-        INITIAL_CONTRACT_DATA,
-        ALL_VOTERS_VOTED,
-        WINNER,
+        getSingleCandidate,
+        getSingleVoter,
+        getRegisteredCandidate,
+        getRegisteredVoters,
+        highestVotedCandidate,
+        initContractData,
+        votedVoters,
+        getWinner,
         notifySuccess,
         notifyError,
         setLoader,
         connectWallet,
-        address,
+        publicKey,
         checkVote,
-        OWNER_ADDRESS,
-        setAddress,
+        isWalletConnected,
         loader,
-        checkIfWalletIsConnected,
-        VOTING_DAPP,
-        REGISTER_CANDIDATE,
-        REGISTER_VOTER,
-        APPROVE_VOTER,
-        APPROVE_CANDIDATE,
-        GIVE_VOTE,
-        UPDATE_CANDIDATE,
-        UPDATE_VOTER,
-        CHANGE_OWNER,
-        RESET_CONTRACT,
-        SET_VOTING_PREIOD,
-        REJECT_CANDIDATE,
-        REGISTER_VOTER,
-        REJECT_VOTER,
-        DONATE_TO_CANDIDATE,
+        registerCandidate,
+        registerVoter,
+        approveVoter,
+        approveCandidate,
+        giveVote,
+        updateCandidate,
+        updateVoter,
+        changeOwner,
+        resetContract,
+        setVotingPeriod,
+        rejectCandidate,
+        registerVoter,
+        rejectVoting,
+        callContract,
+        ownerPublicKey,
+        retrievePublicKey,
+        addTransaction,
+        initFunction,
       }}
     >
       {children}
-    </VOTING_DAPP_CONTEXT.Provider>
+    </VotingDappConext.Provider>
   );
 };

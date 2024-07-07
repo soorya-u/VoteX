@@ -14,7 +14,7 @@ const registerVoters = () => {
   const [candidates, setCandidates] = useState();
   const [loading, setLoading] = useState(false);
 
-  const { GET_REGISTER_VOTERS } = useContext(VOTING_DAPP_CONTEXT);
+  const { GET_registerVoterS } = useContext(VOTING_DAPP_CONTEXT);
 
   function filterUsersByStatus(users, status) {
     return users?.filter((user) => user.status === status);
@@ -23,7 +23,7 @@ const registerVoters = () => {
   useEffect(() => {
     setLoading(true);
     const fetchData = async () => {
-      const items = await GET_REGISTER_VOTERS();
+      const items = await GET_registerVoterS();
 
       const approvedUsers = filterUsersByStatus(items, 1);
       setCandidates(approvedUsers);

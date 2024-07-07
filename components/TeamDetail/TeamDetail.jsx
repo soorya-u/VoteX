@@ -9,7 +9,7 @@ const TeamDetail = ({
   path,
   handleClickApprove,
   handleClickReject,
-  GIVE_VOTE,
+  giveVote,
   OWNER_ADDRESS,
   address,
   checkVote,
@@ -25,7 +25,7 @@ const TeamDetail = ({
         path={path}
         handleClickApprove={handleClickApprove}
         handleClickReject={handleClickReject}
-        GIVE_VOTE={GIVE_VOTE}
+        giveVote={giveVote}
         OWNER_ADDRESS={OWNER_ADDRESS}
         address={address}
         checkVote={checkVote}

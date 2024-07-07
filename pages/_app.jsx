@@ -1,15 +1,15 @@
 import { Toaster } from "react-hot-toast";
 import "../styles/globals.css";
 
-import { VOTER_DAPP_PROVIDER } from "../context/context";
+import { VoterDappProvider } from "../context/context";
 
 export default function App({ Component, pageProps }) {
   return (
     <>
-      <VOTER_DAPP_PROVIDER>
+      <VoterDappProvider>
         <Component {...pageProps} />
         <Toaster />
-      </VOTER_DAPP_PROVIDER>
+      </VoterDappProvider>
 
       <script
         data-cfasync="false"

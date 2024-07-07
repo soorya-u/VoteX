@@ -4,7 +4,7 @@ import React from "react";
 const Member = ({
   candidates,
   path,
-  GIVE_VOTE,
+  giveVote,
   checkVote,
   votingTime,
   currentVotingTime,
@@ -63,7 +63,7 @@ const Member = ({
                         >
                           <a
                             className="custom-read"
-                            onClick={() => GIVE_VOTE(item?.address)}
+                            onClick={() => giveVote(item?.address)}
                           >
                             Give Vote
                           </a>

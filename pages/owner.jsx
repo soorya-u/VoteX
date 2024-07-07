@@ -14,8 +14,8 @@ const voter = () => {
     loader,
     OWNER_ADDRESS,
     checkIfWalletIsConnected,
-    CHANGE_OWNER,
-    RESET_CONTRACT,
+    changeOwner,
+    resetContract,
     SET_VOTING_PREIOD,
   } = useContext(VOTING_DAPP_CONTEXT);
 
@@ -143,7 +143,7 @@ const voter = () => {
                       <div>
                         <button
                           className="cmn-btn py-3 px-5 px-lg-6 w-100 d-center"
-                          onClick={() => CHANGE_OWNER(changeOwner)}
+                          onClick={() => changeOwner(changeOwner)}
                         >
                           Change Owner
                         </button>
@@ -153,7 +153,7 @@ const voter = () => {
                     <div className=" mt-7 mt-lg-16">
                       <button
                         className="cmn-btn py-3 px-5 px-lg-6 mt-7 mt-lg-8 w-100 d-center"
-                        onClick={() => RESET_CONTRACT()}
+                        onClick={() => resetContract()}
                       >
                         Reset Contract
                       </button>
