@@ -144,7 +144,7 @@ const signup = () => {
                         <div className="col-sm-6 col-md-12 col-xl-6">
                           <Input
                             name={"Name"}
-                            placeholder={"_name"}
+                            placeholder={"Name"}
                             type={"text"}
                             handleClick={(e) =>
                               setUpdateCandidate({
@@ -157,7 +157,7 @@ const signup = () => {
                         <div className="col-sm-6 col-md-12 col-xl-6">
                           <Input
                             name={"Nomination Form"}
-                            placeholder={"_nominationForm"}
+                            placeholder={"Nomination Form"}
                             type={"text"}
                             handleClick={(e) =>
                               setUpdateCandidate({
@@ -171,7 +171,7 @@ const signup = () => {
 
                       <Input
                         name={"Affidavit"}
-                        placeholder={"_affidavit"}
+                        placeholder={"Affidavit"}
                         type={"text"}
                         handleClick={(e) =>
                           setUpdateCandidate({
@@ -183,7 +183,7 @@ const signup = () => {
 
                       <Input
                         name={"Criminal Antecedents"}
-                        placeholder={"_criminalAntecedents"}
+                        placeholder={"Criminal Antecedents"}
                         type={"text"}
                         handleClick={(e) =>
                           setUpdateCandidate({
@@ -194,7 +194,7 @@ const signup = () => {
                       />
                       <Input
                         name={"Assets And Liabilities"}
-                        placeholder={"_assetsAndLiabilities"}
+                        placeholder={"Assets And Liabilities"}
                         type={"text"}
                         handleClick={(e) =>
                           setUpdateCandidate({
@@ -205,7 +205,7 @@ const signup = () => {
                       />
                       <Input
                         name={"Educational Qualifications"}
-                        placeholder={"_educationalQualifications"}
+                        placeholder={"Educational Qualifications"}
                         type={"text"}
                         handleClick={(e) =>
                           setUpdateCandidate({
@@ -215,8 +215,8 @@ const signup = () => {
                         }
                       />
                       <Input
-                        name={"Electoral RollEntry"}
-                        placeholder={"_electoralRollEntry"}
+                        name={"Electoral Roll Entry"}
+                        placeholder={"Electoral Roll Entry"}
                         type={"text"}
                         handleClick={(e) =>
                           setUpdateCandidate({
@@ -227,7 +227,7 @@ const signup = () => {
                       />
                       <Input
                         name={"Security Deposit"}
-                        placeholder={"_securityDeposit"}
+                        placeholder={"Security Deposit"}
                         type={"text"}
                         handleClick={(e) =>
                           setUpdateCandidate({
@@ -238,7 +238,7 @@ const signup = () => {
                       />
                       <Input
                         name={"Party Affiliation"}
-                        placeholder={"_partyAffiliation"}
+                        placeholder={"Party Affiliation"}
                         type={"text"}
                         handleClick={(e) =>
                           setUpdateCandidate({
@@ -249,7 +249,7 @@ const signup = () => {
                       />
                       <Input
                         name={"Oath Or Affirmation"}
-                        placeholder={"_oathOrAffirmation"}
+                        placeholder={"Oath Or Affirmation"}
                         type={"text"}
                         handleClick={(e) =>
                           setUpdateCandidate({
@@ -260,7 +260,7 @@ const signup = () => {
                       />
                       <Input
                         name={"Photographs"}
-                        placeholder={"_photographs"}
+                        placeholder={"Photographs"}
                         type={"text"}
                         handleClick={(e) =>
                           setUpdateCandidate({
@@ -270,8 +270,8 @@ const signup = () => {
                         }
                       />
                       <Input
-                        name={"ProofOfAge"}
-                        placeholder={"_proofOfAge"}
+                        name={"Proof Of Age"}
+                        placeholder={"Proof Of Age"}
                         type={"text"}
                         handleClick={(e) =>
                           setUpdateCandidate({
@@ -281,8 +281,8 @@ const signup = () => {
                         }
                       />
                       <Input
-                        name={"ProofOfAddress"}
-                        placeholder={"_proofOfAddress"}
+                        name={"Proof Of Address"}
+                        placeholder={"Proof Of Address"}
                         type={"text"}
                         handleClick={(e) =>
                           setUpdateCandidate({
@@ -292,8 +292,8 @@ const signup = () => {
                         }
                       />
                       <Input
-                        name={"PanCardDetails"}
-                        placeholder={"_panCardDetails"}
+                        name={"Pan Card Details"}
+                        placeholder={"Pan Card Details"}
                         type={"text"}
                         handleClick={(e) =>
                           setUpdateCandidate({
@@ -304,7 +304,7 @@ const signup = () => {
                       />
                       <Input
                         name={"VoterIdCardDetails"}
-                        placeholder={"_voterIdCardDetails"}
+                        placeholder={"Voter Id Card etails"}
                         type={"text"}
                         handleClick={(e) =>
                           setUpdateCandidate({

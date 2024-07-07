@@ -131,7 +131,7 @@ const voter = () => {
                     <div className="d-flex flex-column gap-5 gap-lg-6 ">
                       <Input
                         name={"Name"}
-                        placeholder={"_name"}
+                        placeholder={"Name"}
                         type={"text"}
                         handleClick={(e) =>
                           setUpdateVoter({
@@ -142,7 +142,7 @@ const voter = () => {
                       />
                       <Input
                         name={"Voter Address"}
-                        placeholder={"_voterAddress"}
+                        placeholder={"Voter Address"}
                         type={"text"}
                         handleClick={(e) =>
                           setUpdateVoter({
@@ -153,7 +153,7 @@ const voter = () => {
                       />
                       <Input
                         name={"Photograph"}
-                        placeholder={"_photograph"}
+                        placeholder={"Photograph"}
                         type={"text"}
                         handleClick={(e) =>
                           setUpdateVoter({
@@ -164,7 +164,7 @@ const voter = () => {
                       />
                       <Input
                         name={"Parent Or SpouseName"}
-                        placeholder={"_parentOrSpouseName"}
+                        placeholder={"Parent Or SpouseName"}
                         type={"text"}
                         handleClick={(e) =>
                           setUpdateVoter({
@@ -175,7 +175,7 @@ const voter = () => {
                       />
                       <Input
                         name={"Gender"}
-                        placeholder={"_gender"}
+                        placeholder={"Gender"}
                         type={"text"}
                         handleClick={(e) =>
                           setUpdateVoter({
@@ -186,7 +186,7 @@ const voter = () => {
                       />
                       <Input
                         name={"DOB Or Age"}
-                        placeholder={"_dobOrAge"}
+                        placeholder={"Dob Or Age"}
                         type={"text"}
                         handleClick={(e) =>
                           setUpdateVoter({
@@ -196,8 +196,8 @@ const voter = () => {
                         }
                       />
                       <Input
-                        name={"AddressDetails"}
-                        placeholder={"_addressDetails"}
+                        name={"Address Details"}
+                        placeholder={"Address Details"}
                         type={"text"}
                         handleClick={(e) =>
                           setUpdateVoter({
@@ -208,7 +208,7 @@ const voter = () => {
                       />
                       <Input
                         name={"Epic Number"}
-                        placeholder={"_epicNumber"}
+                        placeholder={"Epic Number"}
                         type={"text"}
                         handleClick={(e) =>
                           setUpdateVoter({
@@ -218,8 +218,8 @@ const voter = () => {
                         }
                       />
                       <Input
-                        name={"Part Number AndName"}
-                        placeholder={"_partNumberAndName"}
+                        name={"Part Number And Name"}
+                        placeholder={"Part Number And Name"}
                         type={"text"}
                         handleClick={(e) =>
                           setUpdateVoter({
@@ -229,8 +229,8 @@ const voter = () => {
                         }
                       />
                       <Input
-                        name={"Assembly Constituency NumberAndName"}
-                        placeholder={"_assemblyConstituencyNumberAndName"}
+                        name={"Assembly Constituency Number And Name"}
+                        placeholder={"Assembly Constituency Number And Name"}
                         type={"text"}
                         handleClick={(e) =>
                           setUpdateVoter({
@@ -240,8 +240,8 @@ const voter = () => {
                         }
                       />
                       <Input
-                        name={"IssuingAuthoritySignature"}
-                        placeholder={"_issuingAuthoritySignature"}
+                        name={"Issuing Authority ignature"}
+                        placeholder={"Issuing Authority Signature"}
                         type={"text"}
                         handleClick={(e) =>
                           setUpdateVoter({
@@ -251,8 +251,8 @@ const voter = () => {
                         }
                       />
                       <Input
-                        name={"HologramAndBarcode"}
-                        placeholder={"_hologramAndBarcode"}
+                        name={"Hologram And Barcode"}
+                        placeholder={"Hologram And Barcode"}
                         type={"text"}
                         handleClick={(e) =>
                           setUpdateVoter({
