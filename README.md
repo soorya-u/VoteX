@@ -2,20 +2,26 @@
 
 ## Prerequisites of the Project
 
-1. Create a Certificate Authority
+1. Create a Certificate Authority.
 
-```sh
-openssl genrsa -out localhost-ca.key 2048
-openssl req -x509 -new -nodes -key localhost-ca.key -sha256 -days 1024 -out localhost-ca.crt -subj "/C=US/ST=State/L=City/O=Organization/CN=localhost"
-```
+   ```sh
+   openssl genrsa -out localhost-ca.key 2048
+   ```
+   ```sh
+   openssl req -x509 -new -nodes -key localhost-ca.key -sha256 -days 1024 -out localhost-ca.crt -subj "/C=US/ST=State/L=City/O=Organization/CN=localhost"
+   ```
 
-2. Create a certificate for localhost
+2. Create a certificate for localhost.
 
-```sh
-openssl genrsa -out localhost.key 2048
-openssl req -new -key localhost.key -out localhost.csr -subj "/C=US/ST=State/L=City/O=Organization/CN=localhost"
-openssl x509 -req -in localhost.csr -CA localhost-ca.crt -CAkey localhost-ca.key -CAcreateserial -out localhost.crt -days 500 -sha256
-```
+   ```sh
+   openssl genrsa -out localhost.key 2048
+   ```
+   ```sh
+   openssl req -new -key localhost.key -out localhost.csr -subj "/C=US/ST=State/L=City/O=Organization/CN=localhost"
+   ```
+   ```sh
+   openssl x509 -req -in localhost.csr -CA localhost-ca.crt -CAkey localhost-ca.key -CAcreateserial -out localhost.crt -days 500 -sha256
+   ```
 
 ## Run Project Locally
 
@@ -27,25 +33,28 @@ To run the Project locally:
    cp .env.example .env
    ```
 
-2. Enter the Pinata API Key and Secret
+2. Enter the Pinata API Key, Secret and Owner Public Key. 
 
-3. Open a Terminal and run
-
-   ```sh
-   npx hardhat node
-   ```
-
-4. Copy the Account ID of the Any Account as the `OWNER_ADDRESS` in \*.env\_ File
-
-5. Create Another Terminal and run
+3. Build the Contract. 
 
    ```sh
-   npx hardhat run scripts/deploy.js --network localhost
+   cd web3 && stellar contract build
    ```
+   
+4. Deploy the Contract.
 
-6. Copy the Contract Address to the _.env_ File
+   ```sh
+    stellar contract deploy --wasm target/wasm32-unknown-unknown/release/voting_organization.wasm --source <account-name> --network <network-name>
+    ```
 
-7. Run the Command to start the Frontend
+5. Copy the Contract ID to `NEXT_PUBLIC_CONTRACT_ID` in \*.env\_ File
+
+6. Run the Init Function.
+
+   ```sh
+   stellar contract invoke --id <contract-id> --source <account-name> --network <network-name> -- init --owner-address <owner-address>
+   ```
+7. Run the Command to start the Frontend.
 
    ```sh
    npm run dev
