@@ -1,15 +1,8 @@
-import React, { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext } from "react";
 import Link from "next/link";
 
 //INTERNAL IMPORT
-import {
-  Cursor,
-  Preloader,
-  ScrollToTop,
-  Footer,
-  Header,
-  RoadMap,
-} from "../components/index";
+import { Cursor, Preloader, ScrollToTop } from "../components";
 
 import Input from "../components/Global/Input";
 import Upload from "../components/Global/Upload";
@@ -20,7 +13,7 @@ import Loader from "../components/Global/Loader";
 import PopUp from "../components/Global/PopUp";
 
 //IMPORTING CONTRCT DATA
-import { VotingDappContext } from "../context/context";
+import { VotingDappContext } from "../context";
 
 const signup = () => {
   const {

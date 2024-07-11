@@ -1,11 +1,10 @@
-import React from "react";
 import {
   Cursor,
   ScrollToTop,
   Footer,
   Header,
   Contact,
-} from "../components/index";
+} from "../components";
 
 const contact = () => {
   return (

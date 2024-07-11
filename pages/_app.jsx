@@ -1,7 +1,7 @@
 import { Toaster } from "react-hot-toast";
 import "../styles/globals.css";
 
-import { VotingDappProvider } from "../context/context";
+import { VotingDappProvider } from "../context";
 
 export default function App({ Component, pageProps }) {
   return (

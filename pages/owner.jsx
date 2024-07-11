@@ -1,13 +1,13 @@
 import React, { useEffect, useState, useContext } from "react";
 import Link from "next/link";
 
-import { Cursor, Preloader, ScrollToTop } from "../components/index";
+import { Cursor, Preloader, ScrollToTop } from "../components";
 
 import Input from "../components/Global/Input";
 import Loader from "../components/Global/Loader";
 
 //IMPORTING CONTRCT DATA
-import { VotingDappContext } from "../context/context";
+import { VotingDappContext } from "../context";
 
 const voter = () => {
   const {

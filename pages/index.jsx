@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 
 //INTERNAL INPORT
 import {
@@ -12,9 +12,9 @@ import {
   Blog,
   Provide,
   Vote,
-} from "../components/index";
+} from "../components";
 
-import { VotingDappContext } from "../context/context";
+import { VotingDappContext } from "../context";
 import ChatBot from "../components/Global/ChatBot";
 
 const index = () => {

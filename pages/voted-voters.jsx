@@ -8,7 +8,7 @@ import {
   Team,
 } from "../components/index";
 //IMPORTING CONTRCT DATA
-import { VotingDappContext } from "../context/context";
+import { VotingDappContext } from "../context";
 
 const allVotersVoted = () => {
   const [candidates, setCandidates] = useState();

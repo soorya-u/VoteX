@@ -1,7 +1,7 @@
-import React, { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext } from "react";
 import Link from "next/link";
 
-import { Cursor, Preloader, ScrollToTop } from "../components/index";
+import { Cursor, Preloader, ScrollToTop } from "../components";
 
 import Input from "../components/Global/Input";
 import Upload from "../components/Global/Upload";
@@ -10,7 +10,7 @@ import Preview from "../components/Global/Preview";
 import PreviewImg from "../components/Global/PreviewImg";
 import Loader from "../components/Global/Loader";
 
-import { VotingDappContext } from "../context/context";
+import { VotingDappContext } from "../context";
 
 const voter = () => {
   const {

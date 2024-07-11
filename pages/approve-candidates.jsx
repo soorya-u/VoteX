@@ -6,9 +6,9 @@ import {
   Footer,
   Header,
   Team,
-} from "../components/index";
+} from "../components";
 import Loader from "../components/Global/Loader";
-import { VotingDappContext } from "../context/context";
+import { VotingDappContext } from "../context";
 
 const registerVoters = () => {
   const [candidates, setCandidates] = useState();

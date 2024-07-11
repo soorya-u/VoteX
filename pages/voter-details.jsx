@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useRouter } from "next/router";
 import {
   Cursor,
@@ -7,11 +7,11 @@ import {
   Footer,
   Header,
   TeamDetail,
-} from "../components/index";
+} from "../components";
 import Loader from "../components/Global/Loader";
 
 //IMPORTING CONTRCT DATA
-import { VotingDappContext } from "../context/context";
+import { VotingDappContext } from "../context";
 
 const voterDetails = () => {
   const router = useRouter();
