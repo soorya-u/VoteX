@@ -1,172 +1,46 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState, createContext } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 
-import {
-  BASE_FEE,
-  TransactionBuilder,
-  Address,
-  scValToNative,
-  Keypair,
-} from "@stellar/stellar-sdk";
-import { getUserInfo, setAllowed, isConnected } from "@stellar/freighter-api";
+import { scValToNative } from "@stellar/stellar-sdk";
 
+import { headers } from "@/constants/headers";
+import { ContractFunctions } from "@/constants/contract";
 import {
-  ownerPublicKey,
-  notifyError,
-  notifySuccess,
-  contract,
-  server,
-  headers,
-} from "./constants";
-import { numberToU64, stringToScValString } from "./value-converter";
-import { retrievePublicKey, connectWallet, signTransaction } from "./wallet";
+  numberToU64,
+  stringToScValString,
+  callContract as callContractFn,
+  stringToAddress,
+} from "@/lib/stellar";
+import { retrievePublicKey, checkConnection } from "@/lib/freighter";
+import { notifyError, notifySuccess } from "@/lib/toast";
+import { validObjectCheck } from "@/utils";
 
-export const VotingDappContext = React.createContext();
+export const VotingDappContext = createContext();
 
 export const VotingDappProvider = ({ children }) => {
   const router = useRouter();
-  const [isWalletConnected, setIsWalletConnected] = useState(false);
   const [loader, setLoader] = useState(false);
   const [publicKey, setPublicKey] = useState("");
+  const [isWalletConnected, setIsWalletConnected] = useState(false);
   const [checkVote, setCheckVote] = useState(false);
 
-  useEffect(() => {
-    const initFn = async () => {
-      if (!(await isConnected())) return;
-      await setAllowed().then(async () => setIsWalletConnected(true));
-      const pk = await retrievePublicKey();
-      setPublicKey(pk);
-    };
-    initFn();
-  }, []);
+  useEffect(() => publicKey !== "" && setIsWalletConnected(true), [publicKey]);
 
-  const callContract = async (functionName, values = null) => {
-    if (!isWalletConnected) return;
+  const connectWallet = async () =>
+    (await checkConnection()) && setPublicKey(await retrievePublicKey());
 
-    const { publicKey } = await getUserInfo();
-
-    const account = await server.getAccount(publicKey);
-
-    const params = {
-      fee: BASE_FEE,
-      networkPassphrase: "Test SDF Network ; September 2015",
-    };
-
-    let buildTx;
-
-    if (values === null) {
-      buildTx = new TransactionBuilder(account, params)
-        .addOperation(contract.call(functionName))
-        .setTimeout(30)
-        .build();
-    } else if (Array.isArray(values)) {
-      buildTx = new TransactionBuilder(account, params)
-        .addOperation(contract.call(functionName, ...values))
-        .setTimeout(30)
-        .build();
-    } else {
-      buildTx = new TransactionBuilder(account, params)
-        .addOperation(contract.call(functionName, values))
-        .setTimeout(30)
-        .build();
-    }
-
-    const prepareTx = await server.prepareTransaction(buildTx);
-
-    const xdrTx = prepareTx.toXDR();
-    const signedTx = await signTransaction(xdrTx, "TESTNET", publicKey);
-    const tx = TransactionBuilder.fromXDR(
-      signedTx,
-      "Test SDF Network ; September 2015"
-    );
-
-    try {
-      let sendTx = await server.sendTransaction(tx).catch((err) => {
-        console.log("Catch-1", err);
-        return err;
-      });
-      if (sendTx.errorResult) {
-        throw new Error("Unable to submit transaction");
-      }
-      if (sendTx.status === "PENDING") {
-        let txResponse = await server.getTransaction(sendTx.hash);
-        while (txResponse.status === "NOT_FOUND") {
-          txResponse = await server.getTransaction(sendTx.hash);
-          await new Promise((resolve) => setTimeout(resolve, 100));
-        }
-        if (txResponse.status === "SUCCESS") {
-          let result = txResponse.returnValue;
-          return result;
-        }
-      }
-    } catch (err) {
-      console.log("Catch-2", err);
-      return;
-    }
-  };
+  const callContract = (funcName, values = null) =>
+    callContractFn(funcName, values, isWalletConnected, publicKey);
 
   const registerCandidate = async (updateCandidate, image, pdf) => {
-    const {
-      _name,
-      _nominationForm,
-      _affidavit,
-      _criminalAntecedents,
-      _assetsAndLiabilities,
-      _educationalQualifications,
-      _electoralRollEntry,
-      _securityDeposit,
-      _partyAffiliation,
-      _oathOrAffirmation,
-      _photographs,
-      _proofOfAge,
-      _proofOfAddress,
-      _panCardDetails,
-      _voterIdCardDetails,
-    } = updateCandidate;
-
-    if (
-      !_name ||
-      !_nominationForm ||
-      !_affidavit ||
-      !_criminalAntecedents ||
-      !_assetsAndLiabilities ||
-      !_educationalQualifications ||
-      !_electoralRollEntry ||
-      !_securityDeposit ||
-      !_partyAffiliation ||
-      !_oathOrAffirmation ||
-      !_photographs ||
-      !_proofOfAge ||
-      !_proofOfAddress ||
-      !_panCardDetails ||
-      !_voterIdCardDetails ||
-      !image ||
-      !pdf
-    )
-      return notifyError("Data Is Missing");
+    const { _name: name } = updateCandidate;
+    const jsonData = { ...updateCandidate, image, pdf };
+    if (validObjectCheck(jsonData)) return notifyError("Data Is Missing");
     notifySuccess("Registering Candidate, kindly wait...");
     setLoader(true);
 
-    const data = JSON.stringify({
-      _name,
-      _nominationForm,
-      _affidavit,
-      _criminalAntecedents,
-      _assetsAndLiabilities,
-      _educationalQualifications,
-      _electoralRollEntry,
-      _securityDeposit,
-      _partyAffiliation,
-      _oathOrAffirmation,
-      _photographs,
-      _proofOfAge,
-      _proofOfAddress,
-      _panCardDetails,
-      _voterIdCardDetails,
-      image,
-      pdf,
-    });
+    const data = JSON.stringify(jsonData);
 
     try {
       const response = await axios({
@@ -178,12 +52,11 @@ export const VotingDappProvider = ({ children }) => {
 
       const url = `https://gateway.pinata.cloud/ipfs/${response.data.IpfsHash}`;
 
-      const publicKey = await retrievePublicKey();
-      const publicKeyAddr = new Address(publicKey);
-      await callContract("registerCandidate", [
-        stringToScValString(_name),
+      const publicKey = await stringToAddress();
+      await callContract(ContractFunctions.registerCandidate, [
+        stringToScValString(name),
         stringToScValString(url),
-        publicKeyAddr.toScVal(),
+        publicKey.toScVal(),
       ]);
 
       notifySuccess("Successfully Registered Candidate");
@@ -191,65 +64,20 @@ export const VotingDappProvider = ({ children }) => {
       router.push("/all-candidates");
     } catch (error) {
       setLoader(false);
-      notifySuccess(
-        "Registration failed, kindly connect to ellection commission"
-      );
+      notifyError("Registration failed, Kindly Connect to the Owner");
       console.log(error);
     }
   };
 
   const registerVoter = async (updateVoter, image, pdf) => {
-    const {
-      _name,
-      _voterAddress,
-      _photograph,
-      _parentOrSpouseName,
-      _gender,
-      _dobOrAge,
-      _addressDetails,
-      _epicNumber,
-      _partNumberAndName,
-      _assemblyConstituencyNumberAndName,
-      _issuingAuthoritySignature,
-      _hologramAndBarcode,
-    } = updateVoter;
+    const { _name: name } = updateVoter;
+    const jsonData = { ...updateVoter, image, pdf };
 
-    if (
-      !_name ||
-      !_voterAddress ||
-      !_photograph ||
-      !_parentOrSpouseName ||
-      !_gender ||
-      !_dobOrAge ||
-      !_addressDetails ||
-      !_epicNumber ||
-      !_partNumberAndName ||
-      !_assemblyConstituencyNumberAndName ||
-      !_issuingAuthoritySignature ||
-      !_hologramAndBarcode ||
-      !image ||
-      !pdf
-    )
-      return notifyError("Data Is Missing");
+    if (validObjectCheck(jsonData)) return notifyError("Data Is Missing");
     notifySuccess("Registering Voter, kindly wait...");
     setLoader(true);
 
-    const data = JSON.stringify({
-      _name,
-      _voterAddress,
-      _photograph,
-      _parentOrSpouseName,
-      _gender,
-      _dobOrAge,
-      _addressDetails,
-      _epicNumber,
-      _partNumberAndName,
-      _assemblyConstituencyNumberAndName,
-      _issuingAuthoritySignature,
-      _hologramAndBarcode,
-      image,
-      pdf,
-    });
+    const data = JSON.stringify(jsonData);
 
     try {
       const response = await axios({
@@ -261,23 +89,19 @@ export const VotingDappProvider = ({ children }) => {
 
       const url = `https://gateway.pinata.cloud/ipfs/${response.data.IpfsHash}`;
 
-      const publicKey = await retrievePublicKey();
-      const publicKeyAddr = new Address(publicKey).toScVal();
-      contract.call("registerVoter", _name, url);
-      await callContract("registerVoter", [
-        stringToScValString(_name),
+      const publicKey = await stringToAddress();
+      await callContract(ContractFunctions.registerVoter, [
+        stringToScValString(name),
         stringToScValString(url),
-        publicKeyAddr,
+        publicKey,
       ]);
 
       notifySuccess("Successfully Registered Voters");
       setLoader(false);
-      router.push("/");
+      router.push("/all-voters");
     } catch (error) {
       setLoader(false);
-      notifySuccess(
-        "Registration failed, kindly connect to election commission"
-      );
+      notifyError("Registration failed, kindly connect to the Owner");
       console.log(error);
     }
   };
@@ -288,10 +112,10 @@ export const VotingDappProvider = ({ children }) => {
     setLoader(true);
 
     try {
-      const pka = new Address(address);
+      const pk = await stringToAddress(address);
 
-      await callContract("approveCandidate", [
-        pka.toScVal(),
+      await callContract(ContractFunctions.approveCandidate, [
+        pk,
         stringToScValString(message),
       ]);
 
@@ -300,7 +124,7 @@ export const VotingDappProvider = ({ children }) => {
       router.push("/approve-candidates");
     } catch (error) {
       setLoader(false);
-      notifySuccess("approve failed, kindly connect to ellection commission");
+      notifyError("approve failed, kindly connect to the Owner");
       console.log(error);
     }
   };
@@ -310,11 +134,11 @@ export const VotingDappProvider = ({ children }) => {
     notifySuccess("kindly wait, approving voter...");
     setLoader(true);
 
-    const pka = new Address(address);
+    const pk = await stringToAddress(address);
 
     try {
-      await callContract("approve_voter", [
-        pka.toScVal(),
+      await callContract(ContractFunctions.approveVoter, [
+        pk,
         stringToScValString(message),
       ]);
 
@@ -323,7 +147,7 @@ export const VotingDappProvider = ({ children }) => {
       router.push("/approve-voters");
     } catch (error) {
       setLoader(false);
-      notifySuccess("approving failed, kindly connect to ellection commission");
+      notifyError("approving failed, kindly connect to the Owner");
       console.log(error);
     }
   };
@@ -334,10 +158,10 @@ export const VotingDappProvider = ({ children }) => {
     setLoader(true);
 
     try {
-      const pka = new Address(address);
+      const pk = await stringToAddress(address);
 
-      await callContract("rejectCandidate", [
-        pka.toScVal(),
+      await callContract(ContractFunctions.rejectCandidate, [
+        pk,
         stringToScValString(message),
       ]);
 
@@ -346,22 +170,22 @@ export const VotingDappProvider = ({ children }) => {
       router.push("/all-candidates");
     } catch (error) {
       setLoader(false);
-      notifySuccess("approve failed, kindly connect to ellection commission");
+      notifyError("approve failed, kindly connect to the Owner");
       console.log(error);
     }
   };
 
-  const rejectVoting = async (address, message) => {
+  const rejectVoter = async (address, message) => {
     console.log(address, message);
     if (!address || !message) return notifyError("Data Is Missing");
     notifySuccess("kindly wait, approving voter...");
     setLoader(true);
 
     try {
-      const pka = new Address(address);
+      const pk = await stringToAddress(address);
 
-      await callContract("reject_voter", [
-        pka.toScVal(),
+      await callContract(ContractFunctions.rejectVoter, [
+        pk,
         stringToScValString(message),
       ]);
 
@@ -370,114 +194,65 @@ export const VotingDappProvider = ({ children }) => {
       router.push("/all-voters");
     } catch (error) {
       setLoader(false);
-      notifySuccess("approving failed, kindly connect to ellection commission");
+      notifyError("approving failed, kindly connect to the Owner");
       console.log(error);
     }
   };
 
   const setVotingPeriod = async (voteTime) => {
-    const { startTime, endTime } = voteTime;
+    if (validObjectCheck(voteTime)) return notifyError("Data Is Missing");
 
-    if (!startTime || !endTime) return notifyError("Data Is Missing");
     notifySuccess("kindly wait...");
     setLoader(true);
 
-    const startDate = new Date(startTime);
-    const endDate = new Date(endTime);
+    const { startTime, endTime } = voteTime;
 
-    const startTimeMilliseconds = startDate.getTime();
-    const endTimeMilliseconds = endDate.getTime();
+    const startTimeMilliseconds = new Date(startTime).getTime();
+    const endTimeMilliseconds = new Date(endTime).getTime();
 
     const startTimeSeconds = Math.floor(startTimeMilliseconds / 1000);
     const endTimeSeconds = Math.floor(endTimeMilliseconds / 1000);
 
     try {
-      await callContract("set_voting_period", [
+      await callContract(ContractFunctions.setVotingPeriod, [
         numberToU64(startTimeSeconds),
         numberToU64(endTimeSeconds),
       ]);
 
       setLoader(false);
       notifySuccess("Successfully set voting period ");
-      window.location.href = "/";
+      router.push("/");
     } catch (error) {
       setLoader(false);
-      notifySuccess(
-        "set voting period failed, kindly connect to ellection commission"
-      );
+      notifyError("set voting period failed, kindly connect to Owner");
       console.log(error);
     }
   };
 
   const updateVoter = async (updateVoter, image, pdf) => {
-    const {
-      _name,
-      _voterAddress,
-      _photograph,
-      _parentOrSpouseName,
-      _gender,
-      _dobOrAge,
-      _addressDetails,
-      _epicNumber,
-      _partNumberAndName,
-      _assemblyConstituencyNumberAndName,
-      _issuingAuthoritySignature,
-      _hologramAndBarcode,
-    } = updateVoter;
-
-    if (
-      !_name ||
-      !_voterAddress ||
-      !_photograph ||
-      !_parentOrSpouseName ||
-      !_gender ||
-      !_dobOrAge ||
-      !_addressDetails ||
-      !_epicNumber ||
-      !_partNumberAndName ||
-      !_assemblyConstituencyNumberAndName ||
-      !_issuingAuthoritySignature ||
-      !_hologramAndBarcode ||
-      !image ||
-      !pdf
-    )
-      return notifyError("Data Is Missing");
-    notifySuccess("Upadate Voter, kindly wait...");
+    const { _name: name } = updateVoter;
+    const jsonData = { ...updateVoter, image, pdf };
+    if (validObjectCheck(jsonData)) return notifyError("Data Is Missing");
+    notifySuccess("Updating Voter, kindly wait...");
     setLoader(true);
 
-    const data = JSON.stringify({
-      _name,
-      _voterAddress,
-      _photograph,
-      _parentOrSpouseName,
-      _gender,
-      _dobOrAge,
-      _addressDetails,
-      _epicNumber,
-      _partNumberAndName,
-      _assemblyConstituencyNumberAndName,
-      _issuingAuthoritySignature,
-      _hologramAndBarcode,
-      image,
-      pdf,
-    });
+    const data = JSON.stringify(jsonData);
 
     try {
       const response = await axios({
         method: "POST",
         url: "https://api.pinata.cloud/pinning/pinJSONToIPFS",
-        data: data,
+        data,
         headers,
       });
 
       const url = `https://gateway.pinata.cloud/ipfs/${response.data.IpfsHash}`;
 
-      const pk = await retrievePublicKey();
-      const pka = new Address(pk);
-      await callContract("update_voter", [
-        stringToScValString(_name),
+      const pk = await stringToAddress();
+      await callContract(ContractFunctions.updateVoter, [
+        stringToScValString(name),
         stringToScValString(url),
-        pka.toScVal(),
+        pk,
       ]);
 
       notifySuccess("Successfully updated voter");
@@ -485,89 +260,35 @@ export const VotingDappProvider = ({ children }) => {
       router.push("/all-voters");
     } catch (error) {
       setLoader(false);
-      notifySuccess("Update failed, kindly connect to ellection commission");
+      notifyError("Update failed, kindly connect to Owner");
       console.log(error);
     }
   };
 
   const updateCandidate = async (updateCandidate, image, pdf) => {
-    const {
-      _name,
-      _nominationForm,
-      _affidavit,
-      _criminalAntecedents,
-      _assetsAndLiabilities,
-      _educationalQualifications,
-      _electoralRollEntry,
-      _securityDeposit,
-      _partyAffiliation,
-      _oathOrAffirmation,
-      _photographs,
-      _proofOfAge,
-      _proofOfAddress,
-      _panCardDetails,
-      _voterIdCardDetails,
-    } = updateCandidate;
-
-    if (
-      !_name ||
-      !_nominationForm ||
-      !_affidavit ||
-      !_criminalAntecedents ||
-      !_assetsAndLiabilities ||
-      !_educationalQualifications ||
-      !_electoralRollEntry ||
-      !_securityDeposit ||
-      !_partyAffiliation ||
-      !_oathOrAffirmation ||
-      !_photographs ||
-      !_proofOfAge ||
-      !_proofOfAddress ||
-      !_panCardDetails ||
-      !_voterIdCardDetails ||
-      !image ||
-      !pdf
-    )
-      return notifyError("Data Is Missing");
+    const { _name: name } = updateCandidate;
+    const jsonData = { ...updateCandidate, image, pdf };
+    if (validObjectCheck(jsonData)) return notifyError("Data Is Missing");
     notifySuccess("Updating Candidate, kindly wait...");
     setLoader(true);
 
-    const data = JSON.stringify({
-      _name,
-      _nominationForm,
-      _affidavit,
-      _criminalAntecedents,
-      _assetsAndLiabilities,
-      _educationalQualifications,
-      _electoralRollEntry,
-      _securityDeposit,
-      _partyAffiliation,
-      _oathOrAffirmation,
-      _photographs,
-      _proofOfAge,
-      _proofOfAddress,
-      _panCardDetails,
-      _voterIdCardDetails,
-      image,
-      pdf,
-    });
+    const data = JSON.stringify(jsonData);
 
     try {
       const response = await axios({
         method: "POST",
         url: "https://api.pinata.cloud/pinning/pinJSONToIPFS",
-        data: data,
+        data,
         headers,
       });
 
       const url = `https://gateway.pinata.cloud/ipfs/${response.data.IpfsHash}`;
 
-      const pk = await retrievePublicKey();
-      const pka = new Address(pk);
-      await callContract("update_candidate", [
-        stringToScValString(_name),
+      const pk = await stringToAddress();
+      await callContract(ContractFunctions.updateCandidate, [
+        stringToScValString(name),
         stringToScValString(url),
-        pka.toScVal(),
+        pk,
       ]);
 
       notifySuccess("Successfully Updated Candidate");
@@ -575,29 +296,28 @@ export const VotingDappProvider = ({ children }) => {
       router.push("/all-candidates");
     } catch (error) {
       setLoader(false);
-      notifySuccess("Update failed, kindly connect to ellection commission");
+      notifyError("Update failed, kindly connect to Owner");
       console.log(error);
     }
   };
 
-  const changeOwner = async (_newOwner) => {
-    if (!_newOwner) return notifyError("Data Is Missing");
+  const changeOwner = async (newOwner) => {
+    if (!newOwner) return notifyError("Data Is Missing");
     notifySuccess("kindly wait...");
     setLoader(true);
 
-    const newOwner = new Address(_newOwner);
-    const pk = await retrievePublicKey();
-    const pka = new Address(pk);
+    const newPk = await stringToAddress(newOwer);
+    const pk = await stringToAddress();
 
     try {
-      await callContract("change_owner", [newOwner.toScVal(), pka.toScVal()]);
+      await callContract(ContractFunctions.changeOwner, [newPk, pk]);
 
       setLoader(false);
       notifySuccess("Successfully updated ");
-      window.location.href = "/";
+      router.push("/");
     } catch (error) {
       setLoader(false);
-      notifySuccess("updated failed, kindly connect to ellection commission");
+      notifyError("updated failed, kindly connect to Owner");
       console.log(error);
     }
   };
@@ -607,40 +327,40 @@ export const VotingDappProvider = ({ children }) => {
     setLoader(true);
 
     try {
-      const pk = await retrievePublicKey();
-      const pka = new Address(pk);
-      await callContract("reset_contract", pka.toScVal());
+      const pk = await stringToAddress();
+      await callContract("reset_contract", pk);
 
       setLoader(false);
-      notifySuccess("Successfully RESET ");
+      notifySuccess("Successfully RESET");
       router.push("/");
     } catch (error) {
       setLoader(false);
-      notifySuccess("RESET failed, kindly connect to ellection commission");
+      notifyError("RESET failed, kindly connect to ellection commission");
       console.log(error.message);
     }
   };
 
-  const giveVote = async (_candidateAddress) => {
-    if (!_candidateAddress) return notifyError("Data Is Missing");
+  const giveVote = async (candidateAddress) => {
+    if (!candidateAddress) return notifyError("Data Is Missing");
     notifySuccess("kindly wait...");
     setLoader(true);
 
     try {
-      const candidateAddress = new Address(_candidateAddress);
-      const pk = await retrievePublicKey();
-      const pka = new Address(pk);
-      await callContract("vote", [candidateAddress.toScVal(), pka.toScVal()]);
+      const candidatePk = await stringToAddress(candidateAddress);
+      const pk = stringToAddress();
+      await callContract(ContractFunctions.giveVote, [candidatePk, pk]);
 
       setLoader(false);
-      notifySuccess("Successfully voted ");
+      notifySuccess("Successfully voted");
       router.push("/approve-candidates");
     } catch (error) {
       setLoader(false);
-      notifySuccess("vote failed, kindly connect to ellection commission");
+      notifySuccess("vote failed, kindly connect to Owner");
       console.log(error);
     }
   };
+
+  // Continue HERE
 
   const initContractData = async () => {
     try {
@@ -894,12 +614,6 @@ export const VotingDappProvider = ({ children }) => {
     }
   };
 
-  const initFunction = async (val = BASE_FEE) => {
-    const pk = await retrievePublicKey();
-    const addres = new Address(pk).toScVal();
-    callContract("init", addres, val);
-  };
-
   const highestVotedCandidate = async () => {
     try {
       if (isWalletConnected) {
@@ -963,47 +677,6 @@ export const VotingDappProvider = ({ children }) => {
       notifyError("Something went wrong");
       console.log(error);
     }
-  };
-
-  const addTransaction = async (destinationId, amount) => {
-    var transaction;
-    var sourceKeys = Keypair.fromSecret(
-      "SCXX7GGIJEYGBL2H4JKSPR3VJXCYUT7KDQHKD2QIDGOMI566SJWEGWZS"
-    );
-    await server
-      .loadAccount(destinationId)
-      .catch(function (error) {
-        if (error instanceof StellarSdk.NotFoundError) {
-          throw new Error("The destination account does not exist!");
-        } else return error;
-      })
-      .then(function () {
-        return server.loadAccount(sourceKeys.publicKey());
-      })
-      .then(function (sourceAccount) {
-        transaction = new StellarSdk.TransactionBuilder(sourceAccount, {
-          fee: StellarSdk.BASE_FEE,
-          networkPassphrase: StellarSdk.Networks.TESTNET,
-        })
-          .addOperation(
-            StellarSdk.Operation.payment({
-              destination: destinationId,
-              asset: StellarSdk.Asset.native(),
-              amount,
-            })
-          )
-          .addMemo(StellarSdk.Memo.text("Test Transaction"))
-          .setTimeout(180)
-          .build();
-        transaction.sign(sourceKeys);
-        return server.submitTransaction(transaction);
-      })
-      .then(function (result) {
-        console.log("Success! Results:", result);
-      })
-      .catch(function (error) {
-        console.error("Something went wrong!", error);
-      });
   };
 
   const getWinner = async () => {
@@ -1198,6 +871,8 @@ export const VotingDappProvider = ({ children }) => {
   return (
     <VotingDappContext.Provider
       value={{
+        loader,
+        setLoader,
         getSingleCandidate,
         getSingleVoter,
         getRegisteredCandidate,
@@ -1206,14 +881,9 @@ export const VotingDappProvider = ({ children }) => {
         initContractData,
         votedVoters,
         getWinner,
-        notifySuccess,
-        notifyError,
-        setLoader,
         connectWallet,
         publicKey,
         checkVote,
-        isWalletConnected,
-        loader,
         registerCandidate,
         registerVoter,
         approveVoter,
@@ -1226,12 +896,8 @@ export const VotingDappProvider = ({ children }) => {
         setVotingPeriod,
         rejectCandidate,
         registerVoter,
-        rejectVoting,
-        callContract,
-        ownerPublicKey,
+        rejectVoter,
         retrievePublicKey,
-        addTransaction,
-        initFunction,
       }}
     >
       {children}
