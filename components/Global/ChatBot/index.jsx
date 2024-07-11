@@ -209,12 +209,12 @@ function ChatBot() {
 
   return (
     <>
-      <img
+      {/* <img
         src="assets/images/chatbot.png"
         alt="AI Profile"
         className={styles.profileButton}
         onClick={showChatBot}
-      />
+      /> */}
       {chatVisible && (
         <div id="test" className={styles.chatContainer}>
           <div className={styles.chatHeader}>
