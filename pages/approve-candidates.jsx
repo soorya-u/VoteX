@@ -8,7 +8,7 @@ import {
   Team,
 } from "../components/index";
 import Loader from "../components/Global/Loader";
-import { VOTING_DAPP_CONTEXT } from "../context/context";
+import { VotingDappContext } from "../context/context";
 
 const registerVoters = () => {
   const [candidates, setCandidates] = useState();
@@ -26,7 +26,7 @@ const registerVoters = () => {
     INITIAL_CONTRACT_DATA,
     GET_SINGLE_VOTER,
     checkIfWalletIsConnected,
-  } = useContext(VOTING_DAPP_CONTEXT);
+  } = useContext(VotingDappContext);
 
   function filterUsersByStatus(users, status) {
     return users?.filter((user) => user.status === status);

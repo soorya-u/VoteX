@@ -11,7 +11,7 @@ import {
 import Loader from "../components/Global/Loader";
 
 //IMPORTING CONTRCT DATA
-import { VOTING_DAPP_CONTEXT } from "../context/context";
+import { VotingDappContext } from "../context/context";
 
 const voterDetails = () => {
   const router = useRouter();
@@ -25,7 +25,7 @@ const voterDetails = () => {
     address,
     OWNER_ADDRESS,
     REJECT_VOTER,
-  } = useContext(VOTING_DAPP_CONTEXT);
+  } = useContext(VotingDappContext);
 
   useEffect(() => {
     setLoading(true);

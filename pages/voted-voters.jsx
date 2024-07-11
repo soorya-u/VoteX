@@ -8,12 +8,12 @@ import {
   Team,
 } from "../components/index";
 //IMPORTING CONTRCT DATA
-import { VOTING_DAPP_CONTEXT } from "../context/context";
+import { VotingDappContext } from "../context/context";
 
 const allVotersVoted = () => {
   const [candidates, setCandidates] = useState();
 
-  const { ALL_VOTERS_VOTED } = useContext(VOTING_DAPP_CONTEXT);
+  const { ALL_VOTERS_VOTED } = useContext(VotingDappContext);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {

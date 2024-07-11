@@ -7,12 +7,12 @@ import {
   Header,
   Team,
 } from "../components/index";
-import { VOTING_DAPP_CONTEXT } from "../context/context";
+import { VotingDappContext } from "../context/context";
 
 const registerVoters = () => {
   const [candidates, setCandidates] = useState();
   const [loading, setLoading] = useState();
-  const { GET_registerVoterS } = useContext(VOTING_DAPP_CONTEXT);
+  const { GET_registerVoterS } = useContext(VotingDappContext);
 
   useEffect(() => {
     setLoading(true);

@@ -2,11 +2,11 @@ import { useContext } from "react";
 import Link from "next/link";
 
 // IMPORTING CONTRACT DATA
-import { VOTING_DAPP_CONTEXT } from "../../../context/context";
+import { VotingDappContext } from "../../../context/context";
 
 const Header = () => {
   const { connectWallet, address, setAddress, OWNER_ADDRESS } =
-    useContext(VOTING_DAPP_CONTEXT);
+    useContext(VotingDappContext);
 
   const clickConnect = async () => {
     const userAddress = await connectWallet();

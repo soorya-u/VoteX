@@ -1,5 +1,4 @@
 import React, { useContext, useState } from "react";
-import { VOTING_DAPP_CONTEXT } from "../../context/context";
 //INTERNAL IMPORT
 import { shortenAddress } from "../../utils";
 import Preview from "../Global/Preview";
@@ -25,7 +24,6 @@ const Details = ({
   const [message, setMessage] = useState();
   const router = useRouter();
   const [amount, setAmount] = useState();
-  const { DONATE_TO_CANDIDATE } = useContext(VOTING_DAPP_CONTEXT);
   return (
     <section className="team-details pt-120 pb-120 position-relative z-0">
       <div className="container">
@@ -311,7 +309,7 @@ const Details = ({
                 </ul>
               </div>
             </div>
-            <form
+            {/* <form
               onSubmit={async (e) => {
                 e.preventDefault();
                 await DONATE_TO_CANDIDATE(router?.query.address, amount).then(
@@ -342,7 +340,7 @@ const Details = ({
               >
                 Submit
               </button>
-            </form>
+            </form> */}
           </div>
         </div>
         <p className="mt-16 align-items-center">

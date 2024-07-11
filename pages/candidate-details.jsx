@@ -10,7 +10,7 @@ import {
 } from "../components/index";
 import Loader from "../components/Global/Loader";
 
-import { VOTING_DAPP_CONTEXT } from "../context/context";
+import { VotingDappContext } from "../context/context";
 
 const candidateDetails = () => {
   const router = useRouter();
@@ -33,7 +33,7 @@ const candidateDetails = () => {
     rejectCandidate,
     GET_SINGLE_VOTER,
     INITIAL_CONTRACT_DATA,
-  } = useContext(VOTING_DAPP_CONTEXT);
+  } = useContext(VotingDappContext);
 
   useEffect(() => {
     setLoading(true);

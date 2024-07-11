@@ -8,7 +8,7 @@ import {
   Team,
 } from "../components/index";
 import Loader from "../components/Global/Loader";
-import { VOTING_DAPP_CONTEXT } from "../context/context";
+import { VotingDappContext } from "../context/context";
 
 const registerCandidate = () => {
   const [candidates, setCandidates] = useState();
@@ -25,7 +25,7 @@ const registerCandidate = () => {
     INITIAL_CONTRACT_DATA,
     GET_SINGLE_VOTER,
     checkIfWalletIsConnected,
-  } = useContext(VOTING_DAPP_CONTEXT);
+  } = useContext(VotingDappContext);
 
   useEffect(() => {
     setLoading(true);

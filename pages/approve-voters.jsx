@@ -8,13 +8,13 @@ import {
   Team,
 } from "../components/index";
 //IMPORTING CONTRCT DATA
-import { VOTING_DAPP_CONTEXT } from "../context/context";
+import { VotingDappContext } from "../context/context";
 
 const registerVoters = () => {
   const [candidates, setCandidates] = useState();
   const [loading, setLoading] = useState(false);
 
-  const { GET_registerVoterS } = useContext(VOTING_DAPP_CONTEXT);
+  const { GET_registerVoterS } = useContext(VotingDappContext);
 
   function filterUsersByStatus(users, status) {
     return users?.filter((user) => user.status === status);

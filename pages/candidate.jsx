@@ -20,7 +20,7 @@ import Loader from "../components/Global/Loader";
 import PopUp from "../components/Global/PopUp";
 
 //IMPORTING CONTRCT DATA
-import { VOTING_DAPP_CONTEXT } from "../context/context";
+import { VotingDappContext } from "../context/context";
 
 const signup = () => {
   const {
@@ -31,7 +31,7 @@ const signup = () => {
     registerCandidate,
     GET_SINGLE_CANDIDATE,
     checkIfWalletIsConnected,
-  } = useContext(VOTING_DAPP_CONTEXT);
+  } = useContext(VotingDappContext);
 
   const [_, setCurrentAddress] = useState();
   const zeroAddress = "0x0000000000000000000000000000000000000000";

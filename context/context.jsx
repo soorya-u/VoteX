@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
-import { setAllowed, isConnected } from "@stellar/freighter-api";
 
-import { retrievePublicKey, connectWallet, signTransaction } from "./wallet";
-import { numberToU64, stringToScValString } from "./value-converter";
 import {
   BASE_FEE,
   TransactionBuilder,
@@ -12,11 +9,20 @@ import {
   scValToNative,
   Keypair,
 } from "@stellar/stellar-sdk";
-import { getUserInfo } from "@stellar/freighter-api";
-import { contract, server } from "./constants";
-import { ownerPublicKey, notifyError, notifySuccess } from "./constants";
+import { getUserInfo, setAllowed, isConnected } from "@stellar/freighter-api";
 
-export const VotingDappConext = React.createContext();
+import {
+  ownerPublicKey,
+  notifyError,
+  notifySuccess,
+  contract,
+  server,
+  headers,
+} from "./constants";
+import { numberToU64, stringToScValString } from "./value-converter";
+import { retrievePublicKey, connectWallet, signTransaction } from "./wallet";
+
+export const VotingDappContext = React.createContext();
 
 export const VotingDappProvider = ({ children }) => {
   const router = useRouter();
@@ -35,7 +41,7 @@ export const VotingDappProvider = ({ children }) => {
     initFn();
   }, []);
 
-  const callContract = async (functionName, values = null, fee = BASE_FEE) => {
+  const callContract = async (functionName, values = null) => {
     if (!isWalletConnected) return;
 
     const { publicKey } = await getUserInfo();
@@ -43,7 +49,7 @@ export const VotingDappProvider = ({ children }) => {
     const account = await server.getAccount(publicKey);
 
     const params = {
-      fee,
+      fee: BASE_FEE,
       networkPassphrase: "Test SDF Network ; September 2015",
     };
 
@@ -167,11 +173,7 @@ export const VotingDappProvider = ({ children }) => {
         method: "POST",
         url: "https://api.pinata.cloud/pinning/pinJSONToIPFS",
         data: data,
-        headers: {
-          pinata_api_key: process.env.NEXT_PUBLIC_PINATA_KEY,
-          pinata_secret_api_key: process.env.NEXT_PUBLIC_PINATA_SECRET,
-          "Content-Type": "application/json",
-        },
+        headers,
       });
 
       const url = `https://gateway.pinata.cloud/ipfs/${response.data.IpfsHash}`;
@@ -254,11 +256,7 @@ export const VotingDappProvider = ({ children }) => {
         method: "POST",
         url: "https://api.pinata.cloud/pinning/pinJSONToIPFS",
         data: data,
-        headers: {
-          pinata_api_key: process.env.NEXT_PUBLIC_PINATA_KEY,
-          pinata_secret_api_key: process.env.NEXT_PUBLIC_PINATA_SECRET,
-          "Content-Type": "application/json",
-        },
+        headers,
       });
 
       const url = `https://gateway.pinata.cloud/ipfs/${response.data.IpfsHash}`;
@@ -469,11 +467,7 @@ export const VotingDappProvider = ({ children }) => {
         method: "POST",
         url: "https://api.pinata.cloud/pinning/pinJSONToIPFS",
         data: data,
-        headers: {
-          pinata_api_key: process.env.NEXT_PUBLIC_PINATA_KEY,
-          pinata_secret_api_key: process.env.NEXT_PUBLIC_PINATA_SECRET,
-          "Content-Type": "application/json",
-        },
+        headers,
       });
 
       const url = `https://gateway.pinata.cloud/ipfs/${response.data.IpfsHash}`;
@@ -563,11 +557,7 @@ export const VotingDappProvider = ({ children }) => {
         method: "POST",
         url: "https://api.pinata.cloud/pinning/pinJSONToIPFS",
         data: data,
-        headers: {
-          pinata_api_key: process.env.NEXT_PUBLIC_PINATA_KEY,
-          pinata_secret_api_key: process.env.NEXT_PUBLIC_PINATA_SECRET,
-          "Content-Type": "application/json",
-        },
+        headers,
       });
 
       const url = `https://gateway.pinata.cloud/ipfs/${response.data.IpfsHash}`;
@@ -1206,7 +1196,7 @@ export const VotingDappProvider = ({ children }) => {
   };
 
   return (
-    <VotingDappConext.Provider
+    <VotingDappContext.Provider
       value={{
         getSingleCandidate,
         getSingleVoter,
@@ -1245,6 +1235,6 @@ export const VotingDappProvider = ({ children }) => {
       }}
     >
       {children}
-    </VotingDappConext.Provider>
+    </VotingDappContext.Provider>
   );
 };

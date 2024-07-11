@@ -11,7 +11,7 @@ import UploadImg from "../components/Global/UploadImg";
 import PreviewImg from "../components/Global/PreviewImg";
 import Loader from "../components/Global/Loader";
 
-import { VOTING_DAPP_CONTEXT } from "../context/context";
+import { VotingDappContext } from "../context/context";
 
 const signup = () => {
   const {
@@ -22,7 +22,7 @@ const signup = () => {
     updateCandidate,
     GET_SINGLE_CANDIDATE,
     checkIfWalletIsConnected,
-  } = useContext(VOTING_DAPP_CONTEXT);
+  } = useContext(VotingDappContext);
 
   //CURRENT ADDRESS
   const [_, setCurrentAddress] = useState();

@@ -14,7 +14,7 @@ import {
   Vote,
 } from "../components/index";
 
-import { VOTING_DAPP_CONTEXT } from "../context/context";
+import { VotingDappContext } from "../context/context";
 import ChatBot from "../components/Global/ChatBot";
 
 const index = () => {
@@ -23,7 +23,7 @@ const index = () => {
   const [loading, setLoading] = useState(false);
 
   const { HIGHEST_VOTED_CANDIDATE, INITIAL_CONTRACT_DATA } =
-    useContext(VOTING_DAPP_CONTEXT);
+    useContext(VotingDappContext);
 
   useEffect(() => {
     setLoading(true);

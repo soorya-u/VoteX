@@ -7,7 +7,7 @@ import Input from "../components/Global/Input";
 import Loader from "../components/Global/Loader";
 
 //IMPORTING CONTRCT DATA
-import { VOTING_DAPP_CONTEXT } from "../context/context";
+import { VotingDappContext } from "../context/context";
 
 const voter = () => {
   const {
@@ -17,7 +17,7 @@ const voter = () => {
     changeOwner,
     resetContract,
     SET_VOTING_PREIOD,
-  } = useContext(VOTING_DAPP_CONTEXT);
+  } = useContext(VotingDappContext);
 
   const [currentAddress, setCurrentAddress] = useState();
   const [loading, setLoading] = useState(false);

@@ -10,7 +10,7 @@ import Preview from "../components/Global/Preview";
 import PreviewImg from "../components/Global/PreviewImg";
 import Loader from "../components/Global/Loader";
 
-import { VOTING_DAPP_CONTEXT } from "../context/context";
+import { VotingDappContext } from "../context/context";
 
 const voter = () => {
   const {
@@ -21,7 +21,7 @@ const voter = () => {
     checkIfWalletIsConnected,
     updateVoter,
     GET_SINGLE_VOTER,
-  } = useContext(VOTING_DAPP_CONTEXT);
+  } = useContext(VotingDappContext);
 
   //VOTER ADDRESS
   const [currentAddress, setCurrentAddress] = useState();

@@ -14,3 +14,9 @@ export const contract = new Contract(process.env.NEXT_PUBLIC_CONTRACT_ID);
 
 export const notifySuccess = (msg) => toast.success(msg, { duration: 2000 });
 export const notifyError = (msg) => toast.error(msg, { duration: 2000 });
+
+export const headers = {
+  pinata_api_key: process.env.NEXT_PUBLIC_PINATA_KEY,
+  pinata_secret_api_key: process.env.NEXT_PUBLIC_PINATA_SECRET,
+  "Content-Type": "application/json",
+};
