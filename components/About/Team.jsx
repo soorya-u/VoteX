@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from "react";
 import Dev from "./Dev";
-import { shuffleArray } from "../../utils";
 
 const devsInfo = [
   {
@@ -26,16 +24,6 @@ const devsInfo = [
 ];
 
 const Team = () => {
-  const [devs, setDevs] = useState(devsInfo);
-
-  useEffect(() => {
-    const ti = setInterval(() => {
-      const shuffledDevs = shuffleArray([...devs]);
-      setDevs(shuffledDevs);
-    }, 1000 * 60 * 5); //5 min shuffle
-    return () => clearInterval(ti);
-  }, [devs]);
-
   return (
     <section className="team pb-120 pt-120 pt-xxl-0 a2-bg position-relative z-0">
       <div className="animation position-absolute top-0 left-0 w-100 h-100 z-n1">
@@ -51,12 +39,13 @@ const Team = () => {
             <span className="heading p1-color fs-five mb-5">Team</span>
             <h3>Our Team</h3>
             <p className="mt-5 mt-xxl-6 mx-ch mx-auto">
-            Innovative 'mad devs' pushing tech limits with creativity and camaraderie.
+              Innovative 'mad devs' pushing tech limits with creativity and
+              camaraderie.
             </p>
           </div>
         </div>
         <div className="row gy-6">
-          {devs.map((d, idx) => (
+          {devsInfo.map((d, idx) => (
             <Dev
               name={d.name}
               description={d.description}
