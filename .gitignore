@@ -31,10 +31,6 @@ yarn-error.log*
 # vercel
 .vercel
 
-artifacts
-cache
-context/*.json
-
 .env*
 !.env.example
 localhost*
