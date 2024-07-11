@@ -31,6 +31,12 @@
 
 4. Enter the Pinata API Key, Secret and Owner Public Key. 
 
+5. Install the Required NPM Packages
+
+   ```sh
+   npm i
+   ```
+
 ## Run Project Locally
 
 To run the Project locally:
