@@ -1,11 +1,9 @@
 import Link from "next/link";
-import React from "react";
 
 const Member = ({
   candidates,
   path,
   giveVote,
-  checkVote,
   votingTime,
   currentVotingTime,
   user,

@@ -1,5 +1,3 @@
-import React from "react";
-
 const Input = ({ name, placeholder, type, handleClick }) => {
   return (
     <div className="single-input">

@@ -2,7 +2,7 @@ import { useContext } from "react";
 import Link from "next/link";
 
 // IMPORTING CONTRACT DATA
-import { VotingDappContext } from "../../../context/context";
+import { VotingDappContext } from "../../../context";
 
 const Header = () => {
   const { connectWallet, address, setAddress, OWNER_ADDRESS } =

@@ -1,5 +1,3 @@
-import React from "react";
-
 const Provide = () => {
   return (
     <section className="provide-world bg nb4-bg pt-120 pb-120  position-relative z-0">

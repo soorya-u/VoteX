@@ -1,14 +1,13 @@
 import React, { useContext, useState } from "react";
-//INTERNAL IMPORT
-import { shortenAddress } from "../../utils";
-import Preview from "../Global/Preview";
 import Link from "next/link";
 import { useRouter } from "next/router";
+
+import Preview from "../Global/Preview";
+import { shortenAddress } from "../../utils";
 
 const Details = ({
   candidate,
   path,
-  handleClick,
   giveVote,
   OWNER_ADDRESS,
   address,

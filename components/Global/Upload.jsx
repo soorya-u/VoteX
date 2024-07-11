@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useCallback } from "react";
 import axios from "axios";
 import { useDropzone } from "react-dropzone";
 
@@ -39,13 +39,10 @@ const Upload = ({ setLoader, notifySuccess, notifyError, setPdf }) => {
     await uploadToIPFS(acceptedFile[0]);
   }, []);
 
-  const {
-    getInputProps,
-    getRootProps,
-    isDragAccept,
-    isDragActive,
-    isDragReject,
-  } = useDropzone({ onDrop, maxSize: 500000000000 });
+  const { getInputProps, getRootProps } = useDropzone({
+    onDrop,
+    maxSize: 500000000000,
+  });
   return (
     <div {...getRootProps()} className="messageBox">
       <div className="fileUploadWrapper">

@@ -1,6 +1,3 @@
-import React from "react";
-
-//INTERNAL IMPORT
 import Banner from "./Banner";
 import Steps from "./Steps";
 
