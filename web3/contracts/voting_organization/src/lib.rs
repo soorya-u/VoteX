@@ -81,7 +81,7 @@ impl VotingOrganization {
         env.storage().persistent().set(&CANDIDATE_ID_COUNTER, &1);
     }
 
-    pub fn registerVoter(env: Env, name: String, ipfs: String, address: Address) {
+    pub fn register_voter(env: Env, name: String, ipfs: String, address: Address) {
         const PENDING_MESSAGE: &str = "Currently your registration is pending";
         let voter_id_key = Voters::Voter(address.clone());
         let id_counter_key = VOTER_ID_COUNTER;
