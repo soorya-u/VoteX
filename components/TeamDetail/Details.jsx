@@ -1,16 +1,16 @@
-import React, { useContext, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/router";
+
+import { useVotingDapp } from "@/hooks/use-voting-dapp";
+import { ownerPublicKey } from "@/constants/contract";
+import { shortenAddress } from "@/utils";
 
 import Preview from "../Global/Preview";
-import { shortenAddress } from "../../utils";
 
 const Details = ({
   candidate,
   path,
   giveVote,
-  OWNER_ADDRESS,
-  address,
   checkVote,
   handleClickApprove,
   handleClickReject,
@@ -18,11 +18,8 @@ const Details = ({
   currentVotingTime,
   user,
 }) => {
-  console.log(address);
-  console.log(candidate?.address.toLowerCase());
   const [message, setMessage] = useState();
-  const router = useRouter();
-  const [amount, setAmount] = useState();
+  const { publicKey } = useVotingDapp();
   return (
     <section className="team-details pt-120 pb-120 position-relative z-0">
       <div className="container">
@@ -104,7 +101,7 @@ const Details = ({
                   </ul>
                 )}
 
-                {path == "candidate" && (
+                {path === "candidate" && (
                   <ul className="social-area d-flex align-items-center gap-2 gap-md-3 mt-8 mt-lg-10">
                     <li>
                       <strong>Criminal Antecedents :&nbsp;&nbsp; </strong>{" "}
@@ -117,7 +114,7 @@ const Details = ({
                   </ul>
                 )}
 
-                {path == "voter" && (
+                {path === "voter" && (
                   <ul className="social-area d-flex align-items-center gap-2 gap-md-3 mt-8 mt-lg-10">
                     <li>
                       <strong>_hologramAndBarcode :&nbsp;&nbsp; </strong>{" "}
@@ -130,7 +127,7 @@ const Details = ({
                   </ul>
                 )}
 
-                {path == "candidate" && (
+                {path === "candidate" && (
                   <ul className="social-area d-flex align-items-center gap-2 gap-md-3 mt-8 mt-lg-10">
                     <li>
                       <strong>ElectoralRollEntry :&nbsp;&nbsp; </strong>{" "}
@@ -146,27 +143,13 @@ const Details = ({
                 <p className="mb-4 mt-10">
                   <strong>Notice:</strong> {candidate?.message}
                 </p>
-                {address == candidate?.address.toLowerCase() &&
-                candidate?.status == 0 ? (
+                {publicKey === candidate.address &&
+                candidate?.status === "Pending" ? (
                   <div className="custom-actions mb-6">
                     <a
                       className="custom-read"
                       href={
-                        path == "candidate"
-                          ? "/update-candidate"
-                          : "/update-voter"
-                      }
-                    >
-                      Update Profile
-                    </a>
-                  </div>
-                ) : address == candidate?.address.toLowerCase() &&
-                  candidate?.status == 2 ? (
-                  <div className="custom-actions mb-6">
-                    <a
-                      className="custom-read"
-                      href={
-                        path == "candidate"
+                        path === "candidate"
                           ? "/update-candidate"
                           : "/update-voter"
                       }
@@ -175,11 +158,25 @@ const Details = ({
                     </a>
                   </div>
                 ) : (
-                  ""
+                  publicKey === candidate.address &&
+                  candidate?.status == "Rejected" && (
+                    <div className="custom-actions mb-6">
+                      <a
+                        className="custom-read"
+                        href={
+                          path == "candidate"
+                            ? "/update-candidate"
+                            : "/update-voter"
+                        }
+                      >
+                        Update Profile
+                      </a>
+                    </div>
+                  )
                 )}
 
-                {address == OWNER_ADDRESS.toLowerCase() &&
-                candidate?.status == 0 ? (
+                {publicKey === ownerPublicKey &&
+                candidate.status === "Pending" ? (
                   <>
                     <div className="single-input">
                       <textarea
@@ -215,44 +212,44 @@ const Details = ({
                       </a>
                     </div>
                   </>
-                ) : address == OWNER_ADDRESS.toLowerCase() &&
-                  candidate?.status == 2 ? (
-                  <>
-                    <div className="single-input">
-                      <textarea
-                        className="fs-six-up bg_transparent"
-                        onChange={(e) => setMessage(e.target.value)}
-                        placeholder={"message"}
-                      ></textarea>
-                    </div>
-                    <div className="custom-actions">
-                      <a
-                        className="custom-read"
-                        onClick={() =>
-                          handleClickApprove(candidate?.address, message)
-                        }
-                      >
-                        Approve
-                      </a>
-                    </div>
-                    <div className="custom-actions">
-                      <a
-                        className="custom-read"
-                        onClick={() =>
-                          handleClickReject(candidate?.address, message)
-                        }
-                      >
-                        Reject
-                      </a>
-                    </div>
-                  </>
                 ) : (
-                  ""
+                  publicKey === ownerPublicKey &&
+                  candidate.status === "Rejected" && (
+                    <>
+                      <div className="single-input">
+                        <textarea
+                          className="fs-six-up bg_transparent"
+                          onChange={(e) => setMessage(e.target.value)}
+                          placeholder={"message"}
+                        ></textarea>
+                      </div>
+                      <div className="custom-actions">
+                        <a
+                          className="custom-read"
+                          onClick={() =>
+                            handleClickApprove(candidate?.address, message)
+                          }
+                        >
+                          Approve
+                        </a>
+                      </div>
+                      <div className="custom-actions">
+                        <a
+                          className="custom-read"
+                          onClick={() =>
+                            handleClickReject(candidate?.address, message)
+                          }
+                        >
+                          Reject
+                        </a>
+                      </div>
+                    </>
+                  )
                 )}
 
-                {path == "candidate" &&
-                  candidate?.status == 1 &&
-                  user?.status == 1 &&
+                {path === "candidate" &&
+                  candidate.status === "Approved" &&
+                  user.status === "Approved" &&
                   !user?.hasVoted &&
                   currentVotingTime >= votingTime?.startDateN &&
                   currentVotingTime <= votingTime?.endDateN && (
@@ -268,13 +265,13 @@ const Details = ({
                     </>
                   )}
 
-                {path == "candidate" && candidate?.status && checkVote == 1 ? (
-                  <div className="custom-actions">
-                    <a className="custom-read">Already Voted</a>
-                  </div>
-                ) : (
-                  ""
-                )}
+                {path === "candidate" &&
+                  candidate?.status &&
+                  checkVote === "Approved" && (
+                    <div className="custom-actions">
+                      <a className="custom-read">Already Voted</a>
+                    </div>
+                  )}
 
                 <ul className="social-area d-flex align-items-center gap-2 gap-md-3 mt-8 mt-lg-10">
                   <li>
@@ -308,43 +305,13 @@ const Details = ({
                 </ul>
               </div>
             </div>
-            {/* <form
-              onSubmit={async (e) => {
-                e.preventDefault();
-                await DONATE_TO_CANDIDATE(router?.query.address, amount).then(
-                  () => setAmount("")
-                );
-              }}
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                paddingTop: "2.5rem",
-              }}
-            >
-              <input
-                type="number"
-                value={amount}
-                onChange={(e) => setAmount(e.target.value)}
-                placeholder="Enter the amount to Donate..."
-                name="donate-value"
-              />
-              <button
-                type="submit"
-                style={{
-                  paddingLeft: "5rem",
-                  paddingRight: "5rem",
-                  color: "#fff6e9",
-                }}
-              >
-                Submit
-              </button>
-            </form> */}
           </div>
         </div>
-        <p className="mt-16 align-items-center">
-          <Preview pdf={candidate?.pdf} />
-        </p>
+        {publicKey === ownerPublicKey && (
+          <p className="mt-16 align-items-center">
+            <Preview pdf={candidate?.pdf} />
+          </p>
+        )}
       </div>
     </section>
   );

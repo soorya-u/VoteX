@@ -1,5 +1,3 @@
-import React from "react";
-
 const Mission = () => {
   return (
     <section className="provide-world our_mission pt-120 pb-120 position-relative z-0">
