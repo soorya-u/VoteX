@@ -1,38 +1,23 @@
-import { useEffect, useState, useContext } from "react";
+import { useState } from "react";
 import Link from "next/link";
 
-import { Cursor, Preloader, ScrollToTop } from "../components";
+import { useVotingDapp } from "@/hooks/use-voting-dapp";
+import { notifyError, notifySuccess } from "@/lib/toast";
+import { Cursor, ScrollToTop } from "@/components";
 
-import Input from "../components/Global/Input";
-import Upload from "../components/Global/Upload";
-import UploadImg from "../components/Global/UploadImg";
-import Preview from "../components/Global/Preview";
-import PreviewImg from "../components/Global/PreviewImg";
-import Loader from "../components/Global/Loader";
-
-import { VotingDappContext } from "../context";
+import Input from "@/components/Global/Input";
+import Upload from "@/components/Global/Upload";
+import UploadImg from "@/components/Global/UploadImg";
+import Preview from "@/components/Global/Preview";
+import PreviewImg from "@/components/Global/PreviewImg";
+import Loader from "@/components/Global/Loader";
 
 const voter = () => {
-  const {
-    notifySuccess,
-    notifyError,
-    setLoader,
-    loader,
-    checkIfWalletIsConnected,
-    updateVoter,
-    GET_SINGLE_VOTER,
-  } = useContext(VotingDappContext);
+  const { loader, setLoader, updateVoter: updateVoterFn } = useVotingDapp();
 
-  //VOTER ADDRESS
-  const [currentAddress, setCurrentAddress] = useState();
-  const [candidate, setCandidate] = useState();
-  const [loading, setLoading] = useState(false);
-
-  //FILES
   const [pdf, setPdf] = useState(null);
   const [image, setImage] = useState(null);
 
-  //VOTER DETAIL
   const [updateVoter, setUpdateVoter] = useState({
     _name: "",
     _voterAddress: "",
@@ -48,24 +33,8 @@ const voter = () => {
     _hologramAndBarcode: "",
   });
 
-  useEffect(() => {
-    setLoading(true);
-    const fetchData = async () => {
-      const address = await checkIfWalletIsConnected();
-      if (address) {
-        setCurrentAddress(address);
-        const items = await GET_SINGLE_VOTER(address);
-        setCandidate(items);
-        console.log(items);
-      }
-    };
-
-    fetchData().finally(() => setLoading(false));
-  }, []);
-
   return (
     <>
-      {loading && <Preloader />}
       <ScrollToTop />
       <Cursor />
 
@@ -277,7 +246,9 @@ const voter = () => {
                   <div className=" mt-7 mt-lg-8">
                     <button
                       className="cmn-btn py-3 px-5 px-lg-6 mt-7 mt-lg-8 w-100 d-center"
-                      onClick={() => updateVoter(updateVoter, image, pdf)}
+                      onClick={async () =>
+                        await updateVoterFn(updateVoter, image, pdf)
+                      }
                     >
                       Update
                     </button>
@@ -286,7 +257,7 @@ const voter = () => {
 
                 <div className="mt-8 mt-lg-10">
                   <p>
-                    Don’t have an account? <a href="/">Register Here</a>
+                    Don’t have an account? <Link href="/">Register Here</Link>
                   </p>
                 </div>
               </div>

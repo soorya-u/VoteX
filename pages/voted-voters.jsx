@@ -1,4 +1,7 @@
-import React, { useEffect, useState, useContext } from "react";
+import { useEffect, useState } from "react";
+
+import { useVotingDapp } from "@/hooks/use-voting-dapp";
+
 import {
   Cursor,
   Preloader,
@@ -6,24 +9,19 @@ import {
   Footer,
   Header,
   Team,
-} from "../components/index";
-//IMPORTING CONTRCT DATA
-import { VotingDappContext } from "../context";
+} from "@/components";
 
 const allVotersVoted = () => {
-  const [candidates, setCandidates] = useState();
+  const [voters, setVoters] = useState();
 
-  const { ALL_VOTERS_VOTED } = useContext(VotingDappContext);
+  const { votedVoters } = useVotingDapp();
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setLoading(true);
     const fetchData = async () => {
-      const items = await ALL_VOTERS_VOTED();
-
-      console.log(items);
-
-      setCandidates(items);
+      const items = await votedVoters();
+      setVoters(items);
     };
 
     fetchData().finally(() => setLoading(false));
@@ -34,7 +32,7 @@ const allVotersVoted = () => {
       <ScrollToTop />
       <Cursor />
       <Header />
-      <Team candidates={candidates} path={"voter"} />
+      <Team candidates={voters} path={"voter"} />
       <Footer />
     </>
   );

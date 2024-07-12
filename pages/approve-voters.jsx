@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import { useEffect, useState } from "react";
 import {
   Cursor,
   Preloader,
@@ -6,15 +6,15 @@ import {
   Footer,
   Header,
   Team,
-} from "../components";
+} from "@/components";
 
-import { VotingDappContext } from "../context";
+import { useVotingDapp } from "@/hooks/use-voting-dapp";
 
 const registerVoters = () => {
   const [candidates, setCandidates] = useState();
   const [loading, setLoading] = useState(false);
 
-  const { GET_registerVoterS } = useContext(VotingDappContext);
+  const { getRegisteredVoters } = useVotingDapp();
 
   function filterUsersByStatus(users, status) {
     return users?.filter((user) => user.status === status);
@@ -23,11 +23,10 @@ const registerVoters = () => {
   useEffect(() => {
     setLoading(true);
     const fetchData = async () => {
-      const items = await GET_registerVoterS();
+      const items = await getRegisteredVoters();
 
-      const approvedUsers = filterUsersByStatus(items, 1);
+      const approvedUsers = filterUsersByStatus(items, "Approved");
       setCandidates(approvedUsers);
-      console.log(approvedUsers);
     };
 
     fetchData().finally(() => setLoading(false));

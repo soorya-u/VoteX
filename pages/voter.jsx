@@ -1,30 +1,22 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 
-import { Cursor, Preloader, ScrollToTop } from "../components";
+import { notifyError, notifySuccess } from "@/lib/toast";
+import { useVotingDapp } from "@/hooks/use-voting-dapp";
+import { Cursor, Preloader, ScrollToTop } from "@/components";
 
-import Input from "../components/Global/Input";
-import Upload from "../components/Global/Upload";
-import UploadImg from "../components/Global/UploadImg";
-import Preview from "../components/Global/Preview";
-import PreviewImg from "../components/Global/PreviewImg";
-import Loader from "../components/Global/Loader";
-import PopUp from "../components/Global/PopUp";
-
-import { VotingDappContext } from "../context";
+import Input from "@/components/Global/Input";
+import Upload from "@/components/Global/Upload";
+import UploadImg from "@/components/Global/UploadImg";
+import Preview from "@/components/Global/Preview";
+import PreviewImg from "@/components/Global/PreviewImg";
+import Loader from "@/components/Global/Loader";
+import PopUp from "@/components/Global/PopUp";
 
 const voter = () => {
-  const {
-    notifySuccess,
-    notifyError,
-    setLoader,
-    loader,
-    checkIfWalletIsConnected,
-    registerVoter,
-    GET_SINGLE_VOTER,
-  } = useContext(VotingDappContext);
+  const { loader, setLoader, registerVoter, getSingleVoter, publicKey } =
+    useVotingDapp();
 
-  const [_, setCurrentAddress] = useState();
   const zeroAddress = "0x0000000000000000000000000000000000000000";
   const [candidate, setCandidate] = useState();
 
@@ -47,17 +39,13 @@ const voter = () => {
     _issuingAuthoritySignature: "",
     _hologramAndBarcode: "",
   });
-  //
+
   useEffect(() => {
     setLoading(true);
     const fetchData = async () => {
-      const address = await checkIfWalletIsConnected();
-      if (address) {
-        setCurrentAddress(address);
-        const items = await GET_SINGLE_VOTER(address);
-        setCandidate(items);
-        console.log(items);
-      }
+      if (!publicKey) return;
+      const items = await getSingleVoter(publicKey);
+      setCandidate(items);
     };
 
     fetchData().finally(() => setLoading(false));
@@ -122,7 +110,7 @@ const voter = () => {
                   <h5 className="mt-5 mt-lg-6">Register as a voter </h5>
                 </div>
 
-                {candidate?.address == zeroAddress && (
+                {candidate.address === "" && (
                   <div
                     autocomplete="off"
                     id="frmContactus"
@@ -288,14 +276,14 @@ const voter = () => {
 
                 <div className="mt-8 mt-lg-10">
                   <p>
-                    Don’t have an account? <a href="/">Register Here</a>
+                    Don’t have an account? <Link href="/">Register Here</Link>
                   </p>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        {candidate?.address != zeroAddress && <PopUp candidate={candidate} />}
+        {candidate.address !== "" && <PopUp candidate={candidate} />}
         {loader && <Loader />}
       </section>
     </>

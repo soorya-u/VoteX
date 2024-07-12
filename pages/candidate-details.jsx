@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import {
   Cursor,
@@ -10,7 +10,7 @@ import {
 } from "../components";
 import Loader from "../components/Global/Loader";
 
-import { VotingDappContext } from "../context";
+import { useVotingDapp } from "@/hooks/use-voting-dapp";
 
 const candidateDetails = () => {
   const router = useRouter();
@@ -20,57 +20,60 @@ const candidateDetails = () => {
   const [loading, setLoading] = useState(false);
   const [currentVotingTime, setCurrentVotingTime] = useState();
 
+  // loader,
+  // checkIfWalletIsConnected,
+  // GET_SINGLE_CANDIDATE,
+  // approveCandidate,
+  // giveVote,
+  // ALL_VOTERS_VOTED,
+  // checkVote,
+  // rejectCandidate,
+  // GET_SINGLE_VOTER,
+  // INITIAL_CONTRACT_DATA,
+
   const {
     loader,
-    address,
-    checkIfWalletIsConnected,
-    GET_SINGLE_CANDIDATE,
-    approveCandidate,
+    publicKey,
+    getSingleCandidate,
+    approveCandidate: approveCandidateFn,
     giveVote,
-    OWNER_ADDRESS,
-    ALL_VOTERS_VOTED,
+    votedVoters,
     checkVote,
-    rejectCandidate,
-    GET_SINGLE_VOTER,
-    INITIAL_CONTRACT_DATA,
-  } = useContext(VotingDappContext);
+    rejectCandidate: rejectCandidateFn,
+    getSingleVoter,
+    initContractData,
+  } = useVotingDapp();
 
   useEffect(() => {
     setLoading(true);
     const fetchData = async () => {
       if (!router.isReady) return;
 
-      const items = await GET_SINGLE_CANDIDATE(router?.query.address);
+      const items = await getSingleCandidate(router?.query.address);
       setCandidate(items);
 
-      const allVotedVoter = await ALL_VOTERS_VOTED();
-      console.log(items);
+      const allVotedVoter = await votedVoters();
 
-      const votingStatus = await INITIAL_CONTRACT_DATA();
+      const votingStatus = await initContractData();
       setVotingTime(votingStatus);
 
-      const nowInMilliseconds = Date.now();
-      const nowInSeconds = Math.floor(nowInMilliseconds / 1000);
+      const nowInSeconds = Math.floor(Date.now() / 1000);
       setCurrentVotingTime(nowInSeconds);
 
-      const address = await checkIfWalletIsConnected();
-
-      if (address) {
-        const user = await GET_SINGLE_VOTER(address);
-        setUser(user);
-        console.log(user);
-      }
+      if (!publicKey) return;
+      const user = await getSingleVoter(address);
+      setUser(user);
     };
 
     fetchData().finally(() => setLoading(false));
   }, [router.isReady]);
 
   const approveCandidate = async (address, message) => {
-    await approveCandidate(address, message);
+    await approveCandidateFn(address, message);
   };
 
   const rejectCandidate = async (address, message) => {
-    await rejectCandidate(address, message);
+    await rejectCandidateFn(address, message);
   };
   //
   return (
@@ -85,8 +88,6 @@ const candidateDetails = () => {
         handleClickApprove={approveCandidate}
         handleClickReject={rejectCandidate}
         giveVote={giveVote}
-        OWNER_ADDRESS={OWNER_ADDRESS}
-        address={address}
         checkVote={checkVote}
         user={user}
         votingTime={votingTime}

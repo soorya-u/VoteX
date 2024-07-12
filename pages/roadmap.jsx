@@ -1,11 +1,4 @@
-import React from "react";
-import {
-  Cursor,
-  ScrollToTop,
-  Footer,
-  Header,
-  RoadMap,
-} from "../components/index";
+import { Cursor, ScrollToTop, Footer, Header, RoadMap } from "@/components";
 
 const roadmap = () => {
   return (

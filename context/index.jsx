@@ -22,7 +22,7 @@ export const VotingDappContext = createContext({
   checkVote,
   getSingleCandidate,
   getSingleVoter,
-  getRegisteredCandidate,
+  getRegisteredCandidates,
   getRegisteredVoters,
   highestVotedCandidate,
   initContractData,
@@ -420,7 +420,7 @@ export const VotingDappProvider = ({ children }) => {
     }
   };
 
-  const getRegisteredCandidate = async () => {
+  const getRegisteredCandidates = async () => {
     try {
       const data = await callContract(
         ContractFunctions.getAllRegisteredCandidates
@@ -612,7 +612,7 @@ export const VotingDappProvider = ({ children }) => {
         checkVote,
         getSingleCandidate,
         getSingleVoter,
-        getRegisteredCandidate,
+        getRegisteredCandidates,
         getRegisteredVoters,
         highestVotedCandidate,
         initContractData,

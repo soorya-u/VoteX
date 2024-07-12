@@ -1,26 +1,21 @@
-import React, { useEffect, useState, useContext } from "react";
+import { useState } from "react";
 import Link from "next/link";
 
-import { Cursor, Preloader, ScrollToTop } from "../components";
+import { useVotingDapp } from "@/hooks/use-voting-dapp";
+import { ownerPublicKey } from "@/constants/contract";
 
-import Input from "../components/Global/Input";
-import Loader from "../components/Global/Loader";
-
-//IMPORTING CONTRCT DATA
-import { VotingDappContext } from "../context";
+import { Cursor, ScrollToTop } from "@/components";
+import Input from "@/components/Global/Input";
+import Loader from "@/components/Global/Loader";
 
 const voter = () => {
   const {
     loader,
-    OWNER_ADDRESS,
-    checkIfWalletIsConnected,
-    changeOwner,
+    changeOwner: changeOwnerFn,
     resetContract,
-    SET_VOTING_PREIOD,
-  } = useContext(VotingDappContext);
-
-  const [currentAddress, setCurrentAddress] = useState();
-  const [loading, setLoading] = useState(false);
+    setVotingPeriod,
+    publicKey,
+  } = useVotingDapp();
 
   const [voteTime, setVoteTime] = useState({
     startTime: "",
@@ -29,19 +24,8 @@ const voter = () => {
 
   const [changeOwner, setChangeOwner] = useState("");
 
-  useEffect(() => {
-    setLoading(true);
-    const fetchData = async () => {
-      const address = await checkIfWalletIsConnected();
-      setCurrentAddress(address);
-    };
-
-    fetchData().finally(() => setLoading(false));
-  }, []);
-
   return (
     <>
-      {loading && <Preloader />}
       <ScrollToTop />
       <Cursor />
 
@@ -96,7 +80,7 @@ const voter = () => {
                   <h5 className="mt-5 mt-lg-6">Import Contract Functions </h5>
                 </div>
 
-                {currentAddress == OWNER_ADDRESS.toLowerCase() && (
+                {publicKey === ownerPublicKey && (
                   <div
                     autocomplete="off"
                     id="frmContactus"
@@ -128,7 +112,7 @@ const voter = () => {
                       <div>
                         <button
                           className="cmn-btn py-3 px-5 px-lg-6 w-100 d-center"
-                          onClick={() => SET_VOTING_PREIOD(voteTime)}
+                          onClick={async () => await setVotingPeriod(voteTime)}
                         >
                           Set Voting Period
                         </button>
@@ -143,7 +127,7 @@ const voter = () => {
                       <div>
                         <button
                           className="cmn-btn py-3 px-5 px-lg-6 w-100 d-center"
-                          onClick={() => changeOwner(changeOwner)}
+                          onClick={async () => await changeOwnerFn(changeOwner)}
                         >
                           Change Owner
                         </button>
@@ -153,7 +137,7 @@ const voter = () => {
                     <div className=" mt-7 mt-lg-16">
                       <button
                         className="cmn-btn py-3 px-5 px-lg-6 mt-7 mt-lg-8 w-100 d-center"
-                        onClick={() => resetContract()}
+                        onClick={async () => await resetContract()}
                       >
                         Reset Contract
                       </button>

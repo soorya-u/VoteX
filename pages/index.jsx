@@ -1,6 +1,5 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 
-//INTERNAL INPORT
 import {
   Cursor,
   Preloader,
@@ -12,29 +11,24 @@ import {
   Blog,
   Provide,
   Vote,
-} from "../components";
+} from "@/components";
 
-import { VotingDappContext } from "../context";
-import ChatBot from "../components/Global/ChatBot";
+import { useVotingDapp } from "@/hooks/use-voting-dapp";
 
 const index = () => {
   const [initialData, setInitialData] = useState();
-  const [higest, setHigest] = useState();
+  const [highest, setHighest] = useState();
   const [loading, setLoading] = useState(false);
 
-  const { HIGHEST_VOTED_CANDIDATE, INITIAL_CONTRACT_DATA } =
-    useContext(VotingDappContext);
+  const { highestVotedCandidate, initContractData } = useVotingDapp();
 
   useEffect(() => {
     setLoading(true);
     const fetchData = async () => {
-      const items = await HIGHEST_VOTED_CANDIDATE();
-      const initialData = await INITIAL_CONTRACT_DATA();
-
-      setHigest(items);
+      const items = await highestVotedCandidate();
+      const initialData = await initContractData();
+      setHighest(items);
       setInitialData(initialData);
-      console.log(items);
-      console.log(initialData);
     };
 
     fetchData().finally(() => setLoading(false));
@@ -43,10 +37,9 @@ const index = () => {
     <>
       {loading && <Preloader />}
       <ScrollToTop />
-      <ChatBot />
       <Cursor />
       <Header />
-      <HeroSection initialData={initialData} higest={higest} />
+      <HeroSection initialData={initialData} higest={highest} />
       <WhyVote />
       <Provide />
       <Vote />
