@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState } from "react";
 import {
   Cursor,
   Preloader,
@@ -6,9 +6,9 @@ import {
   Footer,
   Header,
   Team,
-} from "../components";
-import Loader from "../components/Global/Loader";
-import { VotingDappContext } from "../context";
+} from "@/components";
+import Loader from "@/components/Global/Loader";
+import { useVotingDapp } from "@/hooks/use-voting-dapp";
 
 const registerVoters = () => {
   const [candidates, setCandidates] = useState();
@@ -19,14 +19,13 @@ const registerVoters = () => {
 
   const {
     loader,
-    GET_registerCandidateS,
+    getRegisteredCandidates,
     giveVote,
-    ALL_VOTERS_VOTED,
     checkVote,
-    INITIAL_CONTRACT_DATA,
-    GET_SINGLE_VOTER,
-    checkIfWalletIsConnected,
-  } = useContext(VotingDappContext);
+    initContractData,
+    getSingleVoter,
+    publicKey,
+  } = useVotingDapp();
 
   function filterUsersByStatus(users, status) {
     return users?.filter((user) => user.status === status);
@@ -35,28 +34,20 @@ const registerVoters = () => {
   useEffect(() => {
     setLoading(true);
     const fetchData = async () => {
-      const items = await GET_registerCandidateS();
+      const items = await getRegisteredCandidates();
 
-      const approvedUsers = filterUsersByStatus(items, 1);
+      const approvedUsers = filterUsersByStatus(items, "Approved");
       setCandidates(approvedUsers);
 
-      const votingStatus = await INITIAL_CONTRACT_DATA();
-
+      const votingStatus = await initContractData();
       setVotingTime(votingStatus);
-      console.log(votingStatus);
 
-      const nowInMilliseconds = Date.now();
-
-      const nowInSeconds = Math.floor(nowInMilliseconds / 1000);
-
+      const nowInSeconds = Math.floor(Date.now() / 1000);
       setCurrentVotingTime(nowInSeconds);
-      const address = await checkIfWalletIsConnected();
 
-      if (address) {
-        const user = await GET_SINGLE_VOTER(address);
-        setUser(user);
-        console.log(user);
-      }
+      if (!publicKey) return;
+      const user = await getSingleVoter(publicKey);
+      setUser(user);
     };
 
     fetchData().finally(() => setLoading(false));

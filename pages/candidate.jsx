@@ -1,41 +1,33 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 
-//INTERNAL IMPORT
-import { Cursor, Preloader, ScrollToTop } from "../components";
+import { useVotingDapp } from "@/hooks/use-voting-dapp";
+import { notifyError, notifySuccess } from "@/lib/toast";
 
-import Input from "../components/Global/Input";
-import Upload from "../components/Global/Upload";
-import Preview from "../components/Global/Preview";
-import UploadImg from "../components/Global/UploadImg";
-import PreviewImg from "../components/Global/PreviewImg";
-import Loader from "../components/Global/Loader";
-import PopUp from "../components/Global/PopUp";
-
-//IMPORTING CONTRCT DATA
-import { VotingDappContext } from "../context";
+import { Cursor, Preloader, ScrollToTop } from "@/components";
+import Input from "@/components/Global/Input";
+import Upload from "@/components/Global/Upload";
+import Preview from "@/components/Global/Preview";
+import UploadImg from "@/components/Global/UploadImg";
+import PreviewImg from "@/components/Global/PreviewImg";
+import Loader from "@/components/Global/Loader";
+import PopUp from "@/components/Global/PopUp";
 
 const signup = () => {
   const {
-    notifySuccess,
-    notifyError,
-    setLoader,
     loader,
+    setLoader,
     registerCandidate,
-    GET_SINGLE_CANDIDATE,
-    checkIfWalletIsConnected,
-  } = useContext(VotingDappContext);
+    getSingleCandidate,
+    publicKey,
+  } = useVotingDapp();
 
-  const [_, setCurrentAddress] = useState();
-  const zeroAddress = "0x0000000000000000000000000000000000000000";
   const [candidate, setCandidate] = useState();
   const [loading, setLoading] = useState(false);
 
-  //FILES
   const [pdf, setPdf] = useState(null);
   const [image, setImage] = useState(null);
 
-  //CANDIDATE DETAIL
   const [updateCandidate, setUpdateCandidate] = useState({
     _name: "",
     _nominationForm: "",
@@ -57,13 +49,9 @@ const signup = () => {
   useEffect(() => {
     setLoading(true);
     const fetchData = async () => {
-      const address = await checkIfWalletIsConnected();
-      if (address) {
-        setCurrentAddress(address);
-        const items = await GET_SINGLE_CANDIDATE(address);
-        setCandidate(items);
-        console.log(items);
-      }
+      if (!publicKey) return;
+      const items = await getSingleCandidate(publicKey);
+      setCandidate(items);
     };
 
     fetchData().finally(() => setLoading(false));
@@ -126,7 +114,7 @@ const signup = () => {
                   </Link>
                   <h5 className="mt-5 mt-lg-6">Register as a candidate</h5>
                 </div>
-                {candidate?.address == zeroAddress && (
+                {candidate?.address === "" && (
                   <div
                     autocomplete="off"
                     id="frmContactus"
@@ -328,8 +316,8 @@ const signup = () => {
                     </label>
                     <div className=" mt-7 mt-lg-8">
                       <button
-                        onClick={() =>
-                          registerCandidate(updateCandidate, image, pdf)
+                        onClick={async () =>
+                          await registerCandidate(updateCandidate, image, pdf)
                         }
                         className="cmn-btn py-3 px-5 px-lg-6 mt-7 mt-lg-8 w-100 d-center"
                       >
@@ -342,14 +330,14 @@ const signup = () => {
                 <div className="mt-8 mt-lg-10">
                   <p>
                     Before registering kindly check the nomination details{" "}
-                    <a href="/">here</a>
+                    <Link href="/">here</Link>
                   </p>
                 </div>
               </div>
             </div>
           </div>
         </div>{" "}
-        {candidate?.address != zeroAddress && <PopUp candidate={candidate} />}
+        {candidate.address !== "" && <PopUp candidate={candidate} />}
         {loader && <Loader />}
       </section>
     </>

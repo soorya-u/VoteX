@@ -1,6 +1,3 @@
-import React from "react";
-
-//INTERNAL IMPORT
 import Banner from "./Banner";
 import Company from "./Company";
 import Mission from "./Mission";

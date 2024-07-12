@@ -1,10 +1,4 @@
-import {
-  Cursor,
-  ScrollToTop,
-  Footer,
-  Header,
-  About,
-} from "../components/index";
+import { Cursor, ScrollToTop, Footer, Header, About } from "@/components";
 
 const about = () => {
   return (

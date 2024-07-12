@@ -1,38 +1,27 @@
-import { useEffect, useState, useContext } from "react";
+import { useState } from "react";
 import Link from "next/link";
 
-import { Cursor, Preloader, ScrollToTop } from "../components";
+import { useVotingDapp } from "@/hooks/use-voting-dapp";
+import { notifyError, notifySuccess } from "@/lib/toast";
+import { Cursor, ScrollToTop } from "@/components";
 
-import Input from "../components/Global/Input";
-import Upload from "../components/Global/Upload";
-import Preview from "../components/Global/Preview";
-import UploadImg from "../components/Global/UploadImg";
-import PreviewImg from "../components/Global/PreviewImg";
-import Loader from "../components/Global/Loader";
-
-import { VotingDappContext } from "../context";
+import Input from "@/components/Global/Input";
+import Upload from "@/components/Global/Upload";
+import Preview from "@/components/Global/Preview";
+import UploadImg from "@/components/Global/UploadImg";
+import PreviewImg from "@/components/Global/PreviewImg";
+import Loader from "@/components/Global/Loader";
 
 const signup = () => {
   const {
-    notifySuccess,
-    notifyError,
-    setLoader,
     loader,
-    updateCandidate,
-    GET_SINGLE_CANDIDATE,
-    checkIfWalletIsConnected,
-  } = useContext(VotingDappContext);
+    setLoader,
+    updateCandidate: updateCandidateFn,
+  } = useVotingDapp();
 
-  //CURRENT ADDRESS
-  const [_, setCurrentAddress] = useState();
-  const [c, setCandidate] = useState();
-
-  //FILES
   const [pdf, setPdf] = useState(null);
   const [image, setImage] = useState(null);
-  cosnst[(loadConfig, setLoading)] = useState(false);
 
-  //CANDIDATE DETAIL
   const [updateCandidate, setUpdateCandidate] = useState({
     _name: "",
     _nominationForm: "",
@@ -51,24 +40,8 @@ const signup = () => {
     _voterIdCardDetails: "",
   });
 
-  useEffect(() => {
-    setLoading(true);
-    const fetchData = async () => {
-      const address = await checkIfWalletIsConnected();
-      if (address) {
-        setCurrentAddress(address);
-        const items = await GET_SINGLE_CANDIDATE(address);
-        setCandidate(items);
-        console.log(items);
-      }
-    };
-
-    fetchData().finally(() => setLoading(false));
-  }, []);
-
   return (
     <>
-      {loading && <Preloader />}
       <ScrollToTop />
       <Cursor />
       <section className="sign nb4-bg h-100 d-flex align-items-center position-relative z-0">
@@ -325,8 +298,8 @@ const signup = () => {
                   </label>
                   <div className=" mt-7 mt-lg-8">
                     <button
-                      onClick={() =>
-                        updateCandidate(updateCandidate, image, pdf)
+                      onClick={async () =>
+                        await updateCandidateFn(updateCandidate, image, pdf)
                       }
                       className="cmn-btn py-3 px-5 px-lg-6 mt-7 mt-lg-8 w-100 d-center"
                     >
@@ -338,7 +311,7 @@ const signup = () => {
                 <div className="mt-8 mt-lg-10">
                   <p>
                     Before registering kindly check the nomination details{" "}
-                    <a href="/">here</a>
+                    <Link href="/">here</Link>
                   </p>
                 </div>
               </div>

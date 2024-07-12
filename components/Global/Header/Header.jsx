@@ -1,17 +1,9 @@
-import { useContext } from "react";
 import Link from "next/link";
-
-// IMPORTING CONTRACT DATA
-import { VotingDappContext } from "../../../context";
+import { useVotingDapp } from "@/hooks/use-voting-dapp";
+import { ownerPublicKey } from "@/constants/contract";
 
 const Header = () => {
-  const { connectWallet, address, setAddress, OWNER_ADDRESS } =
-    useContext(VotingDappContext);
-
-  const clickConnect = async () => {
-    const userAddress = await connectWallet();
-    setAddress(userAddress);
-  };
+  const { connectWallet, publicKey } = useVotingDapp();
 
   return (
     <header className="header-section a2-bg-0 header-section--secondary header-menu w-100">
@@ -97,7 +89,7 @@ const Header = () => {
               ) : (
                 <div className="single-item">
                   <button
-                    onClick={() => clickConnect()}
+                    onClick={async () => await connectWallet()}
                     className="cmn-btn fw-bold py-2 px-2 px-sm-3 px-lg-4 align-items-center gap-1"
                   >
                     Connect Wallet{" "}
@@ -174,7 +166,7 @@ const Header = () => {
                   </li>
                 </ul>
               </li>
-              {address === OWNER_ADDRESS?.toLowerCase() && (
+              {publicKey === ownerPublicKey && (
                 <li>
                   <Link href="/owner">
                     <a className="dropdown-item header-hover-link">Owner</a>
