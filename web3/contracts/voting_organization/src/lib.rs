@@ -58,9 +58,7 @@ pub struct VotingOrganization;
 #[contractimpl]
 impl VotingOrganization {
     fn owner_only(env: &Env, address: Address) {
-        let addr: Address = Address::from_string(&String::from_str(env, ""));
-        let stored_addr = env.storage().persistent().get(&OWNER).unwrap_or(addr);
-
+        let stored_addr: Address = env.storage().persistent().get(&OWNER).unwrap();
         if stored_addr != address {
             panic!("can only be called by owner");
         }
