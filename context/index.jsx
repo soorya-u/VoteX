@@ -2,8 +2,6 @@ import { useEffect, useState, createContext } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 
-import { scValToNative } from "@stellar/stellar-sdk";
-
 import { headers } from "@/constants/headers";
 import { ContractFunctions } from "@/constants/contract";
 import {
@@ -11,12 +9,40 @@ import {
   stringToScValString,
   callContract as callContractFn,
   stringToAddress,
+  scValToNative,
 } from "@/lib/stellar";
 import { retrievePublicKey, checkConnection } from "@/lib/freighter";
 import { notifyError, notifySuccess } from "@/lib/toast";
 import { validObjectCheck } from "@/utils";
 
-export const VotingDappContext = createContext();
+export const VotingDappContext = createContext({
+  loader,
+  setLoader,
+  publicKey,
+  checkVote,
+  getSingleCandidate,
+  getSingleVoter,
+  getRegisteredCandidate,
+  getRegisteredVoters,
+  highestVotedCandidate,
+  initContractData,
+  votedVoters,
+  getWinner,
+  connectWallet,
+  registerCandidate,
+  registerVoter,
+  approveVoter,
+  approveCandidate,
+  giveVote,
+  updateCandidate,
+  updateVoter,
+  changeOwner,
+  resetContract,
+  setVotingPeriod,
+  rejectCandidate,
+  registerVoter,
+  rejectVoter,
+});
 
 export const VotingDappProvider = ({ children }) => {
   const router = useRouter();
@@ -360,319 +386,143 @@ export const VotingDappProvider = ({ children }) => {
     }
   };
 
-  // Continue HERE
-
   const initContractData = async () => {
     try {
-      if (isWalletConnected) {
-        const [startDateN, endDateN] = await callContract("get_voting_time");
+      const data = await callContract(ContractFunctions.getVotingTime);
+      const [startDateN, endDateN] = await scValToNative(data);
+      // Value Check
+      const timestamp1 = +startDateN;
+      const timestamp2 = +endDateN;
 
-        const timestamp1 = startDateN;
-        const timestamp2 = endDateN;
+      const date1 = new Date(timestamp1 * 1000);
+      const date2 = new Date(timestamp2 * 1000);
 
-        const date1 = new Date(timestamp1 * 1000);
-        const date2 = new Date(timestamp2 * 1000);
+      const options = {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+      };
 
-        const options = {
-          year: "numeric",
-          month: "2-digit",
-          day: "2-digit",
-          hour: "2-digit",
-          minute: "2-digit",
-          second: "2-digit",
-        };
+      const item = {
+        startDate: date1.toLocaleDateString("en-US", options),
+        endDate: date2.toLocaleDateString("en-US", options),
+        startDateN: startDateN.toNumber(),
+        endDateN: endDateN.toNumber(),
+      };
 
-        const item = {
-          startDate: date1.toLocaleDateString("en-US", options),
-          endDate: date2.toLocaleDateString("en-US", options),
-          startDateN: startDateN.toNumber(),
-          endDateN: endDateN.toNumber(),
-        };
-
-        return item;
-      }
+      return item;
     } catch (error) {
-      notifyError("Something weng wrong ");
+      notifyError("Something weng wrong");
       console.log(error);
     }
   };
 
   const getRegisteredCandidate = async () => {
     try {
-      if (isWalletConnected) {
-        const candidates = await callContract("get_all_registered_candidates");
-        const items = await Promise.all(
-          await scValToNative(candidates).map(
-            async ({
-              ipfs,
-              candidate_address,
-              registerId,
-              status,
-              voteCount,
-              message,
-            }) => {
-              const {
-                data: {
-                  _name,
-                  _nominationForm,
-                  _affidavit,
-                  _criminalAntecedents,
-                  _assetsAndLiabilities,
-                  _educationalQualifications,
-                  _electoralRollEntry,
-                  _securityDeposit,
-                  _partyAffiliation,
-                  _oathOrAffirmation,
-                  _photographs,
-                  _proofOfAge,
-                  _proofOfAddress,
-                  _panCardDetails,
-                  _voterIdCardDetails,
-                  image,
-                  pdf,
-                },
-              } = await axios.get(ipfs, {});
+      const data = await callContract(
+        ContractFunctions.getAllRegisteredCandidates
+      );
+      const candidates = await scValToNative(data);
 
-              return {
-                address: candidate_address,
-                registerId: registerId?.toNumber(),
-                status,
-                voteCount: voteCount?.toNumber(),
-                ipfs,
-                message,
-                _name,
-                _nominationForm,
-                _affidavit,
-                _criminalAntecedents,
-                _assetsAndLiabilities,
-                _educationalQualifications,
-                _electoralRollEntry,
-                _securityDeposit,
-                _partyAffiliation,
-                _oathOrAffirmation,
-                _photographs,
-                _proofOfAge,
-                _proofOfAddress,
-                _panCardDetails,
-                _voterIdCardDetails,
-                image,
-                pdf,
-              };
-            }
-          )
-        );
-
-        return items;
-      }
+      return candidates.map(
+        async ({
+          ipfs,
+          candidate_address,
+          register_id,
+          vote_count,
+          ...rest
+        }) => {
+          const { data } = await axios.get(ipfs);
+          return {
+            ...data,
+            ...rest,
+            candidateAddress: candidate_address,
+            registerId: +register_id,
+            voteCount: +vote_count,
+            ipfs,
+          };
+        }
+      );
     } catch (error) {
-      notifyError("Something weng wrong ");
+      notifyError("Something went wrong");
       console.log(error);
     }
   };
 
   const getRegisteredVoters = async () => {
     try {
-      if (isWalletConnected) {
-        const voters = await callContract("get_all_registered_voters");
-        console.log(voters);
-
-        const items = await Promise.all(
-          scValToNative(voters).map(
-            async ({
-              ipfs,
-              voterAddress,
-              registerId,
-              status,
-              hasVoted,
-              message,
-            }) => {
-              const {
-                data: {
-                  _name,
-                  _voterAddress,
-                  _photograph,
-                  _parentOrSpouseName,
-                  _gender,
-                  _dobOrAge,
-                  _addressDetails,
-                  _epicNumber,
-                  _partNumberAndName,
-                  _assemblyConstituencyNumberAndName,
-                  _issuingAuthoritySignature,
-                  _hologramAndBarcode,
-                  image,
-                  pdf,
-                },
-              } = await axios.get(ipfs, {});
-
-              return {
-                address: voterAddress,
-                registerId: registerId?.toNumber(),
-                status,
-                hasVoted,
-                message,
-                ipfs,
-                _name,
-                _voterAddress,
-                _photograph,
-                _parentOrSpouseName,
-                _gender,
-                _dobOrAge,
-                _addressDetails,
-                _epicNumber,
-                _partNumberAndName,
-                _assemblyConstituencyNumberAndName,
-                _issuingAuthoritySignature,
-                _hologramAndBarcode,
-                image,
-                pdf,
-              };
-            }
-          )
-        );
-
-        return items;
-      }
+      const data = await callContract(ContractFunctions.getAllRegisteredVoters);
+      const voters = await scValToNative(data);
+      return voters.map(
+        async ({ ipfs, voter_address, register_id, has_voted, ...rest }) => {
+          const { data } = await axios.get(ipfs);
+          return {
+            ...data,
+            ...rest,
+            ipfs,
+            voterAddress: voter_address,
+            registerId: register_id,
+            hasVoted: has_voted,
+          };
+        }
+      );
     } catch (error) {
-      notifyError("Something weng wrong ");
+      notifyError("Something went wrong");
       console.log(error);
     }
   };
 
   const votedVoters = async () => {
     try {
-      if (isWalletConnected) {
-        const voters = callContract("get_all_voters_who_voted");
-        console.log(voters);
+      const data = await callContract(ContractFunctions.getAllVotersWhoVoted);
+      const voters = await scValToNative(data);
 
-        const items = await Promise.all(
-          voters.map(
-            async ({
-              ipfs,
-              voterAddress,
-              registerId,
-              status,
-              hasVoted,
-              message,
-            }) => {
-              const {
-                data: {
-                  _name,
-                  _voterAddress,
-                  _photograph,
-                  _parentOrSpouseName,
-                  _gender,
-                  _dobOrAge,
-                  _addressDetails,
-                  _epicNumber,
-                  _partNumberAndName,
-                  _assemblyConstituencyNumberAndName,
-                  _issuingAuthoritySignature,
-                  _hologramAndBarcode,
-                  image,
-                  pdf,
-                },
-              } = await axios.get(ipfs, {});
+      const items = voters.map(
+        async ({ ipfs, voter_address, register_id, has_voted, ...rest }) => {
+          const { data } = await axios.get(ipfs);
+          return {
+            ...data,
+            ...rest,
+            ipfs,
+            address: voter_address,
+            registerId: register_id,
+            hasVoted: has_voted,
+          };
+        }
+      );
 
-              return {
-                address: voterAddress,
-                registerId: registerId?.toNumber(),
-                status,
-                hasVoted,
-                message,
-                ipfs,
-                _name,
-                _voterAddress,
-                _photograph,
-                _parentOrSpouseName,
-                _gender,
-                _dobOrAge,
-                _addressDetails,
-                _epicNumber,
-                _partNumberAndName,
-                _assemblyConstituencyNumberAndName,
-                _issuingAuthoritySignature,
-                _hologramAndBarcode,
-                image,
-                pdf,
-              };
-            }
-          )
-        );
+      items?.filter((user) =>
+        user.address === publicKey ? setCheckVote(true) : setCheckVote(false)
+      );
 
-        items?.filter((user) =>
-          user.address.toLowerCase() === publicKey
-            ? setCheckVote(true)
-            : setCheckVote(false)
-        );
-
-        return items;
-      }
+      return items;
     } catch (error) {
-      notifyError("Something weng wrong ");
+      notifyError("Something went wrong");
       console.log(error);
     }
   };
 
   const highestVotedCandidate = async () => {
     try {
-      if (isWalletConnected) {
-        const candidate = await callContract("get_current_voting_status");
+      const contractData = await callContract(
+        ContractFunctions.getCurrentVotingStatus
+      );
+      const { candidate_address, register_id, vote_count, ...rest } =
+        await scValToNative(contractData);
+      if (candidate_address === "") return;
 
-        console.log(candidate);
+      const { data } = await axios.get(rest.ipfs);
 
-        if (candidates?.candidateAddress.toLowerCase() === zeroAddress) return;
-
-        const {
-          data: {
-            _name,
-            _nominationForm,
-            _affidavit,
-            _criminalAntecedents,
-            _assetsAndLiabilities,
-            _educationalQualifications,
-            _electoralRollEntry,
-            _securityDeposit,
-            _partyAffiliation,
-            _oathOrAffirmation,
-            _photographs,
-            _proofOfAge,
-            _proofOfAddress,
-            _panCardDetails,
-            _voterIdCardDetails,
-            image,
-            pdf,
-          },
-        } = await axios.get(candidates?.ipfs);
-
-        const candidateData = {
-          address: candidates?.candidateAddress,
-          registerId: candidates?.registerId?.toNumber(),
-          status: candidates?.status,
-          voteCount: candidates?.voteCount?.toNumber(),
-          ipfs: candidates?.ipfs,
-          message: candidates?.message,
-          _name,
-          _nominationForm,
-          _affidavit,
-          _criminalAntecedents,
-          _assetsAndLiabilities,
-          _educationalQualifications,
-          _electoralRollEntry,
-          _securityDeposit,
-          _partyAffiliation,
-          _oathOrAffirmation,
-          _photographs,
-          _proofOfAge,
-          _proofOfAddress,
-          _panCardDetails,
-          _voterIdCardDetails,
-          image,
-          pdf,
-        };
-
-        return candidateData;
-      }
+      return {
+        address: candidate_address,
+        registerId: +register_id,
+        voteCount: +vote_count,
+        ...rest,
+        ...data,
+      };
     } catch (error) {
       notifyError("Something went wrong");
       console.log(error);
@@ -681,67 +531,21 @@ export const VotingDappProvider = ({ children }) => {
 
   const getWinner = async () => {
     try {
-      if (isWalletConnected) {
-        const candidate = await callContract("get_winning_candidate");
-        console.log(candidate);
+      const data = await callContract(ContractFunctions.getWinningCandidate);
+      const candidates = await scValToNative(data);
 
-        const items = await Promise.all(
-          candidate.map(
-            async ({
-              ipfs,
-              voterAddress,
-              registerId,
-              status,
-              hasVoted,
-              message,
-            }) => {
-              const {
-                data: {
-                  _name,
-                  _voterAddress,
-                  _photograph,
-                  _parentOrSpouseName,
-                  _gender,
-                  _dobOrAge,
-                  _addressDetails,
-                  _epicNumber,
-                  _partNumberAndName,
-                  _assemblyConstituencyNumberAndName,
-                  _issuingAuthoritySignature,
-                  _hologramAndBarcode,
-                  image,
-                  pdf,
-                },
-              } = await axios.get(ipfs, {});
-
-              return {
-                voterAddress,
-                registerId: registerId?.toNumber(),
-                status,
-                hasVoted,
-                message,
-                ipfs,
-                _name,
-                _voterAddress,
-                _photograph,
-                _parentOrSpouseName,
-                _gender,
-                _dobOrAge,
-                _addressDetails,
-                _epicNumber,
-                _partNumberAndName,
-                _assemblyConstituencyNumberAndName,
-                _issuingAuthoritySignature,
-                _hologramAndBarcode,
-                image,
-                pdf,
-              };
-            }
-          )
-        );
-
-        return items;
-      }
+      return candidates.map(
+        async ({ voter_address, register_id, has_voted, ...rest }) => {
+          const { data } = await axios.get(rest.ipfs);
+          return {
+            ...data,
+            ...rest,
+            voterAddress: voter_address,
+            registerId: +register_id,
+            hasVoted: has_voted,
+          };
+        }
+      );
     } catch (error) {
       notifyError("Something weng wrong ");
       console.log(error);
@@ -751,53 +555,22 @@ export const VotingDappProvider = ({ children }) => {
   const getSingleVoter = async (address) => {
     try {
       if (!address) return notifyError("Kindly provide address");
-      const pka = new Address(address);
-      const data = await callContract("get_voter", pka.toScVal());
-      const {
-        data: {
-          _name,
-          _voterAddress,
-          _photograph,
-          _parentOrSpouseName,
-          _gender,
-          _dobOrAge,
-          _addressDetails,
-          _epicNumber,
-          _partNumberAndName,
-          _assemblyConstituencyNumberAndName,
-          _issuingAuthoritySignature,
-          _hologramAndBarcode,
-          image,
-          pdf,
-        },
-      } = await axios.get(data?.ipfs, {});
 
-      const voter = {
-        address: data?.voterAddress,
-        registerId: data?.registerId.toNumber(),
-        ipfs: data?.ipfs,
-        status: data?.status,
-        hasVoted: data?.hasVoted,
-        message: data?.message,
-        _name,
-        _voterAddress,
-        _photograph,
-        _parentOrSpouseName,
-        _gender,
-        _dobOrAge,
-        _addressDetails,
-        _epicNumber,
-        _partNumberAndName,
-        _assemblyConstituencyNumberAndName,
-        _issuingAuthoritySignature,
-        _hologramAndBarcode,
-        image,
-        pdf,
+      const pk = stringToAddress(address);
+      const contractData = await callContract(ContractFunctions.getVoter, pk);
+      const { voter_address, register_id, has_voted, ...rest } =
+        await scValToNative(contractData);
+      const { data } = await axios.get(rest.ipfs);
+
+      return {
+        address: voter_address,
+        registerId: +register_id,
+        hasVoted: has_voted,
+        ...rest,
+        ...data,
       };
-
-      return voter;
     } catch (error) {
-      notifySuccess("Failed to get data, kindly reload page");
+      notifyError("Failed to get data, kindly reload page");
       console.log(error.message);
     }
   };
@@ -806,64 +579,26 @@ export const VotingDappProvider = ({ children }) => {
     try {
       if (!address) return notifyError("Kindly provide address");
 
-      const pk = await retrievePublicKey();
-      const pka = new Address(pk);
+      const pk = await stringToAddress(address);
 
-      const data = await scValToNative(
-        await callContract("get_candidate", pka.toScVal())
+      const contractData = await callContract(
+        ContractFunctions.getCandidate,
+        pk
       );
 
-      const {
-        data: {
-          _name,
-          _nominationForm,
-          _affidavit,
-          _criminalAntecedents,
-          _assetsAndLiabilities,
-          _educationalQualifications,
-          _electoralRollEntry,
-          _securityDeposit,
-          _partyAffiliation,
-          _oathOrAffirmation,
-          _photographs,
-          _proofOfAge,
-          _proofOfAddress,
-          _panCardDetails,
-          _voterIdCardDetails,
-          image,
-          pdf,
-        },
-      } = await axios.get(data?.ipfs, {});
-      console.log(_name);
-      const candidate = {
-        address: data?.candidateAddress,
-        registerId: data?.registerId.toNumber(),
-        ipfs: data?.ipfs,
-        status: data?.status,
-        voteCount: data?.voteCount.toNumber(),
-        message: data?.message,
-        _name,
-        _nominationForm,
-        _affidavit,
-        _criminalAntecedents,
-        _assetsAndLiabilities,
-        _educationalQualifications,
-        _electoralRollEntry,
-        _securityDeposit,
-        _partyAffiliation,
-        _oathOrAffirmation,
-        _photographs,
-        _proofOfAge,
-        _proofOfAddress,
-        _panCardDetails,
-        _voterIdCardDetails,
-        image,
-        pdf,
-      };
+      const { candidate_address, register_id, vote_count, ...rest } =
+        await scValToNative(contractData);
 
-      return candidate;
+      const { data } = await axios.get(rest.ipfs);
+      return {
+        address: candidate_address,
+        registerId: +register_id,
+        voteCount: +vote_count,
+        ...rest,
+        ...data,
+      };
     } catch (error) {
-      notifySuccess("Failed to get data, kindly reload page");
+      notifyError("Failed to get data, kindly reload page");
       console.log(error);
     }
   };
@@ -873,6 +608,8 @@ export const VotingDappProvider = ({ children }) => {
       value={{
         loader,
         setLoader,
+        publicKey,
+        checkVote,
         getSingleCandidate,
         getSingleVoter,
         getRegisteredCandidate,
@@ -882,8 +619,6 @@ export const VotingDappProvider = ({ children }) => {
         votedVoters,
         getWinner,
         connectWallet,
-        publicKey,
-        checkVote,
         registerCandidate,
         registerVoter,
         approveVoter,
@@ -897,7 +632,6 @@ export const VotingDappProvider = ({ children }) => {
         rejectCandidate,
         registerVoter,
         rejectVoter,
-        retrievePublicKey,
       }}
     >
       {children}
