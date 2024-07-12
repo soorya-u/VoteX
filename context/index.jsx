@@ -371,8 +371,8 @@ export const VotingDappProvider = ({ children }) => {
       if (!data) return;
       const [startDateN, endDateN] = scValToNative(data);
 
-      const timestamp1 = +startDateN;
-      const timestamp2 = +endDateN;
+      const timestamp1 = Number(startDateN);
+      const timestamp2 = Number(endDateN);
 
       const date1 = new Date(timestamp1 * 1000);
       const date2 = new Date(timestamp2 * 1000);
@@ -389,14 +389,14 @@ export const VotingDappProvider = ({ children }) => {
       const item = {
         startDate: date1.toLocaleDateString("en-US", options),
         endDate: date2.toLocaleDateString("en-US", options),
-        startDateN: startDateN.toNumber(),
-        endDateN: endDateN.toNumber(),
+        startDateN: timestamp1,
+        endDateN: timestamp2,
       };
 
       return item;
     } catch (error) {
-      notifyError("Something weng wrong");
-      console.log(error.message);
+      notifyError("Something went wrong");
+      console.log(error);
     }
   };
 
