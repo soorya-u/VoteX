@@ -10,7 +10,7 @@ export const shortenAddress = (address) =>
 
 export const validObjectCheck = (obj) => {
   const values = Object.values(obj);
-  for (v in values) {
+  for (const v in values) {
     if (!v) {
       return false;
     }

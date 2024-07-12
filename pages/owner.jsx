@@ -82,7 +82,7 @@ const voter = () => {
 
                 {publicKey === ownerPublicKey && (
                   <div
-                    autocomplete="off"
+                    autoComplete="off"
                     id="frmContactus"
                     className="contact__form mt-8 mt-lg-10 text-start"
                   >

@@ -37,7 +37,7 @@ export const VotingDappProvider = ({ children }) => {
   const registerCandidate = async (updateCandidate, image, pdf) => {
     const { _name: name } = updateCandidate;
     const jsonData = { ...updateCandidate, image, pdf };
-    if (validObjectCheck(jsonData)) return notifyError("Data Is Missing");
+    if (!validObjectCheck(jsonData)) return notifyError("Data Is Missing");
     notifySuccess("Registering Candidate, kindly wait...");
     setLoader(true);
 
@@ -74,7 +74,7 @@ export const VotingDappProvider = ({ children }) => {
     const { _name: name } = updateVoter;
     const jsonData = { ...updateVoter, image, pdf };
 
-    if (validObjectCheck(jsonData)) return notifyError("Data Is Missing");
+    if (!validObjectCheck(jsonData)) return notifyError("Data Is Missing");
     notifySuccess("Registering Voter, kindly wait...");
     setLoader(true);
 
@@ -177,7 +177,6 @@ export const VotingDappProvider = ({ children }) => {
   };
 
   const rejectVoter = async (address, message) => {
-    console.log(address, message);
     if (!address || !message) return notifyError("Data Is Missing");
     notifySuccess("kindly wait, approving voter...");
     setLoader(true);
@@ -201,23 +200,28 @@ export const VotingDappProvider = ({ children }) => {
   };
 
   const setVotingPeriod = async (voteTime) => {
-    if (validObjectCheck(voteTime)) return notifyError("Data Is Missing");
+    if (!validObjectCheck(voteTime)) return notifyError("Data Is Missing");
 
     notifySuccess("kindly wait...");
     setLoader(true);
 
     const { startTime, endTime } = voteTime;
 
-    const startTimeMilliseconds = new Date(startTime).getTime();
-    const endTimeMilliseconds = new Date(endTime).getTime();
+    const startDate = new Date(startTime);
+    const endDate = new Date(endTime);
+
+    const startTimeMilliseconds = startDate.getTime();
+    const endTimeMilliseconds = endDate.getTime();
 
     const startTimeSeconds = Math.floor(startTimeMilliseconds / 1000);
     const endTimeSeconds = Math.floor(endTimeMilliseconds / 1000);
 
     try {
+      const pk = await stringToAddress();
       await callContract(ContractFunctions.setVotingPeriod, [
         numberToU64(startTimeSeconds),
         numberToU64(endTimeSeconds),
+        pk,
       ]);
 
       setLoader(false);
@@ -233,7 +237,7 @@ export const VotingDappProvider = ({ children }) => {
   const updateVoter = async (updateVoter, image, pdf) => {
     const { _name: name } = updateVoter;
     const jsonData = { ...updateVoter, image, pdf };
-    if (validObjectCheck(jsonData)) return notifyError("Data Is Missing");
+    if (!validObjectCheck(jsonData)) return notifyError("Data Is Missing");
     notifySuccess("Updating Voter, kindly wait...");
     setLoader(true);
 
@@ -269,7 +273,7 @@ export const VotingDappProvider = ({ children }) => {
   const updateCandidate = async (updateCandidate, image, pdf) => {
     const { _name: name } = updateCandidate;
     const jsonData = { ...updateCandidate, image, pdf };
-    if (validObjectCheck(jsonData)) return notifyError("Data Is Missing");
+    if (!validObjectCheck(jsonData)) return notifyError("Data Is Missing");
     notifySuccess("Updating Candidate, kindly wait...");
     setLoader(true);
 
@@ -307,7 +311,7 @@ export const VotingDappProvider = ({ children }) => {
     notifySuccess("kindly wait...");
     setLoader(true);
 
-    const newPk = await stringToAddress(newOwer);
+    const newPk = await stringToAddress(newOwner);
     const pk = await stringToAddress();
 
     try {
@@ -365,7 +369,7 @@ export const VotingDappProvider = ({ children }) => {
     try {
       const data = await callContract(ContractFunctions.getVotingTime);
       if (!data) return;
-      const [startDateN, endDateN] = await scValToNative(data);
+      const [startDateN, endDateN] = scValToNative(data);
 
       const timestamp1 = +startDateN;
       const timestamp2 = +endDateN;
