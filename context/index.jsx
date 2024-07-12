@@ -537,10 +537,16 @@ export const VotingDappProvider = ({ children }) => {
     try {
       if (!address) return notifyError("Kindly provide address");
 
-      const pk = stringToAddress(address);
+      const pk = await stringToAddress(address);
       const contractData = await callContract(ContractFunctions.getVoter, pk);
+      console.log("Contract Data", scValToNative(contractData));
+
       const { voter_address, register_id, has_voted, ...rest } =
-        await scValToNative(contractData);
+        scValToNative(contractData);
+      if (rest.ipfs === "NotFound")
+        return {
+          address: "",
+        };
       const { data } = await axios.get(rest.ipfs);
 
       return {
@@ -551,8 +557,9 @@ export const VotingDappProvider = ({ children }) => {
         ...data,
       };
     } catch (error) {
+      if (error instanceof TypeError) return;
       notifyError("Failed to get data, kindly reload page");
-      console.log(error.message);
+      console.log(error);
     }
   };
 
@@ -569,6 +576,10 @@ export const VotingDappProvider = ({ children }) => {
 
       const { candidate_address, register_id, vote_count, ...rest } =
         await scValToNative(contractData);
+      if (rest.ipfs === "NotFound")
+        return {
+          address: "",
+        };
 
       const { data } = await axios.get(rest.ipfs);
       return {
@@ -579,6 +590,7 @@ export const VotingDappProvider = ({ children }) => {
         ...data,
       };
     } catch (error) {
+      if (error instanceof TypeError) return;
       notifyError("Failed to get data, kindly reload page");
       console.log(error);
     }
