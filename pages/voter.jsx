@@ -111,7 +111,7 @@ const voter = () => {
 
                 {voter && voter.address === "" && (
                   <div
-                    autocomplete="off"
+                    autoComplete="off"
                     id="frmContactus"
                     className="contact__form mt-8 mt-lg-10 text-start"
                   >
@@ -265,7 +265,7 @@ const voter = () => {
                     <div className=" mt-7 mt-lg-8">
                       <button
                         className="cmn-btn py-3 px-5 px-lg-6 mt-7 mt-lg-8 w-100 d-center"
-                        onClick={() => registerVoter(updateVoter, image, pdf)}
+                        onClick={async () => await registerVoter(updateVoter, image, pdf)}
                       >
                         Register
                       </button>

@@ -82,13 +82,12 @@ impl VotingOrganization {
     pub fn register_voter(env: Env, name: String, ipfs: String, address: Address) {
         const PENDING_MESSAGE: &str = "Currently your registration is pending";
         let voter_id_key = Voters::Voter(address.clone());
-        let id_counter_key = VOTER_ID_COUNTER;
 
         let id_counter = env
             .storage()
             .persistent()
-            .get(&id_counter_key)
-            .unwrap_or_default();
+            .get(&VOTER_ID_COUNTER)
+            .unwrap_or(0);
 
         let new_voter = Voter {
             voter_address: address.clone(),
@@ -96,7 +95,7 @@ impl VotingOrganization {
             ipfs,
             has_voted: false,
             message: String::from_str(&env, PENDING_MESSAGE),
-            register_id: U256::from_u32(&env, id_counter),
+            register_id: U256::from_u32(&env, id_counter.clone()),
             status: PENDING,
         };
 
@@ -115,7 +114,7 @@ impl VotingOrganization {
 
         env.storage()
             .persistent()
-            .set(&id_counter_key, &(id_counter + 1));
+            .set(&VOTER_ID_COUNTER, &(id_counter + 1));
     }
 
     pub fn register_candidate(env: Env, name: String, ipfs: String, address: Address) {

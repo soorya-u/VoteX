@@ -539,7 +539,6 @@ export const VotingDappProvider = ({ children }) => {
 
       const pk = await stringToAddress(address);
       const contractData = await callContract(ContractFunctions.getVoter, pk);
-      console.log("Contract Data", scValToNative(contractData));
 
       const { voter_address, register_id, has_voted, ...rest } =
         scValToNative(contractData);
