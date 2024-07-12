@@ -1,6 +1,7 @@
 import { useEffect, useState, createContext } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
+import { scValToNative } from "@stellar/stellar-sdk";
 
 import { headers } from "@/constants/headers";
 import { ContractFunctions } from "@/constants/contract";
@@ -9,7 +10,6 @@ import {
   stringToScValString,
   callContract as callContractFn,
   stringToAddress,
-  scValToNative,
 } from "@/lib/stellar";
 import { retrievePublicKey, checkConnection } from "@/lib/freighter";
 import { notifyError, notifySuccess } from "@/lib/toast";
@@ -364,8 +364,9 @@ export const VotingDappProvider = ({ children }) => {
   const initContractData = async () => {
     try {
       const data = await callContract(ContractFunctions.getVotingTime);
+      if (!data) return;
       const [startDateN, endDateN] = await scValToNative(data);
-      // Value Check
+
       const timestamp1 = +startDateN;
       const timestamp2 = +endDateN;
 
@@ -391,7 +392,7 @@ export const VotingDappProvider = ({ children }) => {
       return item;
     } catch (error) {
       notifyError("Something weng wrong");
-      console.log(error);
+      console.log(error.message);
     }
   };
 
@@ -485,6 +486,7 @@ export const VotingDappProvider = ({ children }) => {
       const contractData = await callContract(
         ContractFunctions.getCurrentVotingStatus
       );
+      if (!contractData) return;
       const { candidate_address, register_id, vote_count, ...rest } =
         await scValToNative(contractData);
       if (candidate_address === "") return;
@@ -500,7 +502,7 @@ export const VotingDappProvider = ({ children }) => {
       };
     } catch (error) {
       notifyError("Something went wrong");
-      console.log(error);
+      console.log(error.message);
     }
   };
 

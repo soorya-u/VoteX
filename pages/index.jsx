@@ -27,13 +27,10 @@ const index = () => {
     if (!publicKey) return;
     setLoading(true);
     const fetchData = async () => {
-      console.log("Hii 1");
       const items = await highestVotedCandidate();
-      const initialData = await initContractData();
       setHighest(items);
-      console.log("Hii 2", items);
+      const initialData = await initContractData();
       setInitialData(initialData);
-      console.log("hii 3", initialData);
     };
 
     fetchData().finally(() => setLoading(false));
