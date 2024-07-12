@@ -15,34 +15,7 @@ import { retrievePublicKey, checkConnection } from "@/lib/freighter";
 import { notifyError, notifySuccess } from "@/lib/toast";
 import { validObjectCheck } from "@/utils";
 
-export const VotingDappContext = createContext({
-  loader,
-  setLoader,
-  publicKey,
-  checkVote,
-  getSingleCandidate,
-  getSingleVoter,
-  getRegisteredCandidates,
-  getRegisteredVoters,
-  highestVotedCandidate,
-  initContractData,
-  votedVoters,
-  getWinner,
-  connectWallet,
-  registerCandidate,
-  registerVoter,
-  approveVoter,
-  approveCandidate,
-  giveVote,
-  updateCandidate,
-  updateVoter,
-  changeOwner,
-  resetContract,
-  setVotingPeriod,
-  rejectCandidate,
-  registerVoter,
-  rejectVoter,
-});
+export const VotingDappContext = createContext();
 
 export const VotingDappProvider = ({ children }) => {
   const router = useRouter();
@@ -51,7 +24,9 @@ export const VotingDappProvider = ({ children }) => {
   const [isWalletConnected, setIsWalletConnected] = useState(false);
   const [checkVote, setCheckVote] = useState(false);
 
-  useEffect(() => publicKey !== "" && setIsWalletConnected(true), [publicKey]);
+  useEffect(() => {
+    publicKey !== "" && setIsWalletConnected(true);
+  }, [publicKey]);
 
   const connectWallet = async () =>
     (await checkConnection()) && setPublicKey(await retrievePublicKey());
@@ -630,7 +605,6 @@ export const VotingDappProvider = ({ children }) => {
         resetContract,
         setVotingPeriod,
         rejectCandidate,
-        registerVoter,
         rejectVoter,
       }}
     >

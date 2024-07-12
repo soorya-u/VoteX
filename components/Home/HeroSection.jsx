@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-const HeroSection = ({ initialData, higest }) => {
+const HeroSection = ({ initialData, highest }) => {
   const motto = "Vote Loud, Vote Proud ";
 
   return (
@@ -67,9 +67,9 @@ const HeroSection = ({ initialData, higest }) => {
                       All Candidates <i className="ti ti-trending-up"></i>
                     </a>
                   </Link>
-                  {higest ? (
+                  {highest ? (
                     <Link
-                      href={`/candidate-details?address=${higest?.address}`}
+                      href={`/candidate-details?address=${highest?.address}`}
                     >
                       <a className="cmn-btn link link-xxl-color fs-five  gap-2 gap-lg-3 align-items-center ">
                         <i className="ti ti-arrow-narrow-right fs-four"></i>

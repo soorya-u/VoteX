@@ -20,26 +20,31 @@ const index = () => {
   const [highest, setHighest] = useState();
   const [loading, setLoading] = useState(false);
 
-  const { highestVotedCandidate, initContractData } = useVotingDapp();
+  const { highestVotedCandidate, initContractData, publicKey } =
+    useVotingDapp();
 
   useEffect(() => {
+    if (!publicKey) return;
     setLoading(true);
     const fetchData = async () => {
+      console.log("Hii 1");
       const items = await highestVotedCandidate();
       const initialData = await initContractData();
       setHighest(items);
+      console.log("Hii 2", items);
       setInitialData(initialData);
+      console.log("hii 3", initialData);
     };
 
     fetchData().finally(() => setLoading(false));
-  }, []);
+  }, [publicKey]);
   return (
     <>
       {loading && <Preloader />}
       <ScrollToTop />
       <Cursor />
       <Header />
-      <HeroSection initialData={initialData} higest={highest} />
+      <HeroSection initialData={initialData} highest={highest} />
       <WhyVote />
       <Provide />
       <Vote />

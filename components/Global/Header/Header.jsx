@@ -68,7 +68,7 @@ const Header = () => {
           </div>
           <div className="nav_alt">
             <div className="right-area position-relative ms-0 d-center gap-1 gap-xl-4 d-lg-none">
-              {address ? (
+              {publicKey ? (
                 <>
                   <div className="single-item">
                     <Link href="/voter">
@@ -207,7 +207,7 @@ const Header = () => {
             </ul>
           </div>
           <div className="right-area position-relative ms-0 d-center gap-1 gap-xl-4 d-none d-lg-flex">
-            {address ? (
+            {publicKey ? (
               <>
                 <div className="single-item">
                   <Link href="/voter">
@@ -228,7 +228,7 @@ const Header = () => {
             ) : (
               <div className="single-item">
                 <button
-                  onClick={() => clickConnect()}
+                  onClick={async () => await connectWallet()}
                   className="cmn-btn fw-bold py-2 px-2 px-sm-3 px-lg-4 align-items-center gap-1"
                 >
                   Connect Wallet{" "}
