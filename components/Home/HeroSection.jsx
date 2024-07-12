@@ -47,19 +47,21 @@ const HeroSection = ({ initialData, highest }) => {
                   Vote For your Favorite Candidate
                 </h1>
                 <p className="fs-six-up fw_500 nb4-xxl-color">
-                  Now you can elect your Candidate through the
-                  decentralized voting system
+                  Now you can elect your Candidate through the decentralized
+                  voting system
                 </p>
-                {initialData?.startDateN != 0 && initialData?.endDateN != 0 && (
-                  <>
-                    <span className="heading mt-3 p1-max-xxl nb4-xxl-color fs-five mb-3">
-                      Starting: {initialData?.startDate}
-                    </span>
-                    <span className="heading p1-max-xxl nb4-xxl-color fs-five mb-3">
-                      Ending: {initialData?.endDate}
-                    </span>
-                  </>
-                )}
+                {initialData &&
+                  initialData?.startDateN !== 0 &&
+                  initialData?.endDateN !== 0 && (
+                    <>
+                      <span className="heading mt-3 p1-max-xxl nb4-xxl-color fs-five mb-3">
+                        Starting: {initialData?.startDate}
+                      </span>
+                      <span className="heading p1-max-xxl nb4-xxl-color fs-five mb-3">
+                        Ending: {initialData?.endDate}
+                      </span>
+                    </>
+                  )}
 
                 <div className="d-inline-flex flex-wrap gap-4 gap-lg-10 align-items-center mt-8 mt-lg-10">
                   <Link href="/approve-candidates">
@@ -79,8 +81,8 @@ const HeroSection = ({ initialData, highest }) => {
                   ) : (
                     <Link href="/all-voters">
                       <a className="cmn-btn link link-xxl-color fs-five  gap-2 gap-lg-3 align-items-center ">
-                        <i className="ti ti-arrow-narrow-right fs-four"></i> All
-                        Voters
+                        <i className="ti ti-arrow-narrow-right fs-four" />
+                        All Voters
                       </a>
                     </Link>
                   )}

@@ -41,7 +41,7 @@ const Footer = () => {
                 href="/"
                 className="cmn-btn secondary-alt ms-auto fs-five nb4-xxl-bg gap-2 align-items-center  py-2 px-4 py-lg-3 px-lg-5"
               >
-                Join <i className="ti ti-arrow-right fs-four"></i>
+                Join Us <i className="ti ti-arrow-right fs-four"></i>
               </a>
             </div>
           </div>

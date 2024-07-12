@@ -1,6 +1,7 @@
 import { useEffect, useState, createContext } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
+import { scValToNative } from "@stellar/stellar-sdk";
 
 import { headers } from "@/constants/headers";
 import { ContractFunctions } from "@/constants/contract";
@@ -9,7 +10,6 @@ import {
   stringToScValString,
   callContract as callContractFn,
   stringToAddress,
-  scValToNative,
 } from "@/lib/stellar";
 import { retrievePublicKey, checkConnection } from "@/lib/freighter";
 import { notifyError, notifySuccess } from "@/lib/toast";
@@ -37,7 +37,7 @@ export const VotingDappProvider = ({ children }) => {
   const registerCandidate = async (updateCandidate, image, pdf) => {
     const { _name: name } = updateCandidate;
     const jsonData = { ...updateCandidate, image, pdf };
-    if (validObjectCheck(jsonData)) return notifyError("Data Is Missing");
+    if (!validObjectCheck(jsonData)) return notifyError("Data Is Missing");
     notifySuccess("Registering Candidate, kindly wait...");
     setLoader(true);
 
@@ -74,7 +74,7 @@ export const VotingDappProvider = ({ children }) => {
     const { _name: name } = updateVoter;
     const jsonData = { ...updateVoter, image, pdf };
 
-    if (validObjectCheck(jsonData)) return notifyError("Data Is Missing");
+    if (!validObjectCheck(jsonData)) return notifyError("Data Is Missing");
     notifySuccess("Registering Voter, kindly wait...");
     setLoader(true);
 
@@ -177,7 +177,6 @@ export const VotingDappProvider = ({ children }) => {
   };
 
   const rejectVoter = async (address, message) => {
-    console.log(address, message);
     if (!address || !message) return notifyError("Data Is Missing");
     notifySuccess("kindly wait, approving voter...");
     setLoader(true);
@@ -201,23 +200,28 @@ export const VotingDappProvider = ({ children }) => {
   };
 
   const setVotingPeriod = async (voteTime) => {
-    if (validObjectCheck(voteTime)) return notifyError("Data Is Missing");
+    if (!validObjectCheck(voteTime)) return notifyError("Data Is Missing");
 
     notifySuccess("kindly wait...");
     setLoader(true);
 
     const { startTime, endTime } = voteTime;
 
-    const startTimeMilliseconds = new Date(startTime).getTime();
-    const endTimeMilliseconds = new Date(endTime).getTime();
+    const startDate = new Date(startTime);
+    const endDate = new Date(endTime);
+
+    const startTimeMilliseconds = startDate.getTime();
+    const endTimeMilliseconds = endDate.getTime();
 
     const startTimeSeconds = Math.floor(startTimeMilliseconds / 1000);
     const endTimeSeconds = Math.floor(endTimeMilliseconds / 1000);
 
     try {
+      const pk = await stringToAddress();
       await callContract(ContractFunctions.setVotingPeriod, [
         numberToU64(startTimeSeconds),
         numberToU64(endTimeSeconds),
+        pk,
       ]);
 
       setLoader(false);
@@ -233,7 +237,7 @@ export const VotingDappProvider = ({ children }) => {
   const updateVoter = async (updateVoter, image, pdf) => {
     const { _name: name } = updateVoter;
     const jsonData = { ...updateVoter, image, pdf };
-    if (validObjectCheck(jsonData)) return notifyError("Data Is Missing");
+    if (!validObjectCheck(jsonData)) return notifyError("Data Is Missing");
     notifySuccess("Updating Voter, kindly wait...");
     setLoader(true);
 
@@ -269,7 +273,7 @@ export const VotingDappProvider = ({ children }) => {
   const updateCandidate = async (updateCandidate, image, pdf) => {
     const { _name: name } = updateCandidate;
     const jsonData = { ...updateCandidate, image, pdf };
-    if (validObjectCheck(jsonData)) return notifyError("Data Is Missing");
+    if (!validObjectCheck(jsonData)) return notifyError("Data Is Missing");
     notifySuccess("Updating Candidate, kindly wait...");
     setLoader(true);
 
@@ -307,7 +311,7 @@ export const VotingDappProvider = ({ children }) => {
     notifySuccess("kindly wait...");
     setLoader(true);
 
-    const newPk = await stringToAddress(newOwer);
+    const newPk = await stringToAddress(newOwner);
     const pk = await stringToAddress();
 
     try {
@@ -364,10 +368,11 @@ export const VotingDappProvider = ({ children }) => {
   const initContractData = async () => {
     try {
       const data = await callContract(ContractFunctions.getVotingTime);
-      const [startDateN, endDateN] = await scValToNative(data);
-      // Value Check
-      const timestamp1 = +startDateN;
-      const timestamp2 = +endDateN;
+      if (!data) return;
+      const [startDateN, endDateN] = scValToNative(data);
+
+      const timestamp1 = Number(startDateN);
+      const timestamp2 = Number(endDateN);
 
       const date1 = new Date(timestamp1 * 1000);
       const date2 = new Date(timestamp2 * 1000);
@@ -384,13 +389,13 @@ export const VotingDappProvider = ({ children }) => {
       const item = {
         startDate: date1.toLocaleDateString("en-US", options),
         endDate: date2.toLocaleDateString("en-US", options),
-        startDateN: startDateN.toNumber(),
-        endDateN: endDateN.toNumber(),
+        startDateN: timestamp1,
+        endDateN: timestamp2,
       };
 
       return item;
     } catch (error) {
-      notifyError("Something weng wrong");
+      notifyError("Something went wrong");
       console.log(error);
     }
   };
@@ -485,6 +490,7 @@ export const VotingDappProvider = ({ children }) => {
       const contractData = await callContract(
         ContractFunctions.getCurrentVotingStatus
       );
+      if (!contractData) return;
       const { candidate_address, register_id, vote_count, ...rest } =
         await scValToNative(contractData);
       if (candidate_address === "") return;
@@ -500,7 +506,7 @@ export const VotingDappProvider = ({ children }) => {
       };
     } catch (error) {
       notifyError("Something went wrong");
-      console.log(error);
+      console.log(error.message);
     }
   };
 
@@ -531,10 +537,15 @@ export const VotingDappProvider = ({ children }) => {
     try {
       if (!address) return notifyError("Kindly provide address");
 
-      const pk = stringToAddress(address);
+      const pk = await stringToAddress(address);
       const contractData = await callContract(ContractFunctions.getVoter, pk);
+
       const { voter_address, register_id, has_voted, ...rest } =
-        await scValToNative(contractData);
+        scValToNative(contractData);
+      if (rest.ipfs === "NotFound")
+        return {
+          address: "",
+        };
       const { data } = await axios.get(rest.ipfs);
 
       return {
@@ -545,8 +556,9 @@ export const VotingDappProvider = ({ children }) => {
         ...data,
       };
     } catch (error) {
+      if (error instanceof TypeError) return;
       notifyError("Failed to get data, kindly reload page");
-      console.log(error.message);
+      console.log(error);
     }
   };
 
@@ -563,6 +575,10 @@ export const VotingDappProvider = ({ children }) => {
 
       const { candidate_address, register_id, vote_count, ...rest } =
         await scValToNative(contractData);
+      if (rest.ipfs === "NotFound")
+        return {
+          address: "",
+        };
 
       const { data } = await axios.get(rest.ipfs);
       return {
@@ -573,6 +589,7 @@ export const VotingDappProvider = ({ children }) => {
         ...data,
       };
     } catch (error) {
+      if (error instanceof TypeError) return;
       notifyError("Failed to get data, kindly reload page");
       console.log(error);
     }

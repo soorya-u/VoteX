@@ -2,6 +2,8 @@ import { useCallback } from "react";
 import axios from "axios";
 import { useDropzone } from "react-dropzone";
 
+import { multiFormHeaders } from "@/constants/headers";
+
 const UploadImg = ({ setLoader, notifySuccess, notifyError, setImage }) => {
   const uploadToIPFS = async (file) => {
     if (file) {
@@ -15,11 +17,7 @@ const UploadImg = ({ setLoader, notifySuccess, notifyError, setImage }) => {
           url: "https://api.pinata.cloud/pinning/pinFileToIPFS",
           data: formData,
           maxBodyLength: "Infinity",
-          headers: {
-            pinata_api_key: process.env.NEXT_PUBLIC_PINATA_KEY,
-            pinata_secret_api_key: process.env.NEXT_PUBLIC_PINATA_SECRET,
-            "Content-Type": "multipart/form-data",
-          },
+          headers: multiFormHeaders,
         });
 
         const url = `https://gateway.pinata.cloud/ipfs/${response.data.IpfsHash}`;

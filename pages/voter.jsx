@@ -17,8 +17,7 @@ const voter = () => {
   const { loader, setLoader, registerVoter, getSingleVoter, publicKey } =
     useVotingDapp();
 
-  const zeroAddress = "0x0000000000000000000000000000000000000000";
-  const [candidate, setCandidate] = useState();
+  const [voter, setVoter] = useState();
 
   const [pdf, setPdf] = useState(null);
   const [image, setImage] = useState(null);
@@ -45,7 +44,7 @@ const voter = () => {
     const fetchData = async () => {
       if (!publicKey) return;
       const items = await getSingleVoter(publicKey);
-      setCandidate(items);
+      setVoter(items);
     };
 
     fetchData().finally(() => setLoading(false));
@@ -110,9 +109,9 @@ const voter = () => {
                   <h5 className="mt-5 mt-lg-6">Register as a voter </h5>
                 </div>
 
-                {candidate.address === "" && (
+                {voter && voter.address === "" && (
                   <div
-                    autocomplete="off"
+                    autoComplete="off"
                     id="frmContactus"
                     className="contact__form mt-8 mt-lg-10 text-start"
                   >
@@ -151,8 +150,8 @@ const voter = () => {
                         }
                       />
                       <Input
-                        name={"Parent Or SpouseName"}
-                        placeholder={"Parent Or SpouseName"}
+                        name={"Parent Or Spouse Name"}
+                        placeholder={"Parent Or Spouse Name"}
                         type={"text"}
                         handleClick={(e) =>
                           setUpdateVoter({
@@ -266,7 +265,7 @@ const voter = () => {
                     <div className=" mt-7 mt-lg-8">
                       <button
                         className="cmn-btn py-3 px-5 px-lg-6 mt-7 mt-lg-8 w-100 d-center"
-                        onClick={() => registerVoter(updateVoter, image, pdf)}
+                        onClick={async () => await registerVoter(updateVoter, image, pdf)}
                       >
                         Register
                       </button>
@@ -283,7 +282,7 @@ const voter = () => {
             </div>
           </div>
         </div>
-        {candidate.address !== "" && <PopUp candidate={candidate} />}
+        {voter && voter.address !== "" && <PopUp candidate={candidate} />}
         {loader && <Loader />}
       </section>
     </>
