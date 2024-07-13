@@ -16,7 +16,7 @@ const TeamDetail = ({
 }) => {
   return (
     <>
-      <Banner />
+      <Banner path={path} />
       <Details
         candidate={candidate}
         path={path}

@@ -6,7 +6,7 @@ export const convertTime = (time) => {
 };
 
 export const shortenAddress = (address) =>
-  `${address?.slice(0, 8)}...${address?.slice(address.length - 8)}`;
+  `${address?.slice(0, 4)}.....${address?.slice(address.length - 4)}`;
 
 export const validObjectCheck = (obj) => {
   const values = Object.values(obj);

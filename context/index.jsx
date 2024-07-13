@@ -395,6 +395,7 @@ export const VotingDappProvider = ({ children }) => {
 
       return item;
     } catch (error) {
+      if (error instanceof TypeError) return;
       notifyError("Something went wrong");
       console.log(error);
     }
@@ -407,26 +408,29 @@ export const VotingDappProvider = ({ children }) => {
       );
       const candidates = await scValToNative(data);
 
-      return candidates.map(
-        async ({
-          ipfs,
-          candidate_address,
-          register_id,
-          vote_count,
-          ...rest
-        }) => {
-          const { data } = await axios.get(ipfs);
-          return {
-            ...data,
-            ...rest,
-            candidateAddress: candidate_address,
-            registerId: +register_id,
-            voteCount: +vote_count,
+      return await Promise.all(
+        candidates.map(
+          async ({
             ipfs,
-          };
-        }
+            candidate_address,
+            register_id,
+            vote_count,
+            ...rest
+          }) => {
+            const { data } = await axios.get(ipfs);
+            return {
+              ...data,
+              ...rest,
+              address: candidate_address,
+              registerId: Number(register_id),
+              voteCount: Number(vote_count),
+              ipfs,
+            };
+          }
+        )
       );
     } catch (error) {
+      if (error instanceof TypeError) return;
       notifyError("Something went wrong");
       console.log(error);
     }
@@ -436,20 +440,23 @@ export const VotingDappProvider = ({ children }) => {
     try {
       const data = await callContract(ContractFunctions.getAllRegisteredVoters);
       const voters = await scValToNative(data);
-      return voters.map(
-        async ({ ipfs, voter_address, register_id, has_voted, ...rest }) => {
-          const { data } = await axios.get(ipfs);
-          return {
-            ...data,
-            ...rest,
-            ipfs,
-            voterAddress: voter_address,
-            registerId: register_id,
-            hasVoted: has_voted,
-          };
-        }
+      return await Promise.all(
+        voters.map(
+          async ({ ipfs, voter_address, register_id, has_voted, ...rest }) => {
+            const { data } = await axios.get(ipfs);
+            return {
+              ...data,
+              ...rest,
+              ipfs,
+              address: voter_address,
+              registerId: Number(register_id),
+              hasVoted: has_voted,
+            };
+          }
+        )
       );
     } catch (error) {
+      if (error instanceof TypeError) return;
       notifyError("Something went wrong");
       console.log(error);
     }
@@ -468,7 +475,7 @@ export const VotingDappProvider = ({ children }) => {
             ...rest,
             ipfs,
             address: voter_address,
-            registerId: register_id,
+            registerId: Number(register_id),
             hasVoted: has_voted,
           };
         }
@@ -499,8 +506,8 @@ export const VotingDappProvider = ({ children }) => {
 
       return {
         address: candidate_address,
-        registerId: +register_id,
-        voteCount: +vote_count,
+        registerId: Number(register_id),
+        voteCount: Number(vote_count),
         ...rest,
         ...data,
       };
@@ -522,7 +529,7 @@ export const VotingDappProvider = ({ children }) => {
             ...data,
             ...rest,
             voterAddress: voter_address,
-            registerId: +register_id,
+            registerId: Number(register_id),
             hasVoted: has_voted,
           };
         }
@@ -536,10 +543,8 @@ export const VotingDappProvider = ({ children }) => {
   const getSingleVoter = async (address) => {
     try {
       if (!address) return notifyError("Kindly provide address");
-
       const pk = await stringToAddress(address);
       const contractData = await callContract(ContractFunctions.getVoter, pk);
-
       const { voter_address, register_id, has_voted, ...rest } =
         scValToNative(contractData);
       if (rest.ipfs === "NotFound")
@@ -550,7 +555,7 @@ export const VotingDappProvider = ({ children }) => {
 
       return {
         address: voter_address,
-        registerId: +register_id,
+        registerId: Number(register_id),
         hasVoted: has_voted,
         ...rest,
         ...data,
@@ -583,8 +588,8 @@ export const VotingDappProvider = ({ children }) => {
       const { data } = await axios.get(rest.ipfs);
       return {
         address: candidate_address,
-        registerId: +register_id,
-        voteCount: +vote_count,
+        registerId: Number(register_id),
+        voteCount: Number(vote_count),
         ...rest,
         ...data,
       };
