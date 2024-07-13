@@ -75,8 +75,6 @@ impl VotingOrganization {
 
     pub fn init(env: Env, owner_address: Address) {
         env.storage().persistent().set(&OWNER, &owner_address);
-        env.storage().persistent().set(&VOTER_ID_COUNTER, &1);
-        env.storage().persistent().set(&CANDIDATE_ID_COUNTER, &1);
     }
 
     pub fn register_voter(env: Env, name: String, ipfs: String, address: Address) {
@@ -87,7 +85,7 @@ impl VotingOrganization {
             .storage()
             .persistent()
             .get(&VOTER_ID_COUNTER)
-            .unwrap_or(0);
+            .unwrap_or(1);
 
         let new_voter = Voter {
             voter_address: address.clone(),
@@ -96,7 +94,7 @@ impl VotingOrganization {
             has_voted: false,
             message: String::from_str(&env, PENDING_MESSAGE),
             register_id: U256::from_u32(&env, id_counter.clone()),
-            status: PENDING,
+            status: PENDING.clone(),
         };
 
         env.storage().persistent().set(&voter_id_key, &new_voter);
@@ -120,13 +118,12 @@ impl VotingOrganization {
     pub fn register_candidate(env: Env, name: String, ipfs: String, address: Address) {
         const PENDING_MESSAGE: &str = "Currently your registration is pending";
         let candidate_id_key = Candidates::Candidate(address.clone());
-        let id_counter_key = VOTER_ID_COUNTER;
 
         let id_counter = env
             .storage()
             .persistent()
-            .get(&id_counter_key)
-            .unwrap_or_default();
+            .get(&CANDIDATE_ID_COUNTER)
+            .unwrap_or(1);
 
         let new_candidate = Candidate {
             candidate_address: address.clone(),
@@ -142,21 +139,21 @@ impl VotingOrganization {
             .persistent()
             .set(&candidate_id_key, &new_candidate);
 
-        let mut registered_voters: Vec<Address> = env
+        let mut registered_candidates: Vec<Address> = env
             .storage()
             .persistent()
             .get(&REGISTERED_CANDIDATES)
             .unwrap_or(vec![&env]);
 
-        registered_voters.push_back(address);
+        registered_candidates.push_back(address);
 
         env.storage()
             .persistent()
-            .set(&REGISTERED_CANDIDATES, &registered_voters);
+            .set(&REGISTERED_CANDIDATES, &registered_candidates);
 
         env.storage()
             .persistent()
-            .set(&id_counter_key, &(id_counter + 1));
+            .set(&CANDIDATE_ID_COUNTER, &(id_counter + 1));
     }
 
     pub fn approve_voter(env: Env, address: Address, message: String) {
