@@ -114,9 +114,9 @@ const signup = () => {
                   </Link>
                   <h5 className="mt-5 mt-lg-6">Register as a candidate</h5>
                 </div>
-                {candidate?.address === "" && (
+                {candidate && candidate?.address === "" && (
                   <div
-                    autocomplete="off"
+                    autoComplete="off"
                     id="frmContactus"
                     className="contact__form mt-8 mt-lg-10  text-start"
                   >
@@ -337,7 +337,9 @@ const signup = () => {
             </div>
           </div>
         </div>{" "}
-        {candidate.address !== "" && <PopUp candidate={candidate} />}
+        {candidate && candidate.address !== "" && (
+          <PopUp candidate={candidate} />
+        )}
         {loader && <Loader />}
       </section>
     </>

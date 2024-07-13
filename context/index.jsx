@@ -57,7 +57,7 @@ export const VotingDappProvider = ({ children }) => {
       await callContract(ContractFunctions.registerCandidate, [
         stringToScValString(name),
         stringToScValString(url),
-        publicKey.toScVal(),
+        publicKey,
       ]);
 
       notifySuccess("Successfully Registered Candidate");
