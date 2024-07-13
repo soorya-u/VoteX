@@ -8,7 +8,6 @@ const Member = ({
   currentVotingTime,
   user,
 }) => {
-  console.log(path);
   return (
     <section className="team pt-120 pb-120 position-relative z-0">
       <div className="container">
@@ -25,7 +24,7 @@ const Member = ({
                 <div className="team__content pseudo_element_after transition text-center py-6 py-lg-7 py-xxl-8 px-4 px-lg-5 px-xxl-6">
                   <Link
                     href={
-                      path == "candidate"
+                      path === "candidate"
                         ? `/candidate-details?address=${item?.address} `
                         : `/voter-details?address=${item?.address} `
                     }
@@ -37,18 +36,12 @@ const Member = ({
                     </a>
                   </Link>
                   <p className="new-custom-top">
-                    <strong>
-                      {item?.status == 0
-                        ? "Pending"
-                        : item?.status == 1
-                        ? "Approved"
-                        : "Rejected"}
-                    </strong>
+                    <strong>{item?.status}</strong>
                   </p>
 
-                  {path == "candidate" &&
-                    item?.status == 1 &&
-                    user?.status == 1 &&
+                  {path === "candidate" &&
+                    item?.status === "Approved" &&
+                    user?.status === "Approved" &&
                     !user?.hasVoted &&
                     currentVotingTime >= votingTime?.startDateN &&
                     currentVotingTime <= votingTime?.endDateN && (
@@ -69,8 +62,8 @@ const Member = ({
                       </>
                     )}
 
-                  {path == "candidate" &&
-                    item?.status == 1 &&
+                  {path === "candidate" &&
+                    item?.status === "Approved" &&
                     user?.hasVoted && (
                       <>
                         <p>Total Vote: {item?.voteCount}</p>
@@ -81,7 +74,7 @@ const Member = ({
                       </>
                     )}
 
-                  {path == "candidate" && item?.status == 0 && (
+                  {path === "candidate" && item?.status === "Pending" && (
                     <>
                       <div className="custom-actions">
                         <a className="custom-read">Status: Pending</a>
@@ -89,7 +82,7 @@ const Member = ({
                     </>
                   )}
 
-                  {path == "voter" && item?.status == 1 && (
+                  {path === "voter" && item?.status === "Approved" && (
                     <>
                       <div className="custom-actions">
                         <a className="custom-read">
@@ -98,7 +91,7 @@ const Member = ({
                       </div>
                     </>
                   )}
-                  {path == "voter" && item?.status == 0 && (
+                  {path === "voter" && item?.status === "Pending" && (
                     <>
                       <div className="custom-actions">
                         <a className="custom-read">Status: Pending</a>

@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Link from "next/link";
 
 import { useVotingDapp } from "@/hooks/use-voting-dapp";
 import { ownerPublicKey } from "@/constants/contract";
@@ -35,67 +34,59 @@ const Details = ({
               </div>
               <div className="team__content pe-md-4">
                 <h5 className="team__title mb-4">{candidate?._name}</h5>
-                <p className="mb-4">
-                  Hey there! So glad you stopped by to Meet Our Company. Don't
-                  miss out on this opportunity to learn about what we do and the
-                  amazing team that makes it all happen!
-                </p>
                 <ul className="social-area d-flex align-items-center gap-2 gap-md-3 mt-8 mt-lg-10">
                   <li>
                     <strong>Address :&nbsp;&nbsp; </strong>{" "}
                     {shortenAddress(candidate?.address)}
                   </li>
                   <li>
-                    <strong>Approval:&nbsp;&nbsp; </strong>{" "}
-                    {candidate?.status == 0
-                      ? "Pending"
-                      : candidate?.status
-                      ? "Accepted"
-                      : "Rejected"}
+                    <strong>Approval:&nbsp;&nbsp; </strong> {candidate?.status}
                   </li>
                   <li>
-                    <strong>RegisterId:&nbsp;&nbsp; </strong> #
+                    <strong>Register Id:&nbsp;&nbsp; </strong> #
                     {candidate?.registerId}
                   </li>
-                  <li>
-                    <strong>VoteCount:&nbsp;&nbsp; </strong>{" "}
-                    {candidate?.voteCount}
-                  </li>
+                  {path === "candidate" && (
+                    <li>
+                      <strong>VoteCount:&nbsp;&nbsp; </strong>{" "}
+                      {candidate?.voteCount}
+                    </li>
+                  )}
                 </ul>
-                {path == "voter" && (
+                {path === "voter" && (
                   <ul className="social-area d-flex align-items-center gap-2 gap-md-3 mt-8 mt-lg-10">
                     <li>
-                      <strong>AddressDetails:&nbsp;&nbsp; </strong>{" "}
+                      <strong>Address Details:&nbsp;&nbsp; </strong>{" "}
                       {candidate?._addressDetails}
                     </li>
                     <li>
-                      <strong>AssemblyConstituency :&nbsp;&nbsp; </strong>{" "}
+                      <strong>Assembly Constituency :&nbsp;&nbsp; </strong>{" "}
                       {candidate?._assemblyConstituencyNumberAndName}
                     </li>
                   </ul>
                 )}
 
-                {path == "candidate" && (
+                {path === "candidate" && (
                   <ul className="social-area d-flex align-items-center gap-2 gap-md-3 mt-8 mt-lg-10">
                     <li>
                       <strong>Affidavit:&nbsp;&nbsp; </strong>{" "}
                       {candidate?._affidavit}
                     </li>
                     <li>
-                      <strong>AssetsAndLiabilities :&nbsp;&nbsp; </strong>{" "}
+                      <strong>Assets And Liabilities :&nbsp;&nbsp; </strong>{" "}
                       {candidate?._assetsAndLiabilities}
                     </li>
                   </ul>
                 )}
 
-                {path == "voter" && (
+                {path === "voter" && (
                   <ul className="social-area d-flex align-items-center gap-2 gap-md-3 mt-8 mt-lg-10">
                     <li>
-                      <strong>Dob Or Age :&nbsp;&nbsp; </strong>{" "}
+                      <strong>Date of Birth / Age :&nbsp;&nbsp; </strong>{" "}
                       {candidate?._dobOrAge}
                     </li>
                     <li>
-                      <strong>_epicNumber :&nbsp;&nbsp; </strong>{" "}
+                      <strong>Epic Number :&nbsp;&nbsp; </strong>{" "}
                       {candidate?._epicNumber}
                     </li>
                   </ul>
@@ -117,11 +108,11 @@ const Details = ({
                 {path === "voter" && (
                   <ul className="social-area d-flex align-items-center gap-2 gap-md-3 mt-8 mt-lg-10">
                     <li>
-                      <strong>_hologramAndBarcode :&nbsp;&nbsp; </strong>{" "}
+                      <strong>Hologram And Barcode :&nbsp;&nbsp; </strong>{" "}
                       {candidate?._hologramAndBarcode}
                     </li>
                     <li>
-                      <strong>_gender :&nbsp;&nbsp; </strong>{" "}
+                      <strong>Gender :&nbsp;&nbsp; </strong>{" "}
                       {candidate?._gender}
                     </li>
                   </ul>
@@ -130,20 +121,21 @@ const Details = ({
                 {path === "candidate" && (
                   <ul className="social-area d-flex align-items-center gap-2 gap-md-3 mt-8 mt-lg-10">
                     <li>
-                      <strong>ElectoralRollEntry :&nbsp;&nbsp; </strong>{" "}
+                      <strong>Electoral Roll Entry :&nbsp;&nbsp; </strong>{" "}
                       {candidate?._electoralRollEntry}
                     </li>
                     <li>
-                      <strong>_nominationForm :&nbsp;&nbsp; </strong>{" "}
+                      <strong>Nomination Form :&nbsp;&nbsp; </strong>{" "}
                       {candidate?._nominationForm}
                     </li>
                   </ul>
                 )}
 
                 <p className="mb-4 mt-10">
-                  <strong>Notice:</strong> {candidate?.message}
+                  <strong>Notice :</strong> {candidate?.message}
                 </p>
-                {publicKey === candidate.address &&
+                {candidate &&
+                publicKey === candidate.address &&
                 candidate?.status === "Pending" ? (
                   <div className="custom-actions mb-6">
                     <a
@@ -158,8 +150,9 @@ const Details = ({
                     </a>
                   </div>
                 ) : (
+                  candidate &&
                   publicKey === candidate.address &&
-                  candidate?.status == "Rejected" && (
+                  candidate?.status === "Rejected" && (
                     <div className="custom-actions mb-6">
                       <a
                         className="custom-read"
@@ -175,7 +168,8 @@ const Details = ({
                   )
                 )}
 
-                {publicKey === ownerPublicKey &&
+                {candidate &&
+                publicKey === ownerPublicKey &&
                 candidate.status === "Pending" ? (
                   <>
                     <div className="single-input">
@@ -191,8 +185,8 @@ const Details = ({
                     >
                       <a
                         className="custom-read"
-                        onClick={() =>
-                          handleClickApprove(candidate?.address, message)
+                        onClick={async () =>
+                          await handleClickApprove(candidate?.address, message)
                         }
                       >
                         Approve
@@ -204,8 +198,8 @@ const Details = ({
                     >
                       <a
                         className="custom-read"
-                        onClick={() =>
-                          handleClickReject(candidate?.address, message)
+                        onClick={async () =>
+                          await handleClickReject(candidate?.address, message)
                         }
                       >
                         Reject
@@ -213,6 +207,7 @@ const Details = ({
                     </div>
                   </>
                 ) : (
+                  candidate &&
                   publicKey === ownerPublicKey &&
                   candidate.status === "Rejected" && (
                     <>
@@ -220,14 +215,17 @@ const Details = ({
                         <textarea
                           className="fs-six-up bg_transparent"
                           onChange={(e) => setMessage(e.target.value)}
-                          placeholder={"message"}
+                          placeholder={"Message"}
                         ></textarea>
                       </div>
                       <div className="custom-actions">
                         <a
                           className="custom-read"
-                          onClick={() =>
-                            handleClickApprove(candidate?.address, message)
+                          onClick={async () =>
+                            await handleClickApprove(
+                              candidate?.address,
+                              message
+                            )
                           }
                         >
                           Approve
@@ -236,8 +234,8 @@ const Details = ({
                       <div className="custom-actions">
                         <a
                           className="custom-read"
-                          onClick={() =>
-                            handleClickReject(candidate?.address, message)
+                          onClick={async () =>
+                            await handleClickReject(candidate?.address, message)
                           }
                         >
                           Reject
@@ -247,7 +245,8 @@ const Details = ({
                   )
                 )}
 
-                {path === "candidate" &&
+                {candidate &&
+                  path === "candidate" &&
                   candidate.status === "Approved" &&
                   user.status === "Approved" &&
                   !user?.hasVoted &&
@@ -265,53 +264,24 @@ const Details = ({
                     </>
                   )}
 
-                {path === "candidate" &&
+                {candidate &&
+                  path === "candidate" &&
                   candidate?.status &&
                   checkVote === "Approved" && (
                     <div className="custom-actions">
                       <a className="custom-read">Already Voted</a>
                     </div>
                   )}
-
-                <ul className="social-area d-flex align-items-center gap-2 gap-md-3 mt-8 mt-lg-10">
-                  <li>
-                    <Link href="/">
-                      <a className="d-center fs-four">
-                        <i className="ti ti-brand-facebook" />
-                      </a>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/">
-                      <a className="d-center fs-four">
-                        <i className="ti ti-brand-twitch" />
-                      </a>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/">
-                      <a className="d-center fs-four">
-                        <i className="ti ti-brand-instagram" />
-                      </a>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/">
-                      <a className="d-center fs-four">
-                        <i className="ti ti-brand-discord-filled" />
-                      </a>
-                    </Link>
-                  </li>
-                </ul>
               </div>
             </div>
           </div>
         </div>
-        {publicKey === ownerPublicKey && (
-          <p className="mt-16 align-items-center">
-            <Preview pdf={candidate?.pdf} />
-          </p>
-        )}
+        {publicKey === ownerPublicKey ||
+          (publicKey === candidate?.address && (
+            <p className="mt-16 align-items-center">
+              <Preview pdf={candidate?.pdf} />
+            </p>
+          ))}
       </div>
     </section>
   );
