@@ -15,7 +15,7 @@ import Loader from "@/components/Global/Loader";
 
 const voterDetails = () => {
   const router = useRouter();
-  const [candidate, setCandidate] = useState();
+  const [voter, setVoter] = useState();
   const [loading, setLoading] = useState(false);
 
   const {
@@ -31,10 +31,12 @@ const voterDetails = () => {
       if (!router.isReady) return;
 
       const items = await getSingleVoter(router?.query.address);
-      setCandidate(items);
+      setVoter(items);
     };
     fetchData().finally(() => setLoading(false));
   }, [router.isReady]);
+
+  console.log(voter);
 
   const approveVoter = async (address, message) => {
     await approveVoterFn(address, message);
@@ -49,7 +51,7 @@ const voterDetails = () => {
       <Cursor />
       <Header />
       <TeamDetail
-        candidate={candidate}
+        candidate={voter}
         path={"voter"}
         handleClickApprove={approveVoter}
         handleClickReject={rejectVoter}

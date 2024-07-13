@@ -20,24 +20,13 @@ const candidateDetails = () => {
   const [loading, setLoading] = useState(false);
   const [currentVotingTime, setCurrentVotingTime] = useState();
 
-  // loader,
-  // checkIfWalletIsConnected,
-  // GET_SINGLE_CANDIDATE,
-  // approveCandidate,
-  // giveVote,
-  // ALL_VOTERS_VOTED,
-  // checkVote,
-  // rejectCandidate,
-  // GET_SINGLE_VOTER,
-  // INITIAL_CONTRACT_DATA,
-
   const {
     loader,
     publicKey,
     getSingleCandidate,
     approveCandidate: approveCandidateFn,
     giveVote,
-    votedVoters,
+
     checkVote,
     rejectCandidate: rejectCandidateFn,
     getSingleVoter,
@@ -52,8 +41,6 @@ const candidateDetails = () => {
       const items = await getSingleCandidate(router?.query.address);
       setCandidate(items);
 
-      const allVotedVoter = await votedVoters();
-
       const votingStatus = await initContractData();
       setVotingTime(votingStatus);
 
@@ -61,7 +48,7 @@ const candidateDetails = () => {
       setCurrentVotingTime(nowInSeconds);
 
       if (!publicKey) return;
-      const user = await getSingleVoter(address);
+      const user = await getSingleVoter(publicKey);
       setUser(user);
     };
 
