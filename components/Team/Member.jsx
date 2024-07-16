@@ -54,6 +54,7 @@ const Member = ({
                         >
                           <a
                             className="custom-read"
+                            style={{ cursor: "pointer" }}
                             onClick={() => giveVote(item?.address)}
                           >
                             Give Vote
