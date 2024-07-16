@@ -36,8 +36,6 @@ const voterDetails = () => {
     fetchData().finally(() => setLoading(false));
   }, [router.isReady]);
 
-  console.log(voter);
-
   const approveVoter = async (address, message) => {
     await approveVoterFn(address, message);
   };

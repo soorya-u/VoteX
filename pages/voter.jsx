@@ -282,7 +282,7 @@ const voter = () => {
             </div>
           </div>
         </div>
-        {voter && voter.address !== "" && <PopUp candidate={candidate} />}
+        {voter && voter.address !== "" && <PopUp candidate={voter} />}
         {loader && <Loader />}
       </section>
     </>
