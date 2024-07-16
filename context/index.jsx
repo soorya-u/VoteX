@@ -333,7 +333,7 @@ export const VotingDappProvider = ({ children }) => {
 
     try {
       const pk = await stringToAddress();
-      await callContract("reset_contract", pk);
+      await callContract(ContractFunctions.resetContract, pk);
 
       setLoader(false);
       notifySuccess("Successfully RESET");
@@ -352,9 +352,9 @@ export const VotingDappProvider = ({ children }) => {
 
     try {
       const candidatePk = await stringToAddress(candidateAddress);
-      const pk = stringToAddress();
+      const pk = await stringToAddress();
       await callContract(ContractFunctions.giveVote, [candidatePk, pk]);
-
+      checkVote(true);
       setLoader(false);
       notifySuccess("Successfully voted");
       router.push("/approve-candidates");
@@ -480,6 +480,7 @@ export const VotingDappProvider = ({ children }) => {
           };
         }
       );
+      console.log(items);
 
       items?.filter((user) =>
         user.address === publicKey ? setCheckVote(true) : setCheckVote(false)
@@ -487,6 +488,7 @@ export const VotingDappProvider = ({ children }) => {
 
       return items;
     } catch (error) {
+      if (error instanceof TypeError) return;
       notifyError("Something went wrong");
       console.log(error);
     }
@@ -497,7 +499,10 @@ export const VotingDappProvider = ({ children }) => {
       const contractData = await callContract(
         ContractFunctions.getCurrentVotingStatus
       );
+
       if (!contractData) return;
+
+
       const { candidate_address, register_id, vote_count, ...rest } =
         await scValToNative(contractData);
       if (candidate_address === "") return;
@@ -513,7 +518,7 @@ export const VotingDappProvider = ({ children }) => {
       };
     } catch (error) {
       notifyError("Something went wrong");
-      console.log(error.message);
+      console.log(error);
     }
   };
 
