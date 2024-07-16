@@ -94,11 +94,11 @@ const signup = () => {
                       </h1>
                     </a>
                   </Link>
-                  <h5 className="mt-5 mt-lg-6">Register as a candidate</h5>
+                  <h5 className="mt-5 mt-lg-6">Update your Candidate Details</h5>
                 </div>
 
                 <div
-                  autocomplete="off"
+                  autoComplete="off"
                   id="frmContactus"
                   className="contact__form mt-8 mt-lg-10  text-start"
                 >
