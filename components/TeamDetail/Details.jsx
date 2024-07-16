@@ -246,6 +246,7 @@ const Details = ({
                 )}
 
                 {candidate &&
+                  user &&
                   path === "candidate" &&
                   candidate.status === "Approved" &&
                   user.status === "Approved" &&

@@ -250,7 +250,7 @@ impl VotingOrganization {
             "Voter not found"
         );
 
-        voter.status = APPROVED;
+        voter.status = REJECTED;
         voter.message = message;
 
         env.storage().persistent().set(&key, &voter);
@@ -276,7 +276,7 @@ impl VotingOrganization {
             "Voter not found"
         );
 
-        candidate.status = APPROVED;
+        candidate.status = REJECTED;
         candidate.message = message;
 
         env.storage().persistent().set(&key, &candidate);
@@ -512,10 +512,10 @@ impl VotingOrganization {
         env.storage().persistent().remove(&APPROVED_VOTERS);
         env.storage().persistent().remove(&APPROVED_CANDIDATES);
         env.storage().persistent().remove(&VOTED_VOTERS);
-        env.storage().persistent().set(&VOTER_ID_COUNTER, &1);
-        env.storage().persistent().set(&CANDIDATE_ID_COUNTER, &1);
-        env.storage().persistent().set(&START_TIME, &0);
-        env.storage().persistent().set(&END_TIME, &0);
+        env.storage().persistent().remove(&VOTER_ID_COUNTER);
+        env.storage().persistent().remove(&CANDIDATE_ID_COUNTER);
+        env.storage().persistent().remove(&START_TIME);
+        env.storage().persistent().remove(&END_TIME);
     }
 
     pub fn vote(env: Env, candidate_address: Address, voter_address: Address) {
@@ -579,14 +579,27 @@ impl VotingOrganization {
             .unwrap_or(vec![&env]);
 
         voters_who_voted.push_back(voter_address);
+
+        env.storage()
+            .persistent()
+            .set(&VOTED_VOTERS, &voters_who_voted)
     }
 
     pub fn get_all_voters_who_voted(env: Env) -> Vec<Voter> {
-        return env
+        let voter_address: Vec<Address> = env
             .storage()
             .persistent()
             .get(&VOTED_VOTERS)
             .unwrap_or(vec![&env]);
+
+        let mut voters: Vec<Voter> = vec![&env];
+
+        for a in voter_address {
+            let v: Voter = env.storage().persistent().get(&Voters::Voter(a)).unwrap();
+            voters.push_back(v);
+        }
+
+        return voters;
     }
 
     pub fn get_current_voting_status(env: Env) -> Candidate {
