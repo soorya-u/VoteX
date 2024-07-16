@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Link from "next/link";
 
 import { useVotingDapp } from "@/hooks/use-voting-dapp";
 import { ownerPublicKey } from "@/constants/contract";
@@ -48,7 +49,7 @@ const Details = ({
                   </li>
                   {path === "candidate" && (
                     <li>
-                      <strong>VoteCount:&nbsp;&nbsp; </strong>{" "}
+                      <strong>Vote Count:&nbsp;&nbsp; </strong>{" "}
                       {candidate?.voteCount}
                     </li>
                   )}
@@ -135,38 +136,21 @@ const Details = ({
                   <strong>Notice :</strong> {candidate?.message}
                 </p>
                 {candidate &&
-                publicKey === candidate.address &&
-                candidate?.status === "Pending" ? (
-                  <div className="custom-actions mb-6">
-                    <a
-                      className="custom-read"
-                      href={
-                        path === "candidate"
-                          ? "/update-candidate"
-                          : "/update-voter"
-                      }
-                    >
-                      Update Profile
-                    </a>
-                  </div>
-                ) : (
-                  candidate &&
                   publicKey === candidate.address &&
-                  candidate?.status === "Rejected" && (
+                  (candidate?.status === "Pending" ||
+                    candidate?.status === "Rejected") && (
                     <div className="custom-actions mb-6">
-                      <a
-                        className="custom-read"
+                      <Link
                         href={
-                          path == "candidate"
+                          path === "candidate"
                             ? "/update-candidate"
                             : "/update-voter"
                         }
                       >
-                        Update Profile
-                      </a>
+                        <a className="custom-read">Update Profile</a>
+                      </Link>
                     </div>
-                  )
-                )}
+                  )}
 
                 {candidate &&
                 publicKey === ownerPublicKey &&
