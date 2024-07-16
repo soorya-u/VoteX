@@ -59,9 +59,7 @@ pub struct VotingOrganization;
 impl VotingOrganization {
     fn owner_only(env: &Env, address: Address) {
         let stored_addr: Address = env.storage().persistent().get(&OWNER).unwrap();
-        if stored_addr != address {
-            panic!("can only be called by owner");
-        }
+        assert_eq!(stored_addr, address, "can only be called by owner");
     }
 
     fn only_during_voting_period(env: &Env) {
@@ -156,8 +154,8 @@ impl VotingOrganization {
             .set(&CANDIDATE_ID_COUNTER, &(id_counter + 1));
     }
 
-    pub fn approve_voter(env: Env, address: Address, message: String) {
-        Self::owner_only(&env, address.clone());
+    pub fn approve_voter(env: Env, address: Address, message: String, owner_address: Address) {
+        Self::owner_only(&env, owner_address);
 
         let key = Voters::Voter(address.clone());
         let mut voter = env.storage().persistent().get(&key).unwrap_or(Voter {
@@ -193,8 +191,8 @@ impl VotingOrganization {
             .set(&APPROVED_VOTERS, &approved_voters);
     }
 
-    pub fn approve_candidate(env: Env, address: Address, message: String) {
-        Self::owner_only(&env, address.clone());
+    pub fn approve_candidate(env: Env, address: Address, message: String, owner_address: Address) {
+        Self::owner_only(&env, owner_address);
 
         let key = Candidates::Candidate(address.clone());
         let mut candidate = env.storage().persistent().get(&key).unwrap_or(Candidate {
@@ -222,7 +220,7 @@ impl VotingOrganization {
             .storage()
             .persistent()
             .get(&APPROVED_CANDIDATES)
-            .unwrap_or_else(|| vec![&env]);
+            .unwrap_or(vec![&env]);
 
         approved_candidate.push_back(address);
         env.storage()
@@ -230,8 +228,8 @@ impl VotingOrganization {
             .set(&APPROVED_CANDIDATES, &approved_candidate);
     }
 
-    pub fn reject_voter(env: Env, address: Address, message: String) {
-        Self::owner_only(&env, address.clone());
+    pub fn reject_voter(env: Env, address: Address, message: String, owner_address: Address) {
+        Self::owner_only(&env, owner_address);
 
         let key = Voters::Voter(address.clone());
         let mut voter = env.storage().persistent().get(&key).unwrap_or(Voter {
@@ -256,24 +254,24 @@ impl VotingOrganization {
         env.storage().persistent().set(&key, &voter);
     }
 
-    pub fn reject_candidate(env: Env, address: Address, message: String) {
-        Self::owner_only(&env, address.clone());
+    pub fn reject_candidate(env: Env, address: Address, message: String, owner_address: Address) {
+        Self::owner_only(&env, owner_address);
 
         let key = Candidates::Candidate(address.clone());
-        let mut candidate = env.storage().persistent().get(&key).unwrap_or(Voter {
+        let mut candidate = env.storage().persistent().get(&key).unwrap_or(Candidate {
             name: String::from_str(&env, ""),
             ipfs: String::from_str(&env, "NotFound"),
             message: String::from_str(&env, ""),
-            has_voted: false,
+            vote_count: U256::from_u32(&env, 0),
             register_id: U256::from_u32(&env, 0),
             status: REJECTED,
-            voter_address: address.clone(),
+            candidate_address: address.clone(),
         });
 
         assert_ne!(
             candidate.ipfs,
             String::from_str(&env, "NotFound"),
-            "Voter not found"
+            "Candidate not found"
         );
 
         candidate.status = REJECTED;
