@@ -114,15 +114,17 @@ export const VotingDappProvider = ({ children }) => {
 
     try {
       const pk = await stringToAddress(address);
+      const ownerPk = await stringToAddress();
 
       await callContract(ContractFunctions.approveCandidate, [
         pk,
         stringToScValString(message),
+        ownerPk,
       ]);
 
       setLoader(false);
       notifySuccess("Successfully approve Candidate");
-      router.push("/approve-candidates");
+      router.push("/approved-candidates");
     } catch (error) {
       setLoader(false);
       notifyError("approve failed, kindly connect to the Owner");
@@ -135,17 +137,19 @@ export const VotingDappProvider = ({ children }) => {
     notifySuccess("kindly wait, approving voter...");
     setLoader(true);
 
+    const ownerPk = await stringToAddress();
     const pk = await stringToAddress(address);
 
     try {
       await callContract(ContractFunctions.approveVoter, [
         pk,
         stringToScValString(message),
+        ownerPk,
       ]);
 
       setLoader(false);
       notifySuccess("Successfully approved voter");
-      router.push("/approve-voters");
+      router.push("/approved-voters");
     } catch (error) {
       setLoader(false);
       notifyError("approving failed, kindly connect to the Owner");
@@ -159,11 +163,13 @@ export const VotingDappProvider = ({ children }) => {
     setLoader(true);
 
     try {
+      const ownerPk = await stringToAddress();
       const pk = await stringToAddress(address);
 
       await callContract(ContractFunctions.rejectCandidate, [
         pk,
         stringToScValString(message),
+        ownerPk,
       ]);
 
       setLoader(false);
@@ -182,11 +188,13 @@ export const VotingDappProvider = ({ children }) => {
     setLoader(true);
 
     try {
+      const ownerPk = await stringToAddress(address);
       const pk = await stringToAddress(address);
 
       await callContract(ContractFunctions.rejectVoter, [
         pk,
         stringToScValString(message),
+        ownerPk,
       ]);
 
       setLoader(false);
@@ -270,9 +278,9 @@ export const VotingDappProvider = ({ children }) => {
     }
   };
 
-  const updateCandidate = async (updateCandidate, image, pdf) => {
-    const { _name: name } = updateCandidate;
-    const jsonData = { ...updateCandidate, image, pdf };
+  const updateCandidate = async (candidate, image, pdf) => {
+    const { _name: name } = candidate;
+    const jsonData = { ...candidate, image, pdf };
     if (!validObjectCheck(jsonData)) return notifyError("Data Is Missing");
     notifySuccess("Updating Candidate, kindly wait...");
     setLoader(true);
@@ -340,8 +348,8 @@ export const VotingDappProvider = ({ children }) => {
       router.push("/");
     } catch (error) {
       setLoader(false);
-      notifyError("RESET failed, kindly connect to ellection commission");
-      console.log(error.message);
+      notifyError("RESET failed, kindly connect the Owner");
+      console.log(error);
     }
   };
 
@@ -357,7 +365,7 @@ export const VotingDappProvider = ({ children }) => {
       checkVote(true);
       setLoader(false);
       notifySuccess("Successfully voted");
-      router.push("/approve-candidates");
+      router.push("/approved-candidates");
     } catch (error) {
       setLoader(false);
       notifySuccess("vote failed, kindly connect to Owner");
@@ -501,7 +509,6 @@ export const VotingDappProvider = ({ children }) => {
       );
 
       if (!contractData) return;
-
 
       const { candidate_address, register_id, vote_count, ...rest } =
         await scValToNative(contractData);

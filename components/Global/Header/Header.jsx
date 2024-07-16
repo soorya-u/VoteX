@@ -126,7 +126,7 @@ const Header = () => {
                     </Link>
                   </li>
                   <li>
-                    <Link href="/approve-candidates">
+                    <Link href="/approved-candidates">
                       <a className="dropdown-item header-hover-link">
                         Approved Candidates
                       </a>
@@ -151,9 +151,9 @@ const Header = () => {
                     </Link>
                   </li>
                   <li>
-                    <Link href="/approve-voters">
+                    <Link href="/approved-voters">
                       <a className="dropdown-item header-hover-link">
-                        Approve Voters
+                        Approved Voters
                       </a>
                     </Link>
                   </li>

@@ -88,11 +88,11 @@ const voter = () => {
                       </h1>
                     </a>
                   </Link>
-                  <h5 className="mt-5 mt-lg-6">Register as a voter </h5>
+                  <h5 className="mt-5 mt-lg-6">Update your Voter Details</h5>
                 </div>
 
                 <div
-                  autocomplete="off"
+                  autoComplete="off"
                   id="frmContactus"
                   className="contact__form mt-8 mt-lg-10 text-start"
                 >
@@ -131,7 +131,7 @@ const voter = () => {
                       }
                     />
                     <Input
-                      name={"Parent Or SpouseName"}
+                      name={"Parent or SpouseName"}
                       placeholder={"_parentOrSpouseName"}
                       type={"text"}
                       handleClick={(e) =>
@@ -153,7 +153,7 @@ const voter = () => {
                       }
                     />
                     <Input
-                      name={"DOB Or Age"}
+                      name={"Date of Birth or Age"}
                       placeholder={"_dobOrAge"}
                       type={"text"}
                       handleClick={(e) =>
@@ -164,7 +164,7 @@ const voter = () => {
                       }
                     />
                     <Input
-                      name={"AddressDetails"}
+                      name={"Address Details"}
                       placeholder={"_addressDetails"}
                       type={"text"}
                       handleClick={(e) =>
@@ -186,7 +186,7 @@ const voter = () => {
                       }
                     />
                     <Input
-                      name={"Part Number AndName"}
+                      name={"Part Number and Name"}
                       placeholder={"_partNumberAndName"}
                       type={"text"}
                       handleClick={(e) =>
@@ -197,7 +197,7 @@ const voter = () => {
                       }
                     />
                     <Input
-                      name={"Assembly Constituency NumberAndName"}
+                      name={"Assembly Constituency Number and Name"}
                       placeholder={"_assemblyConstituencyNumberAndName"}
                       type={"text"}
                       handleClick={(e) =>
@@ -208,7 +208,7 @@ const voter = () => {
                       }
                     />
                     <Input
-                      name={"IssuingAuthoritySignature"}
+                      name={"Issuing Authority Signature"}
                       placeholder={"_issuingAuthoritySignature"}
                       type={"text"}
                       handleClick={(e) =>
@@ -219,7 +219,7 @@ const voter = () => {
                       }
                     />
                     <Input
-                      name={"HologramAndBarcode"}
+                      name={"Hologram and Barcode"}
                       placeholder={"_hologramAndBarcode"}
                       type={"text"}
                       handleClick={(e) =>
