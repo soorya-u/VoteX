@@ -3,7 +3,27 @@ import Link from "next/link";
 const PopUp = ({ candidate }) => {
   return (
     <div className="custom-new">
-      <div className="custom-card">
+      <div
+        style={{
+          position: "relative",
+        }}
+        className="custom-card"
+      >
+        <Link href="/">
+          <a
+            style={{
+              position: "absolute",
+              right: 25,
+              top: 10,
+              fontWeight: 500,
+              fontSize: "1.2rem",
+              fontFamily: "cursive",
+              rotate: "-185deg",
+            }}
+          >
+            x
+          </a>
+        </Link>
         <div className="custom-header">
           <span className="custom-icon">
             <img
@@ -16,9 +36,7 @@ const PopUp = ({ candidate }) => {
               alt=""
             />
           </span>
-          <p className="custom-alert">
-            Welcome {candidate?._name}! <Link href="/">X</Link>
-          </p>
+          <p className="custom-alert">Welcome {candidate?._name}!</p>
         </div>
 
         <p className="custom-message">
@@ -32,14 +50,7 @@ const PopUp = ({ candidate }) => {
         </p>
         <div className="custom-actions">
           <Link href="/">
-            <a className="custom-read">
-              Status:{" "}
-              {candidate?.status == 0
-                ? "Pending"
-                : candidate?.status == 1
-                ? "Approved"
-                : "Rejected"}
-            </a>
+            <a className="custom-read">Status: {candidate?.status}</a>
           </Link>
         </div>
       </div>
