@@ -1,6 +1,6 @@
 # DemocraChain
 
-## Prerequisites of the Project
+<!-- ## Prerequisites of the Project
 
 1. Create a Certificate Authority.
 
@@ -64,4 +64,4 @@ To run the Project locally:
 
    ```sh
    npm run dev
-   ```
+   ``` -->
