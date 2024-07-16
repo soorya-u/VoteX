@@ -64,7 +64,7 @@ const HeroSection = ({ initialData, highest }) => {
                   )}
 
                 <div className="d-inline-flex flex-wrap gap-4 gap-lg-10 align-items-center mt-8 mt-lg-10">
-                  <Link href="/approve-candidates">
+                  <Link href="/approved-candidates">
                     <a className="cmn-btn alt-xxl-bg fs-five nb4-xxl-bg gap-2 gap-lg-3 align-items-center py-2 px-5 py-lg-3 px-lg-6">
                       All Candidates <i className="ti ti-trending-up"></i>
                     </a>

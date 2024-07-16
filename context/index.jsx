@@ -124,7 +124,7 @@ export const VotingDappProvider = ({ children }) => {
 
       setLoader(false);
       notifySuccess("Successfully approve Candidate");
-      router.push("/approve-candidates");
+      router.push("/approved-candidates");
     } catch (error) {
       setLoader(false);
       notifyError("approve failed, kindly connect to the Owner");
@@ -149,7 +149,7 @@ export const VotingDappProvider = ({ children }) => {
 
       setLoader(false);
       notifySuccess("Successfully approved voter");
-      router.push("/approve-voters");
+      router.push("/approved-voters");
     } catch (error) {
       setLoader(false);
       notifyError("approving failed, kindly connect to the Owner");
@@ -365,7 +365,7 @@ export const VotingDappProvider = ({ children }) => {
       checkVote(true);
       setLoader(false);
       notifySuccess("Successfully voted");
-      router.push("/approve-candidates");
+      router.push("/approved-candidates");
     } catch (error) {
       setLoader(false);
       notifySuccess("vote failed, kindly connect to Owner");

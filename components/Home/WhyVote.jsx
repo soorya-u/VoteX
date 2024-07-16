@@ -32,7 +32,7 @@ const WhyVote = () => {
                     Voting is a fundamental civic duty that empowers individuals
                     to influence government decisions and policies.
                   </p>
-                  <Link href="/approve-voters">
+                  <Link href="/approved-voters">
                     <a className="cmn-btn link secondary-link fs-six-up  gap-2 gap-lg-3 align-items-center mt-5">
                       {" "}
                       Check Voters{" "}
@@ -57,7 +57,7 @@ const WhyVote = () => {
                       process, ensuring that your voice and the collective will
                       of the people are heard.
                     </p>
-                    <Link href="/approve-candidates">
+                    <Link href="/approved-candidates">
                       <a className="cmn-btn link secondary-link fs-six-up  gap-2 gap-lg-3 align-items-center mt-5">
                         {" "}
                         Check Candidates{" "}
