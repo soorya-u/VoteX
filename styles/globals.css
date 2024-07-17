@@ -209,3 +209,7 @@ div.team__card:hover .new-custom-top > strong {
 a.header-hover-link:hover {
   color: #f73859 !important;
 }
+
+::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}
