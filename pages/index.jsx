@@ -35,7 +35,7 @@ const index = () => {
 
     fetchData().finally(() => setLoading(false));
   }, [publicKey]);
-  
+
   return (
     <>
       {loading && <Preloader />}
