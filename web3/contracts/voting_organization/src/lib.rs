@@ -616,7 +616,7 @@ impl VotingOrganization {
 
     pub fn get_current_voting_status(env: Env, address: Address) -> Candidate {
         let mut winning_candidate = Candidate {
-            candidate_address: address,
+            candidate_address: address.clone(),
             ipfs: String::from_str(&env, "NotFound"),
             message: String::from_str(&env, ""),
             name: String::from_str(&env, ""),
@@ -628,22 +628,15 @@ impl VotingOrganization {
         let candidates: Vec<Address> = env
             .storage()
             .persistent()
-            .get(&REGISTERED_CANDIDATES)
+            .get(&APPROVED_CANDIDATES)
             .unwrap_or(vec![&env]);
 
         for c in candidates {
             let key = Candidates::Candidate(c);
-            let cand = env.storage().persistent().get(&key).unwrap_or(Candidate {
-                name: String::from_str(&env, ""),
-                ipfs: String::from_str(&env, ""),
-                message: String::from_str(&env, ""),
-                candidate_address: Address::from_string(&String::from_str(&env, "")),
-                register_id: U256::from_u32(&env, 0),
-                vote_count: U256::from_u32(&env, 0),
-                status: REJECTED.clone(),
-            });
+            let cand: Candidate = env.storage().persistent().get(&key).unwrap();
 
-            if winning_candidate.vote_count < cand.vote_count {
+            if winning_candidate.vote_count.to_u128().unwrap() < cand.vote_count.to_u128().unwrap()
+            {
                 winning_candidate = cand;
             }
         }
