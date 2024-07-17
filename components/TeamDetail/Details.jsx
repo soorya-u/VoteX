@@ -20,7 +20,7 @@ const Details = ({
 }) => {
   const [message, setMessage] = useState();
   const { publicKey } = useVotingDapp();
-
+  
   return (
     <section className="team-details pt-120 pb-120 position-relative z-0">
       <div className="container">
@@ -162,7 +162,7 @@ const Details = ({
                         className="fs-six-up bg_transparent"
                         onChange={(e) => setMessage(e.target.value)}
                         placeholder={"message"}
-                      ></textarea>
+                      />
                     </div>
                     <div
                       style={{ cursor: "pointer" }}
@@ -194,14 +194,14 @@ const Details = ({
                 ) : (
                   candidate &&
                   publicKey === ownerPublicKey &&
-                  candidate.status === "Rejected" && (
+                  candidate.status === "Pending" && (
                     <>
                       <div className="single-input">
                         <textarea
                           className="fs-six-up bg_transparent"
                           onChange={(e) => setMessage(e.target.value)}
                           placeholder={"Message"}
-                        ></textarea>
+                        />
                       </div>
                       <div className="custom-actions">
                         <a

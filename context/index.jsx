@@ -500,7 +500,7 @@ export const VotingDappProvider = ({ children }) => {
 
   const highestVotedCandidate = async () => {
     try {
-      const pk = stringToAddress();
+      const pk = await stringToAddress();
       const contractData = await callContract(
         ContractFunctions.getCurrentVotingStatus,
         pk
@@ -508,8 +508,7 @@ export const VotingDappProvider = ({ children }) => {
       if (!contractData) return;
       const { candidate_address, register_id, vote_count, ...rest } =
         await scValToNative(contractData);
-
-      if (candidate_address === "") return;
+      if (rest.ipfs === "NotFound") return;
 
       const { data } = await axios.get(rest.ipfs);
 
