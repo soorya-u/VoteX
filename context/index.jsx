@@ -21,18 +21,13 @@ export const VotingDappProvider = ({ children }) => {
   const router = useRouter();
   const [loader, setLoader] = useState(false);
   const [publicKey, setPublicKey] = useState("");
-  const [isWalletConnected, setIsWalletConnected] = useState(false);
   const [checkVote, setCheckVote] = useState(false);
-
-  useEffect(() => {
-    publicKey !== "" && setIsWalletConnected(true);
-  }, [publicKey]);
 
   const connectWallet = async () =>
     (await checkConnection()) && setPublicKey(await retrievePublicKey());
 
   const callContract = (funcName, values = null) =>
-    callContractFn(funcName, values, isWalletConnected, publicKey);
+    callContractFn(funcName, values, publicKey);
 
   const registerCandidate = async (updateCandidate, image, pdf) => {
     const { _name: name } = updateCandidate;
@@ -113,8 +108,8 @@ export const VotingDappProvider = ({ children }) => {
     setLoader(true);
 
     try {
-      const pk = await stringToAddress(address);
       const ownerPk = await stringToAddress();
+      const pk = await stringToAddress(address);
 
       await callContract(ContractFunctions.approveCandidate, [
         pk,
@@ -188,7 +183,7 @@ export const VotingDappProvider = ({ children }) => {
     setLoader(true);
 
     try {
-      const ownerPk = await stringToAddress(address);
+      const ownerPk = await stringToAddress();
       const pk = await stringToAddress(address);
 
       await callContract(ContractFunctions.rejectVoter, [
@@ -362,13 +357,13 @@ export const VotingDappProvider = ({ children }) => {
       const candidatePk = await stringToAddress(candidateAddress);
       const pk = await stringToAddress();
       await callContract(ContractFunctions.giveVote, [candidatePk, pk]);
-      checkVote(true);
+      setCheckVote(true);
       setLoader(false);
       notifySuccess("Successfully voted");
       router.push("/approved-candidates");
     } catch (error) {
       setLoader(false);
-      notifySuccess("vote failed, kindly connect to Owner");
+      notifyError("vote failed, kindly connect to Owner");
       console.log(error);
     }
   };
@@ -475,20 +470,21 @@ export const VotingDappProvider = ({ children }) => {
       const data = await callContract(ContractFunctions.getAllVotersWhoVoted);
       const voters = await scValToNative(data);
 
-      const items = voters.map(
-        async ({ ipfs, voter_address, register_id, has_voted, ...rest }) => {
-          const { data } = await axios.get(ipfs);
-          return {
-            ...data,
-            ...rest,
-            ipfs,
-            address: voter_address,
-            registerId: Number(register_id),
-            hasVoted: has_voted,
-          };
-        }
+      const items = await Promise.all(
+        voters.map(
+          async ({ ipfs, voter_address, register_id, has_voted, ...rest }) => {
+            const { data } = await axios.get(ipfs);
+            return {
+              ...data,
+              ...rest,
+              ipfs,
+              address: voter_address,
+              registerId: Number(register_id),
+              hasVoted: has_voted,
+            };
+          }
+        )
       );
-      console.log(items);
 
       items?.filter((user) =>
         user.address === publicKey ? setCheckVote(true) : setCheckVote(false)
@@ -504,14 +500,15 @@ export const VotingDappProvider = ({ children }) => {
 
   const highestVotedCandidate = async () => {
     try {
+      const pk = stringToAddress();
       const contractData = await callContract(
-        ContractFunctions.getCurrentVotingStatus
+        ContractFunctions.getCurrentVotingStatus,
+        pk
       );
-
       if (!contractData) return;
-
       const { candidate_address, register_id, vote_count, ...rest } =
         await scValToNative(contractData);
+
       if (candidate_address === "") return;
 
       const { data } = await axios.get(rest.ipfs);
@@ -615,10 +612,10 @@ export const VotingDappProvider = ({ children }) => {
   return (
     <VotingDappContext.Provider
       value={{
-        loader,
-        setLoader,
         publicKey,
         checkVote,
+        loader,
+        setLoader,
         getSingleCandidate,
         getSingleVoter,
         getRegisteredCandidates,

@@ -54,7 +54,7 @@ const UploadImg = ({ setLoader, notifySuccess, notifyError, setImage }) => {
           >
             <circle
               strokeWidth="20"
-              stroke="#6c6c6c"
+              stroke="#fff"
               fill="none"
               r="158.5"
               cy="168.5"
@@ -63,13 +63,13 @@ const UploadImg = ({ setLoader, notifySuccess, notifyError, setImage }) => {
             <path
               strokeLinecap="round"
               strokeWidth="25"
-              stroke="#6c6c6c"
+              stroke="#fff"
               d="M167.759 79V259"
             ></path>
             <path
               strokeLinecap="round"
               strokeWidth="25"
-              stroke="#6c6c6c"
+              stroke="#fff"
               d="M79 167.138H259"
             ></path>
           </svg>

@@ -20,6 +20,7 @@ const Details = ({
 }) => {
   const [message, setMessage] = useState();
   const { publicKey } = useVotingDapp();
+
   return (
     <section className="team-details pt-120 pb-120 position-relative z-0">
       <div className="container">
@@ -241,7 +242,9 @@ const Details = ({
                       <div className="custom-actions">
                         <a
                           className="custom-read"
-                          onClick={() => giveVote(candidate?.address)}
+                          onClick={async () =>
+                            await giveVote(candidate?.address)
+                          }
                         >
                           Give Vote
                         </a>

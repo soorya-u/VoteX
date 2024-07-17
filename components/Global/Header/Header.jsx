@@ -1,9 +1,15 @@
 import Link from "next/link";
 import { useVotingDapp } from "@/hooks/use-voting-dapp";
 import { ownerPublicKey } from "@/constants/contract";
+import { useEffect, useState } from "react";
 
 const Header = () => {
+  const [isConnected, setIsConnected] = useState(false);
   const { connectWallet, publicKey } = useVotingDapp();
+
+  useEffect(() => {
+    if (publicKey) setIsConnected(true);
+  }, [publicKey]);
 
   return (
     <header className="header-section a2-bg-0 header-section--secondary header-menu w-100">
@@ -68,7 +74,7 @@ const Header = () => {
           </div>
           <div className="nav_alt">
             <div className="right-area position-relative ms-0 d-center gap-1 gap-xl-4 d-lg-none">
-              {publicKey ? (
+              {isConnected ? (
                 <>
                   <div className="single-item">
                     <Link href="/voter">
@@ -89,7 +95,9 @@ const Header = () => {
               ) : (
                 <div className="single-item">
                   <button
-                    onClick={async () => await connectWallet()}
+                    onClick={async () =>
+                      await connectWallet().then(() => setIsConnected(true))
+                    }
                     className="cmn-btn fw-bold py-2 px-2 px-sm-3 px-lg-4 align-items-center gap-1"
                   >
                     Connect Wallet{" "}
@@ -207,7 +215,7 @@ const Header = () => {
             </ul>
           </div>
           <div className="right-area position-relative ms-0 d-center gap-1 gap-xl-4 d-none d-lg-flex">
-            {publicKey ? (
+            {isConnected ? (
               <>
                 <div className="single-item">
                   <Link href="/voter">
@@ -228,7 +236,9 @@ const Header = () => {
             ) : (
               <div className="single-item">
                 <button
-                  onClick={async () => await connectWallet()}
+                  onClick={async () =>
+                    await connectWallet().then(() => setIsConnected(true))
+                  }
                   className="cmn-btn fw-bold py-2 px-2 px-sm-3 px-lg-4 align-items-center gap-1"
                 >
                   Connect Wallet{" "}
