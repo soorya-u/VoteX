@@ -21,18 +21,13 @@ export const VotingDappProvider = ({ children }) => {
   const router = useRouter();
   const [loader, setLoader] = useState(false);
   const [publicKey, setPublicKey] = useState("");
-  const [isWalletConnected, setIsWalletConnected] = useState(false);
   const [checkVote, setCheckVote] = useState(false);
-
-  useEffect(() => {
-    publicKey !== "" && setIsWalletConnected(true);
-  }, [publicKey]);
 
   const connectWallet = async () =>
     (await checkConnection()) && setPublicKey(await retrievePublicKey());
 
   const callContract = (funcName, values = null) =>
-    callContractFn(funcName, values, isWalletConnected, publicKey);
+    callContractFn(funcName, values, publicKey);
 
   const registerCandidate = async (updateCandidate, image, pdf) => {
     const { _name: name } = updateCandidate;
