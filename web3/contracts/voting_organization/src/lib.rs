@@ -129,7 +129,7 @@ impl VotingOrganization {
             ipfs,
             message: String::from_str(&env, PENDING_MESSAGE),
             register_id: U256::from_u32(&env, id_counter),
-            status: PENDING,
+            status: PENDING.clone(),
             vote_count: U256::from_u32(&env, 0),
         };
 
@@ -164,7 +164,7 @@ impl VotingOrganization {
             message: String::from_str(&env, ""),
             has_voted: false,
             register_id: U256::from_u32(&env, 0),
-            status: REJECTED,
+            status: REJECTED.clone(),
             voter_address: address.clone(),
         });
 
@@ -174,7 +174,7 @@ impl VotingOrganization {
             "Voter not found"
         );
 
-        voter.status = APPROVED;
+        voter.status = APPROVED.clone();
         voter.message = message;
 
         env.storage().persistent().set(&key, &voter);
@@ -200,7 +200,7 @@ impl VotingOrganization {
             ipfs: String::from_str(&env, "NotFound"),
             message: String::from_str(&env, ""),
             register_id: U256::from_u32(&env, 0),
-            status: REJECTED,
+            status: REJECTED.clone(),
             candidate_address: address.clone(),
             vote_count: U256::from_u32(&env, 0),
         });
@@ -211,7 +211,7 @@ impl VotingOrganization {
             "Voter not found"
         );
 
-        candidate.status = APPROVED;
+        candidate.status = APPROVED.clone();
         candidate.message = message;
 
         env.storage().persistent().set(&key, &candidate);
@@ -238,7 +238,7 @@ impl VotingOrganization {
             message: String::from_str(&env, ""),
             has_voted: false,
             register_id: U256::from_u32(&env, 0),
-            status: REJECTED,
+            status: REJECTED.clone(),
             voter_address: address.clone(),
         });
 
@@ -248,7 +248,7 @@ impl VotingOrganization {
             "Voter not found"
         );
 
-        voter.status = REJECTED;
+        voter.status = REJECTED.clone();
         voter.message = message;
 
         env.storage().persistent().set(&key, &voter);
@@ -264,7 +264,7 @@ impl VotingOrganization {
             message: String::from_str(&env, ""),
             vote_count: U256::from_u32(&env, 0),
             register_id: U256::from_u32(&env, 0),
-            status: REJECTED,
+            status: REJECTED.clone(),
             candidate_address: address.clone(),
         });
 
@@ -274,7 +274,7 @@ impl VotingOrganization {
             "Candidate not found"
         );
 
-        candidate.status = REJECTED;
+        candidate.status = REJECTED.clone();
         candidate.message = message;
 
         env.storage().persistent().set(&key, &candidate);
@@ -306,7 +306,7 @@ impl VotingOrganization {
                 message: String::from_str(&env, ""),
                 name: String::from_str(&env, ""),
                 register_id: U256::from_u32(&env, 0),
-                status: REJECTED,
+                status: REJECTED.clone(),
                 voter_address: v,
             });
 
@@ -334,7 +334,7 @@ impl VotingOrganization {
                 message: String::from_str(&env, ""),
                 name: String::from_str(&env, ""),
                 register_id: U256::from_u32(&env, 0),
-                status: REJECTED,
+                status: REJECTED.clone(),
                 candidate_address: c,
                 vote_count: U256::from_u32(&env, 0),
             });
@@ -363,7 +363,7 @@ impl VotingOrganization {
                 message: String::from_str(&env, ""),
                 name: String::from_str(&env, ""),
                 register_id: U256::from_u32(&env, 0),
-                status: REJECTED,
+                status: REJECTED.clone(),
                 candidate_address: a,
                 vote_count: U256::from_u32(&env, 0),
             });
@@ -392,7 +392,7 @@ impl VotingOrganization {
                 message: String::from_str(&env, ""),
                 name: String::from_str(&env, ""),
                 register_id: U256::from_u32(&env, 0),
-                status: REJECTED,
+                status: REJECTED.clone(),
                 voter_address: a,
                 has_voted: false,
             });
@@ -412,7 +412,7 @@ impl VotingOrganization {
             message: String::from_str(&env, ""),
             name: String::from_str(&env, ""),
             register_id: U256::from_u32(&env, 0),
-            status: REJECTED,
+            status: REJECTED.clone(),
             candidate_address: addr,
             vote_count: U256::from_u32(&env, 0),
         });
@@ -427,7 +427,7 @@ impl VotingOrganization {
             message: String::from_str(&env, ""),
             name: String::from_str(&env, ""),
             register_id: U256::from_u32(&env, 0),
-            status: REJECTED,
+            status: REJECTED.clone(),
             voter_address: addr,
             has_voted: false,
         });
@@ -436,13 +436,14 @@ impl VotingOrganization {
     }
 
     pub fn update_voter(env: Env, name: String, ipfs: String, addr: Address) {
+        const PENDING_MESSAGE: &str = "Currently your registration is pending";
         let key = Voters::Voter(addr.clone());
         let mut voter = env.storage().persistent().get(&key).unwrap_or(Voter {
             ipfs: String::from_str(&env, "NotFound"),
             message: String::from_str(&env, ""),
             name: String::from_str(&env, ""),
             register_id: U256::from_u32(&env, 0),
-            status: REJECTED,
+            status: REJECTED.clone(),
             voter_address: addr,
             has_voted: false,
         });
@@ -451,18 +452,21 @@ impl VotingOrganization {
 
         voter.name = name;
         voter.ipfs = ipfs;
+        voter.message = String::from_str(&env, PENDING_MESSAGE);
+        voter.status = PENDING.clone();
 
         env.storage().persistent().set(&key, &voter)
     }
 
     pub fn update_candidate(env: Env, name: String, ipfs: String, addr: Address) {
         let key = Candidates::Candidate(addr.clone());
+        const PENDING_MESSAGE: &str = "Currently your registration is pending";
         let mut candidate = env.storage().persistent().get(&key).unwrap_or(Candidate {
             ipfs: String::from_str(&env, "NotFound"),
             message: String::from_str(&env, ""),
             name: String::from_str(&env, ""),
             register_id: U256::from_u32(&env, 0),
-            status: REJECTED,
+            status: REJECTED.clone(),
             candidate_address: addr,
             vote_count: U256::from_u32(&env, 0),
         });
@@ -471,6 +475,8 @@ impl VotingOrganization {
 
         candidate.name = name;
         candidate.ipfs = ipfs;
+        candidate.message = String::from_str(&env, PENDING_MESSAGE);
+        candidate.status = PENDING.clone();
 
         env.storage().persistent().set(&key, &candidate)
     }
@@ -529,7 +535,7 @@ impl VotingOrganization {
                 name: String::from_str(&env, ""),
                 voter_address: voter_address.clone(),
                 register_id: U256::from_u32(&env, 0),
-                status: REJECTED,
+                status: REJECTED.clone(),
             });
 
         assert_ne!(
@@ -537,7 +543,11 @@ impl VotingOrganization {
             String::from_str(&env, "NotFound"),
             "Account Not Found"
         );
-        assert_eq!(voter.status, APPROVED, "You are not an approved voter.");
+        assert_eq!(
+            voter.status,
+            APPROVED.clone(),
+            "You are not an approved voter."
+        );
         assert!(!voter.has_voted, "You have already voted.");
 
         let mut candidate = env
@@ -550,7 +560,7 @@ impl VotingOrganization {
                 name: String::from_str(&env, ""),
                 candidate_address: candidate_address.clone(),
                 register_id: U256::from_u32(&env, 0),
-                status: REJECTED,
+                status: REJECTED.clone(),
                 vote_count: U256::from_u32(&env, 0),
             });
         assert_ne!(
@@ -558,7 +568,11 @@ impl VotingOrganization {
             String::from_str(&env, "NotFound"),
             "Account Not Found"
         );
-        assert_eq!(candidate.status, APPROVED, "Candidate is not approved.");
+        assert_eq!(
+            candidate.status,
+            APPROVED.clone(),
+            "Candidate is not approved."
+        );
 
         voter.has_voted = true;
         candidate.vote_count = candidate.vote_count.add(&U256::from_u32(&env, 1));
@@ -600,15 +614,15 @@ impl VotingOrganization {
         return voters;
     }
 
-    pub fn get_current_voting_status(env: Env) -> Candidate {
+    pub fn get_current_voting_status(env: Env, address: Address) -> Candidate {
         let mut winning_candidate = Candidate {
-            name: String::from_str(&env, ""),
+            candidate_address: address,
             ipfs: String::from_str(&env, "NotFound"),
             message: String::from_str(&env, ""),
-            candidate_address: Address::from_string(&String::from_str(&env, "")),
+            name: String::from_str(&env, ""),
             register_id: U256::from_u32(&env, 0),
             vote_count: U256::from_u32(&env, 0),
-            status: REJECTED,
+            status: REJECTED.clone(),
         };
 
         let candidates: Vec<Address> = env
@@ -626,7 +640,7 @@ impl VotingOrganization {
                 candidate_address: Address::from_string(&String::from_str(&env, "")),
                 register_id: U256::from_u32(&env, 0),
                 vote_count: U256::from_u32(&env, 0),
-                status: REJECTED,
+                status: REJECTED.clone(),
             });
 
             if winning_candidate.vote_count < cand.vote_count {
@@ -637,10 +651,10 @@ impl VotingOrganization {
         return winning_candidate;
     }
 
-    pub fn get_winning_candidate(env: Env) -> Candidate {
+    pub fn get_winning_candidate(env: Env, addr: Address) -> Candidate {
         let end_time: u64 = env.storage().persistent().get(&END_TIME).unwrap_or(0);
         assert!(env.ledger().timestamp() > end_time);
-        return Self::get_current_voting_status(env);
+        return Self::get_current_voting_status(env, addr);
     }
 
     pub fn get_voting_time(env: Env) -> Vec<u64> {
