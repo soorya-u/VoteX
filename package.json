@@ -9,24 +9,14 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@formspree/react": "^2.5.1",
     "@stellar/freighter-api": "^2.0.0",
     "@stellar/stellar-sdk": "^12.1.0",
     "axios": "^0.27.2",
-    "ether": "^0.0.9",
-    "ethers": "^5.7.2",
     "next": "12.2.5",
     "next-https": "^1.1.16",
-    "npm": "^10.8.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-dropzone": "^14.2.2",
-    "react-hot-toast": "^2.4.1",
-    "react-icons": "^4.4.0",
-    "web3modal": "^1.9.9"
-  },
-  "devDependencies": {
-    "@nomicfoundation/hardhat-toolbox": "^2.0.0",
-    "hardhat": "^2.11.2"
+    "react-hot-toast": "^2.4.1"
   }
 }
