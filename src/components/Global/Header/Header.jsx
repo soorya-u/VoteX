@@ -39,7 +39,7 @@ const Header = () => {
                   width: "3rem",
                   height: "3rem",
                 }}
-                src="assets/images/logo.png"
+                src="/logo.png"
                 className="logo small_logo d-sm-none"
                 alt="logo"
               />
@@ -56,7 +56,7 @@ const Header = () => {
                     width: "2.5rem",
                     height: "2.5rem",
                   }}
-                  src="assets/images/logo.png"
+                  src="/logo.png"
                   className="logo"
                   alt="logo"
                 />

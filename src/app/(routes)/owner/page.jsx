@@ -63,7 +63,7 @@ const voter = () => {
                         width: "3.2rem",
                         height: "3.2rem",
                       }}
-                      src="assets/images/logo.png"
+                      src="/logo.png"
                       className="logo"
                       alt="logo"
                     />
