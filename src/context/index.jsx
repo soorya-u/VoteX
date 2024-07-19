@@ -1,9 +1,8 @@
-import { useEffect, useState, createContext } from "react";
+import { useState, createContext } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { scValToNative } from "@stellar/stellar-sdk";
 
-import { headers } from "@/constants/headers";
 import { ContractFunctions } from "@/constants/contract";
 import {
   numberToU64,
@@ -36,22 +35,13 @@ export const VotingDappProvider = ({ children }) => {
     notifySuccess("Registering Candidate, kindly wait...");
     setLoader(true);
 
-    const data = JSON.stringify(jsonData);
-
     try {
-      const response = await axios({
-        method: "POST",
-        url: "https://api.pinata.cloud/pinning/pinJSONToIPFS",
-        data: data,
-        headers,
-      });
-
-      const url = `https://gateway.pinata.cloud/ipfs/${response.data.IpfsHash}`;
+      const { data } = await axios.post("/api/upload/json", jsonData);
 
       const publicKey = await stringToAddress();
       await callContract(ContractFunctions.registerCandidate, [
         stringToScValString(name),
-        stringToScValString(url),
+        stringToScValString(data.url),
         publicKey,
       ]);
 
@@ -73,22 +63,13 @@ export const VotingDappProvider = ({ children }) => {
     notifySuccess("Registering Voter, kindly wait...");
     setLoader(true);
 
-    const data = JSON.stringify(jsonData);
-
     try {
-      const response = await axios({
-        method: "POST",
-        url: "https://api.pinata.cloud/pinning/pinJSONToIPFS",
-        data: data,
-        headers,
-      });
-
-      const url = `https://gateway.pinata.cloud/ipfs/${response.data.IpfsHash}`;
+      const { data } = await axios.post("/api/upload/json", jsonData);
 
       const publicKey = await stringToAddress();
       await callContract(ContractFunctions.registerVoter, [
         stringToScValString(name),
-        stringToScValString(url),
+        stringToScValString(data.url),
         publicKey,
       ]);
 
@@ -244,22 +225,13 @@ export const VotingDappProvider = ({ children }) => {
     notifySuccess("Updating Voter, kindly wait...");
     setLoader(true);
 
-    const data = JSON.stringify(jsonData);
-
     try {
-      const response = await axios({
-        method: "POST",
-        url: "https://api.pinata.cloud/pinning/pinJSONToIPFS",
-        data,
-        headers,
-      });
-
-      const url = `https://gateway.pinata.cloud/ipfs/${response.data.IpfsHash}`;
+      const { data } = await axios.post("/api/upload/json", jsonData);
 
       const pk = await stringToAddress();
       await callContract(ContractFunctions.updateVoter, [
         stringToScValString(name),
-        stringToScValString(url),
+        stringToScValString(data.url),
         pk,
       ]);
 
@@ -280,22 +252,13 @@ export const VotingDappProvider = ({ children }) => {
     notifySuccess("Updating Candidate, kindly wait...");
     setLoader(true);
 
-    const data = JSON.stringify(jsonData);
-
     try {
-      const response = await axios({
-        method: "POST",
-        url: "https://api.pinata.cloud/pinning/pinJSONToIPFS",
-        data,
-        headers,
-      });
-
-      const url = `https://gateway.pinata.cloud/ipfs/${response.data.IpfsHash}`;
+      const { data } = await axios.post("/api/upload/json", jsonData);
 
       const pk = await stringToAddress();
       await callContract(ContractFunctions.updateCandidate, [
         stringToScValString(name),
-        stringToScValString(url),
+        stringToScValString(data.url),
         pk,
       ]);
 
