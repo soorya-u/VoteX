@@ -31,7 +31,7 @@ export const defaultMetadata = {
     },
     {
       name: "Likhith SV",
-      url: "https://github.com/Likhith12gl",
+      url: "",
     },
     {
       name: "Hamsa CS",

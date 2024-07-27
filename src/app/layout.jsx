@@ -1,7 +1,5 @@
-import { Toaster } from "react-hot-toast";
-
-import { VotingDappProvider } from "@/context";
 import { defaultMetadata } from "@/constants/metadata";
+import Providers from "@/providers";
 
 import "./globals.css";
 
@@ -16,10 +14,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <VotingDappProvider>
-          {children}
-          <Toaster />
-        </VotingDappProvider>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
