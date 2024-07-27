@@ -15,7 +15,7 @@ export const devsInfo = [
     description: "Short in height not in Talent !!",
     imageUrl: "assets/images/devs/saanvi.jpg",
     links: {
-      web: null,
+      instagram: "https://www.instagram.com/saanvi._m.j",
       github: "https://github.com/Saanvi-MJ",
       linkedin: "https://www.linkedin.com/in/saanvi-m-j-77029627b",
       x: "https://x.com/SaanviMJ",
