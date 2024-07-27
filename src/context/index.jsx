@@ -14,9 +14,9 @@ import { retrievePublicKey, checkConnection } from "@/lib/freighter";
 import { notifyError, notifySuccess } from "@/lib/toast";
 import { validObjectCheck } from "@/utils";
 
-export const VotingDappContext = createContext();
+export const ContractContext = createContext();
 
-export const VotingDappProvider = ({ children }) => {
+export const ContractProvider = ({ children }) => {
   const router = useRouter();
   const [loader, setLoader] = useState(false);
   const [publicKey, setPublicKey] = useState("");
@@ -572,7 +572,7 @@ export const VotingDappProvider = ({ children }) => {
   };
 
   return (
-    <VotingDappContext.Provider
+    <ContractContext.Provider
       value={{
         publicKey,
         checkVote,
@@ -602,6 +602,6 @@ export const VotingDappProvider = ({ children }) => {
       }}
     >
       {children}
-    </VotingDappContext.Provider>
+    </ContractContext.Provider>
   );
 };
