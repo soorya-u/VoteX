@@ -50,7 +50,15 @@ const Company = () => {
                     <h3 className="mb-3">What We Do</h3>
                     <p>
                       A group of students from Sai Angels who dreamt to be in
-                      IIT but ended up in AIT !!! Our team, the "mad devs,"
+                      IIT but ended up in AIT !!! Our team, {" "}
+                      <span
+                        style={{
+                          fontWeight: "bold",
+                          color: "#f73859",
+                        }}
+                      >
+                        Block and Defeat
+                      </span>{" "}
                       started with a passion for tech and a knack for chaos.
                       From late-night coding to wild brainstorming sessions, we
                       blend genius with a touch of madness to create

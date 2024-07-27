@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-export default function Dev({ name, description, imageUrl }) {
+export default function Dev({ name, description, imageUrl, links }) {
   return (
     <div className="col-sm-6 col-lg-4 col-xxl-3">
       <div className="team__card nb3-bg cus-rounded-1 overflow-hidden">
@@ -16,29 +16,7 @@ export default function Dev({ name, description, imageUrl }) {
           <p className="mb-3">{description}</p>
           <div className="social-area alt">
             <ul className="d-flex align-items-center justify-content-center gap-2 gap-md-3">
-              <li>
-                <Link className="d-center fs-four" href="https://facebook.com/">
-                  <i className="ti ti-brand-facebook" />
-                </Link>
-              </li>
-              <li>
-                <Link className="d-center fs-four" href="https://twitch.com/">
-                  <i className="ti ti-brand-twitch" />
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className="d-center fs-four"
-                  href="https://instagram.com/"
-                >
-                  <i className="ti ti-brand-instagram" />
-                </Link>
-              </li>
-              <li>
-                <Link className="d-center fs-four" href="https://discord.com/">
-                  <i className="ti ti-brand-discord-filled" />
-                </Link>
-              </li>
+              <SocialBar links={links} />
             </ul>
           </div>
         </div>
@@ -46,3 +24,27 @@ export default function Dev({ name, description, imageUrl }) {
     </div>
   );
 }
+
+const SocialBar = ({ links }) => {
+  const keys = Object.keys(links);
+  const values = Object.values(links);
+  return (
+    <>
+      {keys.map((key, idx) => (
+        <SocialLink link={values[idx]} name={key} key={idx} />
+      ))}
+    </>
+  );
+};
+
+const SocialLink = ({ name, link }) => {
+  const cn = name === "web" ? "world" : `brand-${name}`;
+  const style = !link ? { color: "gray", cursor: "default" } : {};
+  return (
+    <li>
+      <Link className="d-center fs-four" href={link || ""} target="_blank">
+        <i style={style} className={`ti ti-${cn}`} />
+      </Link>
+    </li>
+  );
+};

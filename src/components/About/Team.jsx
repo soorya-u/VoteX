@@ -1,27 +1,6 @@
 import Dev from "./Dev";
 
-const devsInfo = [
-  {
-    name: "Soorya U",
-    description: "Anonymus dev",
-    imageUrl: "assets/images/devs/soorya.png",
-  },
-  {
-    name: "Saanvi M J",
-    description: "Short in height not in Talent !!",
-    imageUrl: "assets/images/devs/saanvi.jpg",
-  },
-  {
-    name: "Likhith S V",
-    description: "Hell world !!",
-    imageUrl: "assets/images/devs/likhith.jpg",
-  },
-  {
-    name: "Hamsa C S",
-    description: "ERROR 22/09 ",
-    imageUrl: "assets/images/devs/hamsa.jpg",
-  },
-];
+import { devsInfo } from "@/constants/devs";
 
 const Team = () => {
   return (
@@ -50,6 +29,7 @@ const Team = () => {
               name={d.name}
               description={d.description}
               imageUrl={d.imageUrl}
+              links={d.links}
               key={idx}
             />
           ))}
