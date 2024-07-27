@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useState, useEffect } from "react";
 
@@ -17,7 +17,7 @@ import {
 
 import { useVotingDapp } from "@/hooks/use-voting-dapp";
 
-const index = () => {
+export default function IndexPage() {
   const [initialData, setInitialData] = useState();
   const [highest, setHighest] = useState();
   const [loading, setLoading] = useState(false);
@@ -52,6 +52,4 @@ const index = () => {
       <Footer />
     </>
   );
-};
-
-export default index;
+}

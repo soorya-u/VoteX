@@ -18,8 +18,16 @@ const Team = () => {
             <span className="heading p1-color fs-five mb-5">Team</span>
             <h3>Our Team</h3>
             <p className="mt-5 mt-xxl-6 mx-ch mx-auto">
-              Innovative 'mad devs' pushing tech limits with creativity and
-              camaraderie.
+              Innovative{" "}
+              <span
+                style={{
+                  fontWeight: "bold",
+                  color: "#f73859",
+                }}
+              >
+                Block and Defeat
+              </span>{" "}
+              pushing tech limits with creativity and camaraderie.
             </p>
           </div>
         </div>

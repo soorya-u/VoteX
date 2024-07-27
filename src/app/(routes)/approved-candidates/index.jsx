@@ -12,7 +12,7 @@ import {
 import Loader from "@/components/Global/Loader";
 import { useVotingDapp } from "@/hooks/use-voting-dapp";
 
-const registerVoters = () => {
+export default function ApprovedCandidatesPage() {
   const [candidates, setCandidates] = useState();
   const [votingTime, setVotingTime] = useState();
   const [currentVotingTime, setCurrentVotingTime] = useState();
@@ -75,4 +75,3 @@ const registerVoters = () => {
   );
 };
 
-export default registerVoters;

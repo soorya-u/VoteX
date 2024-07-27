@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { defaultMetadata } from "@/constants/metadata";
 import Providers from "@/providers";
 
@@ -14,7 +15,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <Providers>{children}</Providers>
+        <Providers>
+          <Suspense>{children}</Suspense>
+        </Providers>
       </body>
     </html>
   );

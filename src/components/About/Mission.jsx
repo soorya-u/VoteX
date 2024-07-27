@@ -12,12 +12,12 @@ const Mission = () => {
         <div className="row justify-content-between align-items-center mb-10 mb-lg-15">
           <div className="col-xl-5">
             <span className="heading s1-color fs-five mb-5">Our Mission</span>
-            <h3>Empowering Success How We're Making a Difference</h3>
+            <h3>Empowering Success How We&apos;re Making a Difference</h3>
           </div>
           <div className="col-xl-4">
             <p className="fs-six-up mx-ch text-xl-end mt-3 mt-xl-0">
               we believe that success is not reserved for the privileged few.
-              It's a journey that anyone can embark upon with right guidance
+              It&apos;s a journey that anyone can embark upon with right guidance
             </p>
           </div>
         </div>

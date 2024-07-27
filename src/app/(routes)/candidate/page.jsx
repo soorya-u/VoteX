@@ -15,7 +15,7 @@ import PreviewImg from "@/components/Global/PreviewImg";
 import Loader from "@/components/Global/Loader";
 import PopUp from "@/components/Global/PopUp";
 
-const signup = () => {
+export default function CandidatePage() {
   const {
     loader,
     setLoader,
@@ -345,6 +345,4 @@ const signup = () => {
       </section>
     </>
   );
-};
-
-export default signup;
+}

@@ -15,7 +15,7 @@ import {
 
 import Loader from "@/components/Global/Loader";
 
-const voterDetails = () => {
+export default function VoterDetailsPage() {
   const searchParams = useSearchParams();
   const [voter, setVoter] = useState();
   const [loading, setLoading] = useState(false);
@@ -58,6 +58,4 @@ const voterDetails = () => {
       <Footer />
     </>
   );
-};
-
-export default voterDetails;
+}

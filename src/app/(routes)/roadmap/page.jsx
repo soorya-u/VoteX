@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
 import { Cursor, ScrollToTop, Footer, Header, RoadMap } from "@/components";
 
-const roadmap = () => {
+export default function RoadMapPage() {
   return (
     <>
       <ScrollToTop />
@@ -12,6 +12,4 @@ const roadmap = () => {
       <Footer />
     </>
   );
-};
-
-export default roadmap;
+}

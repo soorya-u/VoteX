@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
 import { Cursor, ScrollToTop, Footer, Header, Contact } from "@/components";
 
-const contact = () => {
+export default function ContactPage() {
   return (
     <>
       <ScrollToTop />
@@ -12,6 +12,4 @@ const contact = () => {
       <Footer />
     </>
   );
-};
-
-export default contact;
+}

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useEffect, useState } from "react";
 import {
@@ -12,7 +12,7 @@ import {
 
 import { useVotingDapp } from "@/hooks/use-voting-dapp";
 
-const registerVoters = () => {
+export default function ApprovedVotersPage() {
   const [candidates, setCandidates] = useState();
   const [loading, setLoading] = useState(false);
 
@@ -43,6 +43,4 @@ const registerVoters = () => {
       <Footer />
     </>
   );
-};
-
-export default registerVoters;
+}

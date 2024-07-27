@@ -14,7 +14,7 @@ import Preview from "@/components/Global/Preview";
 import PreviewImg from "@/components/Global/PreviewImg";
 import Loader from "@/components/Global/Loader";
 
-const voter = () => {
+export default function UpdateVoterPage() {
   const { loader, setLoader, updateVoter: updateVoterFn } = useVotingDapp();
 
   const [pdf, setPdf] = useState(null);
@@ -269,6 +269,4 @@ const voter = () => {
       </section>
     </>
   );
-};
-
-export default voter;
+}
