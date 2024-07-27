@@ -14,7 +14,7 @@ import Loader from "@/components/Global/Loader";
 
 import { useVotingDapp } from "@/hooks/use-voting-dapp";
 
-const candidateDetails = () => {
+export default function CandidateDetailsPage() {
   const searchParams = useSearchParams();
   const [candidate, setCandidate] = useState();
   const [user, setUser] = useState();
@@ -84,6 +84,4 @@ const candidateDetails = () => {
       <Footer />
     </>
   );
-};
-
-export default candidateDetails;
+}

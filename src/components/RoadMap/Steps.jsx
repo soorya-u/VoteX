@@ -7,9 +7,9 @@ const Steps = () => {
             <div className="heading__content mb-10 mb-lg-15 text-center">
               <h1 className="display-four mb-5 mb-lg-6">Roadmap to use</h1>
               <p className="fs-six-up mx-ch mx-auto">
-                "Our roadmap guides users through secure registration, intuitive
-                interfaces, and transparent blockchain interactions, evolving
-                with user feedback."
+                &quot;Our roadmap guides users through secure registration,
+                intuitive interfaces, and transparent blockchain interactions,
+                evolving with user feedback.&quot;
               </p>
             </div>
           </div>
@@ -23,18 +23,18 @@ const Steps = () => {
                   <span className="heading fs-three p1-color mb-3">1.</span>
                   <h4>Introducton</h4>
                   <p className="mt-4">
-                    "Seamlessly register, interact, and innovate with our
-                    user-friendly blockchain DApp."
+                    &quot;Seamlessly register, interact, and innovate with our
+                    user-friendly blockchain DApp.&quot;
                   </p>
                 </div>
               </div>
               <div className="roadmap__part">
                 <div className="event cus-rounded-1 p-4 p-md-5 p-xxl-10">
                   <span className="heading fs-three p1-color mb-3">2.</span>
-                  <h4>Create Metamask account & connect</h4>
+                  <h4>Create Freighter account & connect</h4>
                   <p className="mt-4">
-                    "Create a Metamask account to securely interact with
-                    blockchain applications and manage digital assets."{" "}
+                    &quot;Create a Freighter account to securely interact with
+                    blockchain applications and manage digital assets.&quot;{" "}
                   </p>
                 </div>
               </div>

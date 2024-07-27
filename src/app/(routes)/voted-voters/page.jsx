@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useEffect, useState } from "react";
 
@@ -13,7 +13,7 @@ import {
   Team,
 } from "@/components";
 
-const allVotersVoted = () => {
+export default function VotedVotersPage() {
   const [voters, setVoters] = useState();
 
   const { votedVoters } = useVotingDapp();
@@ -38,6 +38,4 @@ const allVotersVoted = () => {
       <Footer />
     </>
   );
-};
-
-export default allVotersVoted;
+}

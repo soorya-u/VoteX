@@ -14,7 +14,7 @@ const Provide = () => {
           <div className="col-lg-8 col-xxl-7">
             <div className="heading__content mb-10 mb-lg-15 text-center">
               <span className="heading p1-color fs-five mb-5">
-                We Provide World’s
+                We Provide World&apos;s
               </span>
               <h3 className="mb-5 mb-lg-6">
                 Decentralized voting community{" "}
@@ -34,7 +34,7 @@ const Provide = () => {
               </span>
               <h4 className="mt-5 mb-5">At Best Reputation</h4>
               <p>
-              At Best Reputation, we enhance your online presence with integrity and excellence. Trust our expert team to build and maintain your brand's credibility, ensuring you shine in the digital world.
+              At Best Reputation, we enhance your online presence with integrity and excellence. Trust our expert team to build and maintain your brand&apos;s credibility, ensuring you shine in the digital world.
               </p>
             </div>
           </div>
@@ -45,7 +45,7 @@ const Provide = () => {
               </span>
               <h4 className="mt-5 mb-5">Welcome to Democrochain </h4>
               <p>
-              Join millions in shaping our nation's future by casting your vote. Every vote counts—be informed, get involved, and make a difference. Vote responsibly!
+              Join millions in shaping our nation&apos;s future by casting your vote. Every vote counts—be informed, get involved, and make a difference. Vote responsibly!
               </p>
             </div>
           </div>

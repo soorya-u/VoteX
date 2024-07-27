@@ -10,7 +10,7 @@ import { Cursor, ScrollToTop } from "@/components";
 import Input from "@/components/Global/Input";
 import Loader from "@/components/Global/Loader";
 
-const voter = () => {
+export default function OwnerPage() {
   const {
     loader,
     changeOwner: changeOwnerFn,
@@ -154,6 +154,4 @@ const voter = () => {
       </section>
     </>
   );
-};
-
-export default voter;
+}

@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
 import { Cursor, ScrollToTop, Footer, Header, About } from "@/components";
 
-const about = () => {
+export default function AboutPage() {
   return (
     <>
       <ScrollToTop />
@@ -12,6 +12,4 @@ const about = () => {
       <Footer />
     </>
   );
-};
-
-export default about;
+}

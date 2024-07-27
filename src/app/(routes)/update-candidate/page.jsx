@@ -14,7 +14,7 @@ import UploadImg from "@/components/Global/UploadImg";
 import PreviewImg from "@/components/Global/PreviewImg";
 import Loader from "@/components/Global/Loader";
 
-const signup = () => {
+export default function UpdateCandidatesPage() {
   const {
     loader,
     setLoader,
@@ -325,6 +325,4 @@ const signup = () => {
       </section>
     </>
   );
-};
-
-export default signup;
+}

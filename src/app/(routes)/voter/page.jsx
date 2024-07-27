@@ -15,7 +15,7 @@ import PreviewImg from "@/components/Global/PreviewImg";
 import Loader from "@/components/Global/Loader";
 import PopUp from "@/components/Global/PopUp";
 
-const voter = () => {
+export default function VoterPage() {
   const { loader, setLoader, registerVoter, getSingleVoter, publicKey } =
     useVotingDapp();
 
@@ -25,7 +25,6 @@ const voter = () => {
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  //VOTER DETAIL
   const [updateVoter, setUpdateVoter] = useState({
     _name: "",
     _voterAddress: "",
@@ -290,6 +289,4 @@ const voter = () => {
       </section>
     </>
   );
-};
-
-export default voter;
+}
