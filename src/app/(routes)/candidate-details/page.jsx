@@ -9,8 +9,8 @@ import {
   Footer,
   Header,
   TeamDetail,
-} from "../components";
-import Loader from "../components/Global/Loader";
+} from "@/components";
+import Loader from "@/components/Global/Loader";
 
 import { useVotingDapp } from "@/hooks/use-voting-dapp";
 
