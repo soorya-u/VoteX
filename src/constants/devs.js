@@ -3,7 +3,7 @@ export const devsInfo = [
     name: "Soorya U",
     description:
       "A passionate developer dedicated to building exceptional projects and achieving perfection in every detail.",
-    imageUrl: "assets/images/devs/soorya.png",
+    imageUrl: "assets/images/devs/soorya.jpg",
     links: {
       web: "https://soorya-u.dev",
       github: "https://github.com/soorya-u",
