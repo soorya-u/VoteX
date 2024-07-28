@@ -14,7 +14,7 @@ export const devsInfo = [
   {
     name: "Saanvi M J",
     description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint voluptas qui numquam, quasi saepe impedit! obcaecati ducimus nisi!",
+      "Hardworking college student with a motivated attitude and active participation, possessing a variety of powerful, grasping, and innovative skills.",
     imageUrl: "assets/images/devs/saanvi.jpg",
     links: {
       instagram: "https://www.instagram.com/saanvi._m.j",
