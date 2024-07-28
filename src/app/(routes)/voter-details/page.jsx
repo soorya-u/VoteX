@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
-import { useVotingDapp } from "@/hooks/use-voting-dapp";
+import { useVotingDapp } from "@/hooks/use-contract";
 import {
   Cursor,
   Preloader,

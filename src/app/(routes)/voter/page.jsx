@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 
 import { notifyError, notifySuccess } from "@/lib/toast";
-import { useVotingDapp } from "@/hooks/use-voting-dapp";
+import { useVotingDapp } from "@/hooks/use-contract";
 import { Cursor, Preloader, ScrollToTop } from "@/components";
 
 import Input from "@/components/Global/Input";

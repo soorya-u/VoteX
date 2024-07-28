@@ -12,7 +12,7 @@ import {
 } from "@/components";
 import Loader from "@/components/Global/Loader";
 
-import { useVotingDapp } from "@/hooks/use-voting-dapp";
+import { useVotingDapp } from "@/hooks/use-contract";
 
 export default function CandidateDetailsPage() {
   const searchParams = useSearchParams();

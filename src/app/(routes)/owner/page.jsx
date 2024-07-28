@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 
-import { useVotingDapp } from "@/hooks/use-voting-dapp";
+import { useVotingDapp } from "@/hooks/use-contract";
 import { ownerPublicKey } from "@/constants/contract";
 
 import { Cursor, ScrollToTop } from "@/components";
