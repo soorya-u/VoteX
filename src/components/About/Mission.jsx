@@ -17,7 +17,8 @@ const Mission = () => {
           <div className="col-xl-4">
             <p className="fs-six-up mx-ch text-xl-end mt-3 mt-xl-0">
               we believe that success is not reserved for the privileged few.
-              It&apos;s a journey that anyone can embark upon with right guidance
+              It&apos;s a journey that anyone can embark upon with right
+              guidance
             </p>
           </div>
         </div>
@@ -25,36 +26,42 @@ const Mission = () => {
           <div className="col-md-6 col-xxl-4">
             <div className="provide-world__card nb3-bg text-center cus-rounded-1 py-5 py-lg-10 px-4 px-lg-9">
               <span className="provide-card__icon d-center nb4-bg p-4 rounded-circle mx-auto">
-                <i className="ti ti-currency-dollar-brunei  fs-three p1-color"></i>
+                <i className="ti ti-users  fs-three p1-color"></i>
               </span>
               <h4 className="mt-5 mb-5">Client-first approach</h4>
               <p>
-                Transformed the trading landscape. Online trading platforms and
-                mobile apps have made it easier than ever for individuals
+                Transformed the voting landscape. By leveraging blockchain
+                technology, our app has made it easier than ever for individuals
+                to securely and transparently participate in voting processes
+                from anywhere.
               </p>
             </div>
           </div>
           <div className="col-md-6 col-xxl-4">
             <div className="provide-world__card nb3-bg text-center cus-rounded-1 py-5 py-lg-10 px-4 px-lg-9">
               <span className="provide-card__icon d-center nb4-bg p-4 rounded-circle mx-auto">
-                <i className="ti ti-brand-cakephp fs-three p1-color"></i>
+                <i className="ti ti-shield fs-three p1-color"></i>
               </span>
               <h4 className="mt-5 mb-5">Integrity and Compliance</h4>
               <p>
-                One of the fundamental principles of trading is risk management.
-                Successful traders carefully manage their capital,
+                One of the fundamental principles of voting is security and
+                transparency. Successful voting systems ensure that each vote is
+                accurately recorded and counted, providing voters with
+                confidence in the electoral process.
               </p>
             </div>
           </div>
           <div className="col-md-6 col-xxl-4">
             <div className="provide-world__card nb3-bg text-center cus-rounded-1 py-5 py-lg-10 px-4 px-lg-9">
               <span className="provide-card__icon d-center nb4-bg p-4 rounded-circle mx-auto">
-                <i className="ti ti-broadcast fs-three p1-color"></i>
+                <i className="ti ti-bolt fs-three p1-color"></i>
               </span>
               <h4 className="mt-5 mb-5">Fast Execution</h4>
               <p>
-                Trading is not without its challenges, as markets can be highly
-                volatile and unpredictable. It requires discipline
+                Voting is not without its challenges, as ensuring the security
+                and integrity of the process can be complex and demanding. It
+                requires rigorous measures to prevent fraud and ensure
+                transparency, fostering trust and participation among voters.
               </p>
             </div>
           </div>

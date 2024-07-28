@@ -1,7 +1,8 @@
 export const devsInfo = [
   {
     name: "Soorya U",
-    description: "Anonymus dev",
+    description:
+      "A passionate developer dedicated to building exceptional projects and achieving perfection in every detail.",
     imageUrl: "assets/images/devs/soorya.png",
     links: {
       web: "https://soorya-u.dev",
@@ -12,7 +13,8 @@ export const devsInfo = [
   },
   {
     name: "Saanvi M J",
-    description: "Short in height not in Talent !!",
+    description:
+      "Hardworking college student with a motivated attitude and active participation, possessing a variety of powerful, grasping, and innovative skills.",
     imageUrl: "assets/images/devs/saanvi.jpg",
     links: {
       instagram: "https://www.instagram.com/saanvi._m.j",
@@ -23,7 +25,8 @@ export const devsInfo = [
   },
   {
     name: "Likhith S V",
-    description: "Hell world !!",
+    description:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint voluptas qui numquam, quasi saepe impedit! obcaecati ducimus nisi!",
     imageUrl: "assets/images/devs/likhith.jpg",
     links: {
       web: null,
@@ -34,13 +37,14 @@ export const devsInfo = [
   },
   {
     name: "Hamsa C S",
-    description: "ERROR 22/09 ",
+    description:
+      "My commitment to coding is driven by a desire to develop innovative solutions that have a meaningful impact on real-world issues.",
     imageUrl: "assets/images/devs/hamsa.jpg",
     links: {
       web: "https://hamsacs.github.io/HamsaCS",
-      github: null,
-      linkedin: null,
-      x: null,
+      github: "https://github.com/HamsaCS",
+      linkedin: "http://linkedin.com/in/hamsa-cs-621a9627a",
+      instagram: "https://www.instagram.com/hamsa_c_s",
     },
   },
 ];
