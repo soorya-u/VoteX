@@ -1,10 +1,11 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
 import { useContract } from "@/hooks/use-contract";
 import { useWindowDimension } from "@/hooks/use-window-dimension";
 import { ownerPublicKey } from "@/constants/contract";
-import { noSSR } from "next/dynamic";
 
 const Header = () => {
   const [isConnected, setIsConnected] = useState(false);
