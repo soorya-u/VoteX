@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import { useVotingDapp } from "@/hooks/use-voting-dapp";
+import { useVotingDapp } from "@/hooks/use-contract";
 
 import {
   Cursor,

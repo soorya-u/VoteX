@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
-import { useVotingDapp } from "@/hooks/use-voting-dapp";
+import { useVotingDapp } from "@/hooks/use-contract";
 import { notifyError, notifySuccess } from "@/lib/toast";
 
 import { Cursor, Preloader, ScrollToTop } from "@/components";

@@ -1,7 +1,10 @@
-import Link from "next/link";
-import { useVotingDapp } from "@/hooks/use-voting-dapp";
-import { ownerPublicKey } from "@/constants/contract";
 import { useEffect, useState } from "react";
+import Link from "next/link";
+
+import { useVotingDapp } from "@/hooks/use-contract";
+import { useWindowDimension } from "@/hooks/use-window-dimension";
+import { ownerPublicKey } from "@/constants/contract";
+import { noSSR } from "next/dynamic";
 
 const Header = () => {
   const [isConnected, setIsConnected] = useState(false);
@@ -253,11 +256,16 @@ const Header = () => {
 };
 
 const Dropdown = ({ btnName, children }) => {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(true);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const { width } = useWindowDimension();
+  console.log(width);
+  console.log(isDropdownOpen);
   return (
     <li className="dropdown show-dropdown">
       <button
-        onClick={() => setIsDropdownOpen((prev) => !prev)}
+        onClick={
+          width <= 990 ? () => setIsDropdownOpen((prev) => !prev) : () => {}
+        }
         type="button"
         aria-label="Navbar Dropdown Button"
         className="dropdown-nav header-hover-link"
@@ -266,7 +274,7 @@ const Dropdown = ({ btnName, children }) => {
       </button>
       <ul
         className="dropdown-menu"
-        style={{ display: isDropdownOpen && "block" }}
+        style={{ display: width > 990 || isDropdownOpen ? "block" : "none" }}
       >
         {children}
       </ul>

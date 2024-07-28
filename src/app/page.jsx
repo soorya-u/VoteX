@@ -15,7 +15,7 @@ import {
   Vote,
 } from "@/components";
 
-import { useVotingDapp } from "@/hooks/use-voting-dapp";
+import { useVotingDapp } from "@/hooks/use-contract";
 
 export default function IndexPage() {
   const [initialData, setInitialData] = useState();
