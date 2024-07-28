@@ -258,14 +258,10 @@ const Header = () => {
 const Dropdown = ({ btnName, children }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { width } = useWindowDimension();
-  console.log(width);
-  console.log(isDropdownOpen);
   return (
     <li className="dropdown show-dropdown">
       <button
-        onClick={
-          width <= 990 ? () => setIsDropdownOpen((prev) => !prev) : () => {}
-        }
+        onClick={() => width <= 990 && setIsDropdownOpen((prev) => !prev)}
         type="button"
         aria-label="Navbar Dropdown Button"
         className="dropdown-nav header-hover-link"

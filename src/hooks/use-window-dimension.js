@@ -10,8 +10,8 @@ function getWindowDimensions() {
   }
 
   return {
-    width: 0,
-    height: 0,
+    width: 991,
+    height: 991,
   };
 }
 
