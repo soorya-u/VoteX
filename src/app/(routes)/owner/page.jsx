@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 
-import { useVotingDapp } from "@/hooks/use-contract";
+import { useContract } from "@/hooks/use-contract";
 import { ownerPublicKey } from "@/constants/contract";
 
 import { Cursor, ScrollToTop } from "@/components";
@@ -17,7 +17,7 @@ export default function OwnerPage() {
     resetContract,
     setVotingPeriod,
     publicKey,
-  } = useVotingDapp();
+  } = useContract();
 
   const [voteTime, setVoteTime] = useState({
     startTime: "",

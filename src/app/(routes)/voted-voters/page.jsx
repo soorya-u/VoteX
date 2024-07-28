@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import { useVotingDapp } from "@/hooks/use-contract";
+import { useContract } from "@/hooks/use-contract";
 
 import {
   Cursor,
@@ -16,7 +16,7 @@ import {
 export default function VotedVotersPage() {
   const [voters, setVoters] = useState();
 
-  const { votedVoters } = useVotingDapp();
+  const { votedVoters } = useContract();
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {

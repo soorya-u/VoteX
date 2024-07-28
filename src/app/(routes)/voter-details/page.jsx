@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
-import { useVotingDapp } from "@/hooks/use-contract";
+import { useContract } from "@/hooks/use-contract";
 import {
   Cursor,
   Preloader,
@@ -25,7 +25,7 @@ export default function VoterDetailsPage() {
     getSingleVoter,
     approveVoter: approveVoterFn,
     rejectVoter: rejectVoterFn,
-  } = useVotingDapp();
+  } = useContract();
 
   useEffect(() => {
     setLoading(true);

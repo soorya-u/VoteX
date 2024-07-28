@@ -15,7 +15,7 @@ import {
   Vote,
 } from "@/components";
 
-import { useVotingDapp } from "@/hooks/use-contract";
+import { useContract } from "@/hooks/use-contract";
 
 export default function IndexPage() {
   const [initialData, setInitialData] = useState();
@@ -23,7 +23,7 @@ export default function IndexPage() {
   const [loading, setLoading] = useState(false);
 
   const { highestVotedCandidate, initContractData, publicKey } =
-    useVotingDapp();
+    useContract();
 
   useEffect(() => {
     if (!publicKey) return;

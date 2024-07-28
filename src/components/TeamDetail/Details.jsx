@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Link from "next/link";
 
-import { useVotingDapp } from "@/hooks/use-contract";
+import { useContract } from "@/hooks/use-contract";
 import { ownerPublicKey } from "@/constants/contract";
 import { shortenAddress } from "@/utils";
 
@@ -19,7 +19,7 @@ const Details = ({
   user,
 }) => {
   const [message, setMessage] = useState();
-  const { publicKey } = useVotingDapp();
+  const { publicKey } = useContract();
 
   return (
     <section className="team-details pt-120 pb-120 position-relative z-0">

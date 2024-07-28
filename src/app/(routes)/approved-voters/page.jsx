@@ -10,13 +10,13 @@ import {
   Team,
 } from "@/components";
 
-import { useVotingDapp } from "@/hooks/use-contract";
+import { useContract } from "@/hooks/use-contract";
 
 export default function ApprovedVotersPage() {
   const [candidates, setCandidates] = useState();
   const [loading, setLoading] = useState(false);
 
-  const { getRegisteredVoters } = useVotingDapp();
+  const { getRegisteredVoters } = useContract();
 
   function filterUsersByStatus(users, status) {
     return users?.filter((user) => user.status === status);

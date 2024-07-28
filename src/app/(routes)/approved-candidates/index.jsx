@@ -10,7 +10,7 @@ import {
   Team,
 } from "@/components";
 import Loader from "@/components/Global/Loader";
-import { useVotingDapp } from "@/hooks/use-contract";
+import { useContract } from "@/hooks/use-contract";
 
 export default function ApprovedCandidatesPage() {
   const [candidates, setCandidates] = useState();
@@ -27,7 +27,7 @@ export default function ApprovedCandidatesPage() {
     initContractData,
     getSingleVoter,
     publicKey,
-  } = useVotingDapp();
+  } = useContract();
 
   function filterUsersByStatus(users, status) {
     return users?.filter((user) => user.status === status);

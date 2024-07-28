@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 
-import { useVotingDapp } from "@/hooks/use-contract";
+import { useContract } from "@/hooks/use-contract";
 import { notifyError, notifySuccess } from "@/lib/toast";
 import { Cursor, ScrollToTop } from "@/components";
 
@@ -19,7 +19,7 @@ export default function UpdateCandidatesPage() {
     loader,
     setLoader,
     updateCandidate: updateCandidateFn,
-  } = useVotingDapp();
+  } = useContract();
 
   const [pdf, setPdf] = useState(null);
   const [image, setImage] = useState(null);

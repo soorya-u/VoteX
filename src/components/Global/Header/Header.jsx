@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
-import { useVotingDapp } from "@/hooks/use-contract";
+import { useContract } from "@/hooks/use-contract";
 import { useWindowDimension } from "@/hooks/use-window-dimension";
 import { ownerPublicKey } from "@/constants/contract";
 import { noSSR } from "next/dynamic";
@@ -9,7 +9,7 @@ import { noSSR } from "next/dynamic";
 const Header = () => {
   const [isConnected, setIsConnected] = useState(false);
   const [isNavBarOpen, setIsNavBarOpen] = useState(false);
-  const { connectWallet, publicKey } = useVotingDapp();
+  const { connectWallet, publicKey } = useContract();
 
   useEffect(() => {
     if (publicKey) setIsConnected(true);

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
-import { useVotingDapp } from "@/hooks/use-contract";
+import { useContract } from "@/hooks/use-contract";
 import { notifyError, notifySuccess } from "@/lib/toast";
 
 import { Cursor, Preloader, ScrollToTop } from "@/components";
@@ -22,7 +22,7 @@ export default function CandidatePage() {
     registerCandidate,
     getSingleCandidate,
     publicKey,
-  } = useVotingDapp();
+  } = useContract();
 
   const [candidate, setCandidate] = useState();
   const [loading, setLoading] = useState(false);

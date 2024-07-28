@@ -12,7 +12,7 @@ import {
 } from "@/components";
 import Loader from "@/components/Global/Loader";
 
-import { useVotingDapp } from "@/hooks/use-contract";
+import { useContract } from "@/hooks/use-contract";
 
 export default function CandidateDetailsPage() {
   const searchParams = useSearchParams();
@@ -33,7 +33,7 @@ export default function CandidateDetailsPage() {
     rejectCandidate: rejectCandidateFn,
     getSingleVoter,
     initContractData,
-  } = useVotingDapp();
+  } = useContract();
 
   useEffect(() => {
     setLoading(true);

@@ -9,12 +9,12 @@ import {
   Header,
   Team,
 } from "@/components";
-import { useVotingDapp } from "@/hooks/use-contract";
+import { useContract } from "@/hooks/use-contract";
 
 export default function AllVotersPage() {
   const [voters, setVoters] = useState();
   const [loading, setLoading] = useState();
-  const { getRegisteredVoters } = useVotingDapp();
+  const { getRegisteredVoters } = useContract();
 
   useEffect(() => {
     setLoading(true);
