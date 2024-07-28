@@ -29,9 +29,9 @@ const Company = () => {
                     Our Team Story
                   </span>
                   <h3 className="mb-3 mt-5">Who We Are</h3>
-                  <p>
-                    A group of students from Sai Angels who dreamt to be in IIT
-                    but ended up in AIT !!!
+                  <p  >
+                    We are a team of four passionate developers with a keen
+                    interest in blockchain technology.
                   </p>
                 </div>
               </div>
@@ -49,8 +49,7 @@ const Company = () => {
                   <div className="content">
                     <h3 className="mb-3">What We Do</h3>
                     <p>
-                      A group of students from Sai Angels who dreamt to be in
-                      IIT but ended up in AIT !!! Our team, {" "}
+                      Our team,{"  "}
                       <span
                         style={{
                           fontWeight: "bold",
