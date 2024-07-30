@@ -3,9 +3,7 @@
 import { useState, useEffect } from "react";
 
 import {
-  Cursor,
   Preloader,
-  ScrollToTop,
   Footer,
   Header,
   HeroSection,
@@ -22,8 +20,7 @@ export default function IndexPage() {
   const [highest, setHighest] = useState();
   const [loading, setLoading] = useState(false);
 
-  const { highestVotedCandidate, initContractData, publicKey } =
-    useContract();
+  const { highestVotedCandidate, initContractData, publicKey } = useContract();
 
   useEffect(() => {
     if (!publicKey) return;
@@ -41,8 +38,6 @@ export default function IndexPage() {
   return (
     <>
       {loading && <Preloader />}
-      <ScrollToTop />
-      <Cursor />
       <Header />
       <HeroSection initialData={initialData} highest={highest} />
       <WhyVote />

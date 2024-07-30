@@ -1,14 +1,7 @@
-"use client"
+"use client";
 
 import { useEffect, useState } from "react";
-import {
-  Cursor,
-  Preloader,
-  ScrollToTop,
-  Footer,
-  Header,
-  Team,
-} from "@/components";
+import { Preloader, Footer, Header, Team } from "@/components";
 import Loader from "@/components/Global/Loader";
 import { useContract } from "@/hooks/use-contract";
 
@@ -57,8 +50,6 @@ export default function ApprovedCandidatesPage() {
   return (
     <>
       {loading && <Preloader />}
-      <ScrollToTop />
-      <Cursor />
       <Header />
       <Team
         candidates={candidates}
@@ -73,5 +64,4 @@ export default function ApprovedCandidatesPage() {
       <Footer />
     </>
   );
-};
-
+}

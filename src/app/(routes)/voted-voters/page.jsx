@@ -4,14 +4,7 @@ import { useEffect, useState } from "react";
 
 import { useContract } from "@/hooks/use-contract";
 
-import {
-  Cursor,
-  Preloader,
-  ScrollToTop,
-  Footer,
-  Header,
-  Team,
-} from "@/components";
+import { Preloader, Footer, Header, Team } from "@/components";
 
 export default function VotedVotersPage() {
   const [voters, setVoters] = useState();
@@ -31,8 +24,6 @@ export default function VotedVotersPage() {
   return (
     <>
       {loading && <Preloader />}
-      <ScrollToTop />
-      <Cursor />
       <Header />
       <Team candidates={voters} path={"voter"} />
       <Footer />

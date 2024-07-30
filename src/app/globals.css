@@ -63,7 +63,6 @@
   opacity: 1;
 }
 
-/* ??LOADER */
 .custom-loader-wrapper {
   position: fixed;
   top: 0;
@@ -93,9 +92,7 @@
     transform: rotate(360deg);
   }
 }
-/* END LOADER */
 
-/* //POPUP MODEL */
 .custom-new {
   position: fixed;
   top: 0;
@@ -189,9 +186,7 @@
 .custom-mark-as-read:hover {
   background-color: rgb(230, 231, 233);
 }
-/* //END POPUP MODEL */
 
-/* //MEMBER POSITION */
 .new-custom-position {
   position: relative;
 }

@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useContract } from "@/hooks/use-contract";
 import { notifyError, notifySuccess } from "@/lib/toast";
 
-import { Cursor, Preloader, ScrollToTop } from "@/components";
+import { Preloader } from "@/components";
 import Input from "@/components/Global/Input";
 import Upload from "@/components/Global/Upload";
 import Preview from "@/components/Global/Preview";
@@ -62,8 +62,6 @@ export default function CandidatePage() {
   return (
     <>
       {loading && <Preloader />}
-      <ScrollToTop />
-      <Cursor />
       <section className="sign nb4-bg h-100 d-flex align-items-center position-relative z-0">
         <div className="animation position-absolute top-0 left-0 w-100 h-100 z-n1">
           <img
