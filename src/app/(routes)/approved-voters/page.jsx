@@ -1,14 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import {
-  Cursor,
-  Preloader,
-  ScrollToTop,
-  Footer,
-  Header,
-  Team,
-} from "@/components";
+import { Preloader, Footer, Header, Team } from "@/components";
 
 import { useContract } from "@/hooks/use-contract";
 
@@ -36,8 +29,6 @@ export default function ApprovedVotersPage() {
   return (
     <>
       {loading && <Preloader />}
-      <ScrollToTop />
-      <Cursor />
       <Header />
       <Team candidates={candidates} path={"voter"} />
       <Footer />

@@ -4,14 +4,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
 import { useContract } from "@/hooks/use-contract";
-import {
-  Cursor,
-  Preloader,
-  ScrollToTop,
-  Footer,
-  Header,
-  TeamDetail,
-} from "@/components";
+import { Preloader, Footer, Header, TeamDetail } from "@/components";
 
 import Loader from "@/components/Global/Loader";
 
@@ -45,8 +38,6 @@ export default function VoterDetailsPage() {
   return (
     <>
       {loading && <Preloader />}
-      <ScrollToTop />
-      <Cursor />
       <Header />
       <TeamDetail
         candidate={voter}

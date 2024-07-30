@@ -1,12 +1,4 @@
 @import "../css/bootstrap.min.css";
-@import "../css/plugins/fontawesome.min.css";
-@import "../css/plugins/nice-select.css";
-@import "../css/plugins/magnific-popup.css";
-@import "../css/plugins/swiper.min.css";
-@import "../css/plugins/jquery-ui-min.css";
-@import "../css/plugins/odometer-min.css";
-@import "../css/plugins/materialicons.css";
-@import "../css/plugins/animate.css";
 @import "https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap";
 :root {
   --body-font: "Poppins", sans-serif;

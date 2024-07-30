@@ -2,14 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import {
-  Cursor,
-  Preloader,
-  ScrollToTop,
-  Footer,
-  Header,
-  TeamDetail,
-} from "@/components";
+import { Preloader, Footer, Header, TeamDetail } from "@/components";
 import Loader from "@/components/Global/Loader";
 
 import { useContract } from "@/hooks/use-contract";
@@ -62,12 +55,10 @@ export default function CandidateDetailsPage() {
   const rejectCandidate = async (address, message) => {
     await rejectCandidateFn(address, message);
   };
-  //
+
   return (
     <>
       {loading && <Preloader />}
-      <ScrollToTop />
-      <Cursor />
       <Header />
       <TeamDetail
         candidate={candidate}
