@@ -2,7 +2,8 @@ import Link from "next/link";
 
 const Banner = () => {
   return (
-    <section className="banner-section  pt-120 pb-120">
+    // TODO: Add based on media query
+    <section className="bg-banner bg-no-repeat bg-center bg-cover pt-[120px] pb-[120px]">
       <div className="container mt-lg-0 pt-18 pt-xl-20">
         <div className="row">
           <div className="col-12 breadcrumb-area ">

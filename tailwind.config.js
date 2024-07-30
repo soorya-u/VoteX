@@ -2,7 +2,11 @@
 module.exports = {
   content: ["./src/components/Global/*.{js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: {
+        banner: 'url("/assets/images/new-banner.png");',
+      },
+    },
   },
   plugins: [],
 };

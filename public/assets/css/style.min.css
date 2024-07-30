@@ -450,7 +450,6 @@ textarea:focus {
   border: 1px solid rgba(0, 0, 0, 0);
 }
 
-input.bg_transparent,
 textarea.bg_transparent {
   background: rgba(0, 0, 0, 0);
 }
@@ -2965,11 +2964,6 @@ iframe {
   .hero-section--secondary .video_content span {
     display: none;
   }
-}
-
-.banner-section {
-  background: url("/assets/images/new-banner.png") no-repeat center;
-  background-size: cover;
 }
 
 .why-trade .animation img:first-child {

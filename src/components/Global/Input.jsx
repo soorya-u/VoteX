@@ -1,12 +1,12 @@
 const Input = ({ name, placeholder, type, handleClick }) => {
   return (
-    <div className="single-input">
-      <label className="mb-2 nw1-color" htmlFor="lname">
+    <div>
+      <label className="mb-2 text-[#fefefe]" htmlFor="lname">
         {name}
       </label>
       <input
         type={type}
-        className="fs-six-up bg_transparent"
+        className="text-[18px] bg-transparent"
         name={name}
         id={name}
         placeholder={placeholder}
