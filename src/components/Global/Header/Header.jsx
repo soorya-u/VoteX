@@ -122,98 +122,100 @@ const Header = () => {
             }`}
             id="navbar-content"
           >
-            <ul className="navbar-nav gap-2 gap-lg-3 gap-xxl-8 align-self-center mx-auto mt-4 mt-lg-0">
-              <li className="dropdown show-dropdown">
-                <Link
-                  style={{ fontSize: 16 }}
-                  href="/"
-                  className="dropdown-nav header-hover-link"
-                >
-                  Home
-                </Link>
-              </li>
-              <Dropdown btnName={"Candidate"}>
-                <li>
+            {
+              <ul className="navbar-nav gap-2 gap-lg-3 gap-xxl-8 align-self-center mx-auto mt-4 mt-lg-0">
+                <li className="dropdown show-dropdown">
                   <Link
-                    href="/all-candidates"
-                    className="dropdown-item header-hover-link"
+                    style={{ fontSize: 16 }}
+                    href="/"
+                    className="dropdown-nav hover:text-[#f73859]"
                   >
-                    All Candidates
+                    Home
                   </Link>
                 </li>
-                <li>
-                  <Link
-                    href="/approved-candidates"
-                    className="dropdown-item header-hover-link"
-                  >
-                    Approved Candidates
-                  </Link>
-                </li>
-              </Dropdown>
-              <Dropdown btnName={"Voter"}>
-                <li>
-                  <Link
-                    href="/all-voters"
-                    className="dropdown-item header-hover-link"
-                  >
-                    All Voters
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/approved-voters"
-                    className="dropdown-item header-hover-link"
-                  >
-                    Approved Voters
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/voted-voters"
-                    className="dropdown-item header-hover-link"
-                  >
-                    Voted Voters
-                  </Link>
-                </li>
-              </Dropdown>
-              {publicKey === ownerPublicKey && (
-                <li>
-                  <Link
-                    href="/owner"
-                    className="dropdown-item header-hover-link"
-                  >
-                    Owner
-                  </Link>
-                </li>
-              )}
-              <Dropdown btnName={"Resources"}>
-                <li>
-                  <Link
-                    href="/about"
-                    className="dropdown-item header-hover-link"
-                  >
-                    About Us
-                  </Link>
-                </li>
+                <Dropdown btnName={"Candidate"}>
+                  <li>
+                    <Link
+                      href="/all-candidates"
+                      className="dropdown-item hover:text-[#f73859]"
+                    >
+                      All Candidates
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/approved-candidates"
+                      className="dropdown-item hover:text-[#f73859]"
+                    >
+                      Approved Candidates
+                    </Link>
+                  </li>
+                </Dropdown>
+                <Dropdown btnName={"Voter"}>
+                  <li>
+                    <Link
+                      href="/all-voters"
+                      className="dropdown-item hover:text-[#f73859]"
+                    >
+                      All Voters
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/approved-voters"
+                      className="dropdown-item hover:text-[#f73859]"
+                    >
+                      Approved Voters
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/voted-voters"
+                      className="dropdown-item hover:text-[#f73859]"
+                    >
+                      Voted Voters
+                    </Link>
+                  </li>
+                </Dropdown>
+                {publicKey === ownerPublicKey && (
+                  <li>
+                    <Link
+                      href="/owner"
+                      className="dropdown-item hover:text-[#f73859]"
+                    >
+                      Owner
+                    </Link>
+                  </li>
+                )}
+                <Dropdown btnName={"Resources"}>
+                  <li>
+                    <Link
+                      href="/about"
+                      className="dropdown-item hover:text-[#f73859]"
+                    >
+                      About Us
+                    </Link>
+                  </li>
 
-                <li>
-                  <Link
-                    href="/contact"
-                    className="dropdown-item header-hover-link"
-                  >
-                    Contact Us
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/roadmap"
-                    className="dropdown-item header-hover-link"
-                  >
-                    Roadmap
-                  </Link>
-                </li>
-              </Dropdown>
-            </ul>
+                  <li>
+                    <Link
+                      href="/contact"
+                      className="dropdown-item hover:text-[#f73859]"
+                    >
+                      Contact Us
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/roadmap"
+                      className="dropdown-item hover:text-[#f73859]"
+                    >
+                      Roadmap
+                    </Link>
+                  </li>
+                </Dropdown>
+              </ul>
+            }
           </div>
           <div className="right-area position-relative ms-0 d-center gap-1 gap-xl-4 d-none d-lg-flex">
             {isConnected ? (

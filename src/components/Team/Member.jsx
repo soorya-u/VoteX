@@ -15,9 +15,11 @@ const Member = ({
           {candidates?.map((item, index) => (
             <div
               key={index + 1}
-              className="new-custom-position col-sm-6 col-lg-4 col-xxl-3"
+              // relative is tw
+              className="relative col-sm-6 col-lg-4 col-xxl-3"
             >
-              <div className="team__card nb3-bg cus-rounded-1 overflow-hidden">
+              {/* group is tw */}
+              <div className="group team__card nb3-bg cus-rounded-1 overflow-hidden">
                 <div className="team__thumbs position-relative">
                   <img src={item?.image} alt="Image" className="w-100" />
                 </div>
@@ -43,9 +45,14 @@ const Member = ({
                       {item?._name}{" "}
                     </h5>
                   </Link>
-                  <p className="new-custom-top">
-                    <strong>{item?.status}</strong>
-                  </p>
+                  {
+                    // below elements are tw
+                    <p className="absolute -top-[18rem] text-[#f73859]">
+                      <strong className="group-hover:text-[#eee6e9]">
+                        {item?.status}
+                      </strong>
+                    </p>
+                  }
 
                   {path === "candidate" &&
                     item?.status === "Approved" &&

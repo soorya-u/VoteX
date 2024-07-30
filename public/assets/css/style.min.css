@@ -29,29 +29,15 @@
   font-size: 72px;
 }
 
-.display-three {
-  font-size: 64px;
-}
-
 .display-four {
   font-size: 56px;
 }
 
-.display-five {
-  font-size: 48px;
-}
-
-.display-six {
-  font-size: 40px;
-}
-
-.fs-one,
 h1,
 h1 > a {
   font-size: 48px;
 }
 
-.fs-two,
 h2,
 h2 > a {
   font-size: 40px;
@@ -93,10 +79,6 @@ h6 > a {
   font-size: 14px;
 }
 
-.fs-eight {
-  font-size: 12px;
-}
-
 table thead tr th {
   font-size: 16px;
   line-height: 150%;
@@ -119,9 +101,7 @@ li {
   .display-two {
     font-size: 68px;
   }
-  .display-three {
-    font-size: 60px;
-  }
+
   h1,
   h1 > a {
     font-size: 40px;
@@ -150,12 +130,6 @@ li {
   padding-bottom: 120px;
 }
 
-@media (min-width: 991px) {
-  .pb-lg-120 {
-    padding-bottom: 120px !important;
-  }
-}
-
 @media (max-width: 991px) {
   .display-one {
     font-size: 68px;
@@ -163,24 +137,15 @@ li {
   .display-two {
     font-size: 62px;
   }
-  .display-three {
-    font-size: 56px;
-  }
+
   .display-four {
     font-size: 48px;
   }
-  .display-five {
-    font-size: 42px;
-  }
-  .display-six {
-    font-size: 32px;
-  }
-  .fs-one,
+
   h1,
   h1 > a {
     font-size: 36px;
   }
-  .fs-two,
   h2,
   h2 > a {
     font-size: 30px;
@@ -246,41 +211,17 @@ li {
   .display-two {
     font-size: 48px;
   }
-  .display-three {
-    font-size: 38px;
-  }
+
   .display-four {
     font-size: 30px;
   }
-  .display-five {
-    font-size: 24px;
-  }
-  .display-six {
-    font-size: 20px;
-  }
+
   .pt-120 {
     padding-top: 50px;
   }
   .pb-120 {
     padding-bottom: 50px;
   }
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
-body {
-  font-family: var(--body-font);
-  background-color: rgb(var(--nb4));
-  color: rgb(var(--nw2));
-  font-size: 16px;
-  line-height: 150%;
-  padding: 0;
-  margin: 0;
-  font-weight: 400;
-  overflow-x: hidden;
-  position: relative;
 }
 
 section,
@@ -328,10 +269,7 @@ h6,
 h6 > a,
 .display-one,
 .display-two,
-.display-three,
 .display-four,
-.display-five,
-.display-six,
 .heading {
   font-family: var(--head-font);
   color: rgba(var(--nw1), 1);
@@ -357,10 +295,7 @@ h6 span,
 h6 > a span,
 .display-one span,
 .display-two span,
-.display-three span,
 .display-four span,
-.display-five span,
-.display-six span,
 .heading span {
   font-size: inherit;
   font-family: inherit;
@@ -383,10 +318,7 @@ h6 button,
 h6 > a button,
 .display-one button,
 .display-two button,
-.display-three button,
 .display-four button,
-.display-five button,
-.display-six button,
 .heading button {
   color: inherit;
 }
@@ -547,20 +479,12 @@ select {
   color: rgba(var(--nb4), 1);
 }
 
-.z-1 {
-  z-index: 1;
-}
-
 .z-0 {
   z-index: 0;
 }
 
 .z-n1 {
   z-index: -1;
-}
-
-.z-n2 {
-  z-index: -2;
 }
 
 .p1-color {

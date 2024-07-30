@@ -7,50 +7,8 @@
 @tailwind components;
 @tailwind utilities;
 
-.custom-icon svg {
-  height: 1rem;
-  width: 1rem;
-}
-
-.custom-mark-as-read {
-  display: inline-block;
-  border-radius: 0.5rem;
-  width: 100%;
-  padding: 0.75rem 1.25rem;
-  text-align: center;
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  font-weight: 600;
-}
-
-.custom-mark-as-read {
-  margin-top: 0.5rem;
-  background-color: rgba(249, 250, 251, 1);
-  color: rgba(107, 114, 128, 1);
-  transition: all 0.15s ease;
-}
-
-.custom-mark-as-read:hover {
-  background-color: rgb(230, 231, 233);
-}
-
-.new-custom-position {
-  position: relative;
-}
-
-.new-custom-top {
-  position: absolute;
-  top: -18rem;
-  color: #f73859;
-}
-/* //END MEMBER POSITION */
-
-div.team__card:hover .new-custom-top > strong {
-  color: #eee6e9;
-}
-
-a.header-hover-link:hover {
-  color: #f73859 !important;
+body {
+  @apply font-[Poppins] bg-[#141414] text-[#b6b6b6] text-base leading-[150%] p-0 m-0 font-[400] overflow-x-hidden relative;
 }
 
 ::-webkit-calendar-picker-indicator {
