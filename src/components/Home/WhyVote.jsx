@@ -6,17 +6,19 @@ const WhyVote = () => {
       <div className="animation position-absolute top-0 left-0 w-100 h-100 z-n1">
         {
           // tw done
-          <img
-            src="assets/images/sun.png"
-            alt="vector"
-            className="absolute animate-push"
-          />
+          <>
+            <img
+              src="assets/images/sun.png"
+              alt="vector"
+              className="absolute animate-push"
+            />
+            <img
+              src="assets/images/star.png"
+              alt="vector"
+              className="absolute animate-preview-skew"
+            />
+          </>
         }
-        <img
-          src="assets/images/star.png"
-          alt="vector"
-          className="position-absolute  d-xxxl-flex previewSkew"
-        />
       </div>
       <div className="container">
         <div className="row gy-3 gy-lg-0 justify-content-center">

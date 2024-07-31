@@ -4,11 +4,14 @@ const Company = () => {
   return (
     <section className="company-story position-relative z-0  pt-120 pb-120 ">
       <div className="animation position-absolute w-100 h-100 z-n1">
-        <img
-          src="assets/images/star3.png"
-          alt="vector"
-          className="position-absolute top-0 end-0 pt-10 pe-20 me-20 d-none d-xxl-flex previewSkew"
-        />
+        {
+          // animate-p-s is tw
+          <img
+            src="assets/images/star3.png"
+            alt="vector"
+            className="position-absolute top-0 end-0 pt-10 pe-20 me-20 d-none d-xxl-flex animate-preview-skew"
+          />
+        }
       </div>
       <div className="container">
         <div className="row gy-15 gy-lg-0 justify-content-center align-items-center">
@@ -29,7 +32,7 @@ const Company = () => {
                     Our Team Story
                   </span>
                   <h3 className="mb-3 mt-5">Who We Are</h3>
-                  <p  >
+                  <p>
                     We are a team of four passionate developers with a keen
                     interest in blockchain technology.
                   </p>

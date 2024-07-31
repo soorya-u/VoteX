@@ -4,24 +4,26 @@ const Vote = () => {
   return (
     <section className="trade_on a2-bg pt-120 pb-120 position-relative z-0">
       <div className="animation position-absolute top-0 left-0 w-100 h-100 z-n1">
-        <img
-          src="assets/images/coin.png"
-          alt="vector"
-          className="position-absolute d-none d-md-flex previewShapeRevX"
-        />
         {
           // animate-push is tw
-          <img
-            src="assets/images/star2.png"
-            alt="vector"
-            className="position-absolute d-none d-xl-flex animate-push"
-          />
+          <>
+            <img
+              src="assets/images/coin.png"
+              alt="vector"
+              className="position-absolute d-none d-md-flex animate-preview-shape-rev-x"
+            />
+            <img
+              src="assets/images/star2.png"
+              alt="vector"
+              className="position-absolute d-none d-xl-flex animate-push"
+            />
+            <img
+              src="assets/images/coin_vector.png"
+              alt="vector"
+              className="position-absolute d-none d-xxxl-flex bottom-0 end-0 animate-preview-shape-rev-x opacity-50"
+            />
+          </>
         }
-        <img
-          src="assets/images/coin_vector.png"
-          alt="vector"
-          className="position-absolute d-none d-xxxl-flex bottom-0 end-0 previewShapeRevX opacity-50"
-        />
       </div>
       <div className="container">
         <div className="row gy-10 gy-xxl-0 justify-content-center justify-content-xxl-between align-items-center">

@@ -6,11 +6,14 @@ const Team = () => {
   return (
     <section className="team pb-120 pt-120 pt-xxl-0 a2-bg position-relative z-0">
       <div className="animation position-absolute top-0 left-0 w-100 h-100 z-n1">
-        <img
-          src="assets/images/vector.png"
-          alt="vector"
-          className="position-absolute jello d-none d-lg-flex top-0 pt-10 pt-xxl-0 "
-        />
+        {
+          //  animate done
+          <img
+            src="assets/images/vector.png"
+            alt="vector"
+            className="position-absolute animate-jello d-none d-lg-flex top-0 pt-10 pt-xxl-0 "
+          />
+        }
       </div>
       <div className="container">
         <div className="row">

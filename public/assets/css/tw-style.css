@@ -1,0 +1,95 @@
+h1,
+h1 > a,
+h2,
+h2 > a,
+h3,
+h3 > a,
+h4,
+h4 > a,
+h5,
+h5 > a,
+h6,
+h6 > a {
+  @apply font-open-sans text-[#fefefe] font-bold p-0 m-0 leading-[120%] block transition-all ease-out duration-500;
+}
+
+.heading {
+  @apply font-open-sans text-[#fefefe] font-bold p-0 m-0 leading-[120%] block transition-all ease-out duration-500;
+}
+
+.tw-display-one {
+  @apply text-[56px] sm:text-[68px] lg:text-[85px] xl:text-[100px] font-open-sans text-[#fefefe] font-bold p-0 m-0 leading-[120%] block transition-all ease-out duration-500;
+}
+
+.tw-display-two {
+  @apply text-48 sm:text-[62px] lg:text-[68px] xl:text-[72px] font-open-sans text-[#fefefe] font-bold p-0 m-0 leading-[120%] block transition-all ease-out duration-500;
+}
+
+.tw-display-four {
+  @apply text-[30px] sm:text-[48px] lg:text-[56px] font-open-sans text-[#fefefe] font-bold p-0 m-0 leading-[120%] block transition-all ease-out duration-500;
+}
+
+.tw-fs-three {
+  @apply text-[24px] lg:text-[32px];
+}
+
+.tw-fs-four {
+  @apply text-[20px] lg:text-[24px];
+}
+
+.tw-fs-five {
+  @apply text-[18px] lg:text-[20px];
+}
+
+.tw-fs-six {
+  @apply text-[14px] lg:text-[16px];
+}
+
+.tw-fs-seven {
+  @apply text-[13px] lg:text-[14px];
+}
+
+.tw-fs-six-up {
+  @apply text-[16px] lg:text-[18px];
+}
+
+.tw-fs-four-up {
+  @apply text-[24px] lg:text-[26px] xl:text-[28px];
+}
+
+.tw-pt-120 {
+  @apply pt-[50px] sm:pt-[60px] lg:pt-[120px];
+}
+
+.tw-pb-120 {
+  @apply pb-[50px] sm:pb-[60px] lg:pb-[120px];
+}
+
+.tw-max-auto {
+  @apply max-w-full;
+}
+
+.tw-p1-color {
+  @apply text-[#fff6e9];
+}
+
+.tw-s1-color {
+  @apply text-[#f73859];
+}
+
+.tw-p1-bg {
+  @apply bg-[#fff6e9];
+}
+
+.tw-s1-bg {
+  @apply bg-[#f73859];
+}
+
+.tw-a2-lg-bg {
+  @apply lg:bg-[#000];
+}
+
+.tw-p1-max-xxl {
+  @apply 2xl:text-[#fff6e9];
+}
+

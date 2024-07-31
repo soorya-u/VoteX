@@ -6,11 +6,14 @@ const HeroSection = ({ initialData, highest }) => {
   return (
     <section className="hero-section position-relative z-0 ">
       <div className="animation position-absolute top-0 left-0 w-100 h-100 z-n1">
-        <img
-          src="assets/images/hero_vector.png"
-          alt="vector"
-          className="position-absolute d-none d-xxxl-flex bottom-0 end-0 previewShapeRevX"
-        />
+        {
+          // animate added
+          <img
+            src="assets/images/hero_vector.png"
+            alt="vector"
+            className="position-absolute d-none d-xxxl-flex bottom-0 end-0 animate-preview-shape-rev-x"
+          />
+        }
       </div>
       <div className="container pt-20 mt-12 mt-lg-20">
         <div className="row pt-4 pt-lg-10 gy-12 gy-lg-0 justify-content-center justify-content-lg-between align-items-center">
