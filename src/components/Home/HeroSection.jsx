@@ -34,11 +34,14 @@ const HeroSection = ({ initialData, highest }) => {
                       ))}
                     </p>
                   </div>
-                  <img
-                    src="assets/images/circle_star.png"
-                    alt="star"
-                    className="push_animat"
-                  />
+                  {
+                    // tw done
+                    <img
+                      src="assets/images/circle_star.png"
+                      alt="star"
+                      className="animate-push"
+                    />
+                  }
                 </div>
                 <span className="heading p1-max-xxl nb4-xxl-color fs-five mb-3">
                   Decentralized Voting

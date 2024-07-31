@@ -4,11 +4,14 @@ const WhyVote = () => {
   return (
     <section className="why-trade s1-bg alt-color position-relative z-0">
       <div className="animation position-absolute top-0 left-0 w-100 h-100 z-n1">
-        <img
-          src="assets/images/sun.png"
-          alt="vector"
-          className="position-absolute push_animat"
-        />
+        {
+          // tw done
+          <img
+            src="assets/images/sun.png"
+            alt="vector"
+            className="absolute animate-push"
+          />
+        }
         <img
           src="assets/images/star.png"
           alt="vector"

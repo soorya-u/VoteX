@@ -9,11 +9,14 @@ const Vote = () => {
           alt="vector"
           className="position-absolute d-none d-md-flex previewShapeRevX"
         />
-        <img
-          src="assets/images/star2.png"
-          alt="vector"
-          className="position-absolute d-none d-xl-flex push_animat"
-        />
+        {
+          // animate-push is tw
+          <img
+            src="assets/images/star2.png"
+            alt="vector"
+            className="position-absolute d-none d-xl-flex animate-push"
+          />
+        }
         <img
           src="assets/images/coin_vector.png"
           alt="vector"

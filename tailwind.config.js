@@ -14,7 +14,26 @@ module.exports = {
     },
     extend: {
       backgroundImage: {
-        banner: 'url("/assets/images/new-banner.png");',
+        banner: 'url("/assets/images/new-banner.png")',
+      },
+      animation: {
+        push: "push 5s linear infinite",
+      },
+      keyframes: {
+        push: {
+          "0%": {
+            transform: "scale(0.9)",
+            opacity: "0.7",
+          },
+          "50%": {
+            transform: "scale(1)",
+            opacity: "1",
+          },
+          "100%": {
+            transform: "scale(0.9)",
+            opacity: "0.7",
+          },
+        },
       },
     },
   },

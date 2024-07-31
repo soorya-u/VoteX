@@ -44,11 +44,14 @@ export default function UpdateCandidatesPage() {
   return (
     <section className="sign nb4-bg h-100 d-flex align-items-center position-relative z-0">
       <div className="animation position-absolute top-0 left-0 w-100 h-100 z-n1">
-        <img
-          src="assets/images/star.png"
-          alt="vector"
-          className="position-absolute push_animat"
-        />
+        {
+          // tw done
+          <img
+            src="assets/images/star.png"
+            alt="vector"
+            className="absolute animate-push"
+          />
+        }
       </div>
       <div className="container ">
         <div className="row align-items-center justify-content-center justify-content-xl-start">
