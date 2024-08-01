@@ -12,7 +12,7 @@ const HeroSection = ({ initialData, highest }) => {
           className="absolute none xl:flex bottom-0 right-0 animate-preview-shape-rev-x"
         />
       </div>
-      <div className="container pt-20 mt-12 mt-lg-20">
+      <div className="w-full px-3 mx-auto sm:max-w-[540px] md:max-w-[720px] lg:max-w-[960px] xl:max-w-[1140px] 2xl:max-w-[1320px] pt-20 mt-12 lg:mt-20">
         <div className="row pt-4 pt-lg-10 gy-12 gy-lg-0 justify-content-center justify-content-lg-between align-items-center">
           <div className="col-lg-6 col-xxl-7">
             <div className="hero-card p1-xxl-bg pt-xl-20 pb-xl-20 position-relative">
