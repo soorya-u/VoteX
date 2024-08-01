@@ -125,6 +125,10 @@ li {
   }
 }
 
+.banner-section {
+  @apply bg-banner bg-no-repeat bg-center bg-cover;
+}
+
 section,
 footer {
   overflow: hidden;
@@ -723,50 +727,21 @@ span {
   }
 }
 
-@keyframes shadow {
-  0%,
-  100% {
-    transform: scale(1, 1);
-  }
-  50% {
-    transform: scale(1.2, 1);
-  }
-}
-
 .breadcrumb-area .breadcrumb {
-  row-gap: 8px;
+  @apply gap-y-2;
 }
 
 .breadcrumb-area .breadcrumb a,
 .breadcrumb-area .breadcrumb span {
-  color: rgba(var(--nw1), 1);
-  font-size: 18px;
-  font-weight: 500;
-}
-
-@media (max-width: 991px) {
-  .breadcrumb-area .breadcrumb a,
-  .breadcrumb-area .breadcrumb span {
-    font-size: 16px;
-  }
+  @apply text-base lg:text-[18px] font-[500];
 }
 
 .breadcrumb-area .breadcrumb .breadcrumb-item + .breadcrumb-item {
-  position: relative;
-}
-
-.breadcrumb-area .breadcrumb .breadcrumb-item + .breadcrumb-item::before {
-  content: "";
-  font-family: "tabler-icons" !important;
-  z-index: 1;
-  position: absolute;
-  left: 0;
-  font-size: 24px;
-  color: rgba(var(--p1), 1);
+  @apply relative before:content-[''] before:font-['tabler-icons'] before:z-[1] before:absolute before:left-0 before:text-2xl text-[#fff6e9];
 }
 
 .breadcrumb-area .breadcrumb .active span {
-  color: rgba(var(--p1), 1);
+  @apply text-[#fff6e9];
 }
 
 .checkbox-single {

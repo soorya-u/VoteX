@@ -27,6 +27,7 @@ module.exports = {
         "preview-skew": "preview-skew 5s linear infinite",
         "preview-shape-rev-x": "preview-shape-rev-x 5s linear infinite",
         jello: "jello 10s linear infinite",
+        shadow: "shadow 0.5s linear infinite",
       },
       keyframes: {
         push: {
@@ -64,6 +65,17 @@ module.exports = {
           },
           "100%": {
             transform: "translateX(15px)",
+          },
+        },
+        shadow: {
+          "0%": {
+            transform: "scale(1, 1)",
+          },
+          "50%": {
+            transform: "scale(1.2, 1)",
+          },
+          "100%": {
+            transform: "scale(1, 1)",
           },
         },
         jello: {

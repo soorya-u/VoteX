@@ -93,3 +93,10 @@ h6 > a {
   @apply 2xl:text-[#fff6e9];
 }
 
+.row {
+  @apply flex flex-wrap -mx-[0.75rem] [&>*]:flex-shrink-0 [&>*]:w-full [&>*]:max-w-full [&>*]:mx-[0.75rem];
+}
+
+.col-12 {
+  @apply flex-[0_0_auto] w-full;
+}
