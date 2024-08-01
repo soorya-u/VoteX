@@ -57,7 +57,9 @@ export default function UpdateCandidatesPage() {
         <div className="row align-items-center justify-content-center justify-content-xl-start">
           <div className="col-12 col-sm-10 col-md-6">
             <div className="welcome alt-color text-center text-md-start pt-120 pb-120 position-relative z-0">
-              <h1 className="display-one">Welcome Back!</h1>
+              <h1 className="text-[56px] sm:text-[68px] lg:text-[85px] xl:text-[100px] font-open-sans text-[#fefefe] font-bold p-0 m-0 leading-[120%] block transition-all ease-out duration-500">
+                Welcome Back!
+              </h1>
               {image && <PreviewImg image={image} />}
               {pdf && <Preview pdf={pdf} />}
             </div>
@@ -83,16 +85,7 @@ export default function UpdateCandidatesPage() {
                     className="logo"
                     alt="logo"
                   />
-                  <h1
-                    style={{
-                      fontSize: "3.5rem",
-                      fontFamily: "Tiny5",
-                      fontWeight: 400,
-                      fontStyle: "normal",
-                    }}
-                  >
-                    DemocraChain
-                  </h1>
+                  <h1 className="text-[3.5rem] font-tiny5">DemocraChain</h1>
                 </Link>
                 <h5 className="mt-5 mt-lg-6">Update your Candidate Details</h5>
               </div>

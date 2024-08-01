@@ -31,7 +31,9 @@ const WhyVote = () => {
             <div className="row pt-120 pb-120">
               <div className="col-xxl-6 offset-xxl-2">
                 <div className="why-trade__part">
-                  <span className="heading fs-five">Why Vote </span>
+                  <span className="font-open-sans text-[#f73859] font-bold p-0 m-0 leading-[120%] block transition-all ease-out duration-500 text-[18px] lg:text-[20px]">
+                    Why Vote{" "}
+                  </span>
                   <h3 className="mb-3 mt-5">Candidate (EC)</h3>
                   <p>
                     Voting is a fundamental civic duty that empowers individuals

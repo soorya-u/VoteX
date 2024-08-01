@@ -14,7 +14,9 @@ const Mission = () => {
       <div className="container">
         <div className="row justify-content-between align-items-center mb-10 mb-lg-15">
           <div className="col-xl-5">
-            <span className="heading s1-color fs-five mb-5">Our Mission</span>
+            <span className="font-open-sans text-[#f73859] font-bold p-0 m-0 leading-[120%] block transition-all ease-out duration-500 text-[18px] lg:text-[20px] mb-5">
+              Our Mission
+            </span>
             <h3>Empowering Success How We&apos;re Making a Difference</h3>
           </div>
           <div className="col-xl-4">

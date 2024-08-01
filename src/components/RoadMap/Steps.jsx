@@ -20,7 +20,9 @@ const Steps = () => {
               <span className="roadmap__line"></span>
               <div className="roadmap__part">
                 <div className="event cus-rounded-1 p-4 p-md-5 p-xxl-10 me-5">
-                  <span className="heading fs-three p1-color mb-3">1.</span>
+                  <span className="font-open-sans text-[#fff6e9] font-bold p-0 m-0 leading-[120%] block transition-all ease-out duration-500 text-[24px] lg:text-[32px] mb-3">
+                    1.
+                  </span>
                   <h4>Introducton</h4>
                   <p className="mt-4">
                     &quot;Seamlessly register, interact, and innovate with our
@@ -30,7 +32,7 @@ const Steps = () => {
               </div>
               <div className="roadmap__part">
                 <div className="event cus-rounded-1 p-4 p-md-5 p-xxl-10">
-                  <span className="heading fs-three p1-color mb-3">2.</span>
+                  <span className="font-open-sans text-[#fff6e9] font-bold p-0 m-0 leading-[120%] block transition-all ease-out duration-500 text-[24px] lg:text-[32px] mb-3">2.</span>
                   <h4>Create Freighter account & connect</h4>
                   <p className="mt-4">
                     &quot;Create a Freighter account to securely interact with
@@ -40,7 +42,7 @@ const Steps = () => {
               </div>
               <div className="roadmap__part">
                 <div className="event cus-rounded-1 p-4 p-md-5 p-xxl-10 me-5">
-                  <span className="heading fs-three p1-color mb-3">3.</span>
+                  <span className="font-open-sans text-[#fff6e9] font-bold p-0 m-0 leading-[120%] block transition-all ease-out duration-500 text-[24px] lg:text-[32px] mb-3">3.</span>
                   <h4>Register as Voter / Candidate </h4>
                   <p className="mt-4">
                     For registration provide all the necessary information and
@@ -50,7 +52,7 @@ const Steps = () => {
               </div>
               <div className="roadmap__part">
                 <div className="event cus-rounded-1 p-4 p-md-5 p-xxl-10">
-                  <span className="heading fs-three p1-color mb-3">4.</span>
+                  <span className="font-open-sans text-[#fff6e9] font-bold p-0 m-0 leading-[120%] block transition-all ease-out duration-500 text-[24px] lg:text-[32px] mb-3">4.</span>
                   <h4>Verifiction</h4>
                   <p className="mt-4">
                     Once registered wait for the confirmation by admin.
@@ -59,7 +61,7 @@ const Steps = () => {
               </div>
               <div className="roadmap__part">
                 <div className="event cus-rounded-1 p-4 p-md-5 p-xxl-10 me-5">
-                  <span className="heading fs-three p1-color mb-3">5.</span>
+                  <span className="font-open-sans text-[#fff6e9] font-bold p-0 m-0 leading-[120%] block transition-all ease-out duration-500 text-[24px] lg:text-[32px] mb-3">5.</span>
                   <h4>Ready to VOTE</h4>
                   <p className="mt-4">
                     {" "}
@@ -70,7 +72,7 @@ const Steps = () => {
               </div>
               <div className="roadmap__part">
                 <div className="event cus-rounded-1 p-4 p-md-5 p-xxl-10">
-                  <span className="heading fs-three p1-color mb-3">6.</span>
+                  <span className="font-open-sans text-[#fff6e9] font-bold p-0 m-0 leading-[120%] block transition-all ease-out duration-500 text-[24px] lg:text-[32px] mb-3">6.</span>
                   <h4>View Results</h4>
                   <p className="mt-4">View results within no-time</p>
                 </div>

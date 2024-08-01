@@ -28,7 +28,7 @@ const Company = () => {
             <div className="row ms-xl-3 ms-xxl-10">
               <div className="col-xxl-6">
                 <div className="company-story__part">
-                  <span className="heading p1-color fs-five">
+                  <span className="font-open-sans font-bold p-0 m-0 leading-[120%] block transition-all ease-out duration-500 text-[#fff6e9] text-[18px] lg:text-[20px]">
                     Our Team Story
                   </span>
                   <h3 className="mb-3 mt-5">Who We Are</h3>

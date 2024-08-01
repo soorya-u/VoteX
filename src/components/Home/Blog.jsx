@@ -24,7 +24,9 @@ const Blog = () => {
         <div className="row justify-content-center">
           <div className="heading__content d-flex row-gap-7 gap-20 flex-wrap justify-content-between align-items-center mb-10 mb-lg-15 ">
             <div className="heading__part">
-              <span className="heading s1-color fs-five mb-5">Blog</span>
+              <span className="font-open-sans text-[#f73859] font-bold p-0 m-0 leading-[120%] block transition-all ease-out duration-500 text-[18px] lg:text-[20px] mb-5">
+                Blog
+              </span>
               <h3>News & Analysis</h3>
             </div>
             <Link

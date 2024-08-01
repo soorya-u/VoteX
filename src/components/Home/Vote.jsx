@@ -29,7 +29,7 @@ const Vote = () => {
         <div className="row gy-10 gy-xxl-0 justify-content-center justify-content-xxl-between align-items-center">
           <div className="col-lg-6 col-xxl-5">
             <div className="trade_on__content">
-              <span className="heading s1-color fs-five mb-5">
+              <span className="font-open-sans text-[#f73859] font-bold p-0 m-0 leading-[120%] block transition-all ease-out duration-500 text-[18px] lg:text-[20px] mb-5">
                 Vote Through Democrochain
               </span>
               <p className="fs-six mx-ch">

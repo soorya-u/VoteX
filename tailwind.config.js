@@ -16,9 +16,11 @@ module.exports = {
       fontFamily: {
         "open-sans": ["Open Sans"],
         poppins: ["Poppins"],
+        tiny5: ["Tiny5"],
       },
       backgroundImage: {
         banner: 'url("/assets/images/new-banner.png")',
+        "hero-bg-vector": 'url("/assets/images/hero_bg_vector.png")',
       },
       animation: {
         push: "push 5s linear infinite",

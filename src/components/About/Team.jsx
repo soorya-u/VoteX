@@ -18,18 +18,13 @@ const Team = () => {
       <div className="container">
         <div className="row">
           <div className="heading__content text-center mb-10 mb-lg-15 ">
-            <span className="heading p1-color fs-five mb-5">Team</span>
+            <span className="font-open-sans text-[#fff6e9] font-bold p-0 m-0 leading-[120%] block transition-all ease-out duration-500  text-[18px] lg:text-[20px] mb-5">
+              Team
+            </span>
             <h3>Our Team</h3>
             <p className="mt-5 mt-xxl-6 mx-ch mx-auto">
               Innovative{" "}
-              <span
-                style={{
-                  fontWeight: "bold",
-                  color: "#f73859",
-                }}
-              >
-                Block and Defeat
-              </span>{" "}
+              <span className="font-bold text-[#f73859]">Block and Defeat</span>{" "}
               pushing tech limits with creativity and camaraderie.
             </p>
           </div>

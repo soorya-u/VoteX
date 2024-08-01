@@ -16,12 +16,12 @@ const Provide = () => {
         <div className="row justify-content-center">
           <div className="col-lg-8 col-xxl-7">
             <div className="heading__content mb-10 mb-lg-15 text-center">
-              <span className="heading p1-color fs-five mb-5">
+              <span className=" font-open-sans text-[#f73859] font-bold p-0 m-0 leading-[120%] block transition-all ease-out duration-500 text-[18px] lg:text-[20px] mb-5">
                 We Provide World&apos;s
               </span>
               <h3 className="mb-5 mb-lg-6">
                 Decentralized voting community{" "}
-                <span className="s1-color"></span> Voters
+                <span className="text-[#f73859]"></span> Voters
               </h3>
               <p className="fs-six-up mx-ch mx-auto">
                 Voting is a fundamental duty as a citizen of nation.

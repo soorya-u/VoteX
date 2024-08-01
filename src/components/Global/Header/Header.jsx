@@ -66,16 +66,7 @@ const Header = () => {
                   className="logo"
                   alt="logo"
                 />
-                <h1
-                  style={{
-                    fontSize: "2.1rem",
-                    fontFamily: "Tiny5",
-                    fontWeight: 400,
-                    fontStyle: "normal",
-                  }}
-                >
-                  DemocraChain
-                </h1>
+                <h1 className="text-[2.1rem] font-tiny5">DemocraChain</h1>
               </div>
             </Link>
           </div>

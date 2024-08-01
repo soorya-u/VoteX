@@ -50,7 +50,9 @@ export default function UpdateVoterPage() {
         <div className="row align-items-center justify-content-center justify-content-xl-start">
           <div className="col-12 col-sm-10 col-md-6">
             <div className="welcome alt-color text-center text-md-start pt-120 pb-120 position-relative z-0">
-              <h1 className="display-one">Welcome Back!</h1>
+              <h1 className="text-[56px] sm:text-[68px] lg:text-[85px] xl:text-[100px] font-open-sans text-[#fefefe] font-bold p-0 m-0 leading-[120%] block transition-all ease-out duration-500">
+                Welcome Back!
+              </h1>
               {image && <PreviewImg image={image} />}
               {pdf && <Preview pdf={pdf} />}
             </div>
@@ -59,33 +61,11 @@ export default function UpdateVoterPage() {
             <div className="sign__content ms-md-5 ms-xxl-0 pt-120 pb-120">
               <div className="head_part">
                 <Link
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "start",
-                    gap: 16,
-                  }}
+                  className="flex justify-center items-start gap-4"
                   href="/"
                 >
-                  <img
-                    style={{
-                      width: "3.2rem",
-                      height: "3.2rem",
-                    }}
-                    src="/logo.png"
-                    className="logo"
-                    alt="logo"
-                  />
-                  <h1
-                    style={{
-                      fontSize: "3.5rem",
-                      fontFamily: "Tiny5",
-                      fontWeight: 400,
-                      fontStyle: "normal",
-                    }}
-                  >
-                    DemocraChain
-                  </h1>
+                  <img src="/logo.png" className="size-[3.2rem]" alt="logo" />
+                  <h1 className="text-[3.5rem] font-tiny5">DemocraChain</h1>
                 </Link>
                 <h5 className="mt-5 mt-lg-6">Update your Voter Details</h5>
               </div>

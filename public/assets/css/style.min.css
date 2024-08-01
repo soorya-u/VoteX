@@ -352,7 +352,7 @@ input[type="checkbox"] {
   @apply 2xl:text-[#141414];
 }
 
-.nb4-xxl-color {
+.nb4-xxl-bg {
   @apply 2xl:bg-[#141414];
 }
 
@@ -1378,48 +1378,15 @@ span {
   left: 80px;
 }
 
+.container {
+  @apply w-full px-3 mx-auto sm:max-w-[540px] md:max-w-[720px] lg:max-w-[960px] xl:max-w-[1140px] 2xl:max-w-[1320px];
+}
+
 .hero-section {
-  background: url("../images/hero_bg_vector.png");
-  background-color: rgba(var(--nb4));
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-}
-
-@media (min-width: 992px) {
-  .hero-section::after {
-    content: "";
-    position: absolute;
-    width: 539px;
-    height: 539px;
-    border-radius: 539px;
-    opacity: 0.35;
-    background: var(--Primary-colors, #f73859);
-    filter: blur(200px);
-    top: 12%;
-    right: 6%;
-    z-index: -1;
-  }
-}
-
-@media (min-width: 992px) and (min-width: 1400px) {
-  .hero-section::after {
-    top: 18%;
-    right: 12%;
-  }
+  @apply bg-hero-bg-vector bg-[#141414] bg-no-repeat bg-center bg-cover lg:after:content-[''] lg:after:absolute lg:after:size-[539px] lg:after:rounded-[539px] lg:after:opacity-35 lg:after:blur-[200px] lg:after:top-[12%] lg:after:right-[6%] lg:after:-z-[1] 2xl:after:top-[18%] 2xl:after:right-[12%] 2xl:before:content-[''] 2xl:before:absolute 2xl:before:top-0 2xl:before:left-0 2xl:before:w-[45%] 2xl:before:h-full 2xl:before:bg-[#fff6e9] 2xl:before:-z-[1];
 }
 
 @media (min-width: 1400px) {
-  .hero-section::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 45%;
-    height: 100%;
-    background: rgba(var(--p1), 1);
-    z-index: -1;
-  }
   .hero-section .hero-card {
     padding-right: 198px;
     border-radius: 0px 24px 24px 0px;
