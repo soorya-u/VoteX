@@ -9,10 +9,10 @@ import Provide from "./Home/Provide";
 import Vote from "./Home/Vote";
 
 import About from "./About";
-import Team from "./Team/Team";
-import TeamDetail from "./TeamDetail/TeamDetail";
+import Team from "./Team";
+import TeamDetail from "./TeamDetail";
 import Contact from "./Contact";
-import RoadMap from "./RoadMap/RoadMap";
+import RoadMap from "./RoadMap";
 
 export {
   Preloader,
