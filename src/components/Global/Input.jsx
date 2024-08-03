@@ -1,7 +1,7 @@
 const Input = ({ name, placeholder, type, handleClick }) => {
   return (
     <div>
-      <label className="mb-2 text-[#fefefe]" htmlFor="lname">
+      <label className="mb-2 text-[#fefefe]" htmlFor={name}>
         {name}
       </label>
       <input
