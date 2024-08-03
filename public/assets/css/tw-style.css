@@ -97,6 +97,42 @@ h6 > a {
   @apply flex flex-wrap -mx-[0.75rem] [&>*]:flex-shrink-0 [&>*]:w-full [&>*]:max-w-full [&>*]:mx-[0.75rem];
 }
 
+.col-1 {
+  @apply flex-[0_0_auto] w-1/12;
+}
+
+.col-2 {
+  @apply flex-[0_0_auto] w-1/6;
+}
+
+.col-3 {
+  @apply flex-[0_0_auto] w-1/4;
+}
+
+.col-4 {
+  @apply flex-[0_0_auto] w-1/3;
+}
+
+.col-5 {
+  @apply flex-[0_0_auto] w-5/12;
+}
+
+.col-6 {
+  @apply flex-[0_0_auto] w-1/2;
+}
+
+.col-7 {
+  @apply flex-[0_0_auto] w-7/12;
+}
+
+.col-10 {
+  @apply flex-[0_0_auto] w-5/6;
+}
+
 .col-12 {
   @apply flex-[0_0_auto] w-full;
+}
+
+.d-center {
+  @apply flex justify-center items-center;
 }

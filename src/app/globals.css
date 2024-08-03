@@ -14,3 +14,21 @@ body {
 ::-webkit-calendar-picker-indicator {
   filter: invert(1);
 }
+
+*::-webkit-scrollbar-track {
+  background: #000;
+}
+
+*::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+*::-webkit-scrollbar-button,
+*::-webkit-scrollbar-thumb {
+  background: #fff6e9;
+}
+
+.common-btn {
+  @apply bg-[#fff6e9] text-[#141414] font-medium rounded-xl transition-all duration-500 ease-in-out capitalize relative overflow-hidden cursor-pointer z-[1] inline-flex whitespace-nowrap before:content-[''] before:size-[60px] before:-translate-x-1/2 before:-translate-y-1/2 before:absolute before:-z-[1] before:bg-[#f73859] before:transition-all before:duration-500 before:ease-in-out before:-top-[26px] before:-left-[26px] after:content-[''] after:size-[60px] after:-translate-x-1/2 after:-translate-y-1/2 after:absolute after:-z-[1] after:bg-[#f73859] after:transition-all after:duration-500 after:ease-in-out after:left-[calc(100%+1.7em)] after:top-[calc(100%+1.7em)] active:brightness-[0.8] focus:text-[#141414] active:text-[#141414] focus:before:size-[410px] focus:after:size-[410px] focus:after:-bottom-[33px] focus:after:left-[calc(100%-3em)] hover:before:size-[410px] hover:after:size-[410px] hover:after:-bottom-[33px] hover:after:left-[calc(100%-3em)] hover:before:-top-[33px] focus:before:-top-[33px] hover:before:left-[20%] focus:before:left-[20%] [&_i]:transition-all [&_i]:duration-300 [&_i]:ease-out [&:focus_i]:-rotate-45 [&:hover_i]:-rotate-45 [&_i.ti-trending-up]:duration-0 [&_i.ti-video]:duration-0 [&:focus.ti-trending-up_i]:rotate-0 [&:hover.ti-trending-up_i]:rotate-0 [&:focus_i.ti-video]:rotate-0 [&:hover_i.ti-video]:rotate-0;
+}

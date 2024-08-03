@@ -5,20 +5,20 @@
   --head-font: "Open Sans", sans-serif;
   --transition: all 0.5s ease-in-out;
   --p1: 255, 246, 233;
-  --s1: 247, 56, 89;
+  --s1: 247, 56, 89; /*#f73859*/
   --a1: 162, 0, 29;
-  --a2: 0, 0, 0;
+  --a2: 0, 0, 0; /*black*/
   --a3: 108, 94, 203;
   --a4: 10, 89, 78;
   --a5: 82, 0, 15;
-  --nw1: 254, 254, 254;
+  --nw1: 254, 254, 254; /*#fefefe*/
   --nw2: 182, 182, 182;
   --nw3: 168, 173, 198;
   --nw4: 160, 165, 168;
   --nb1: 52, 56, 57;
   --nb2: 35, 38, 39;
-  --nb3: 31, 31, 31;
-  --nb4: 20, 20, 20;
+  --nb3: 31, 31, 31; /* #1f1f1f*/
+  --nb4: 20, 20, 20; /* #141414 */
 }
 
 h1,
@@ -317,7 +317,7 @@ input[type="checkbox"] {
 }
 
 .fw_500 {
-  @apply font-[500];
+  @apply font-medium;
 }
 
 .transition {
@@ -364,80 +364,42 @@ input[type="checkbox"] {
   @apply max-w-[60ch];
 }
 
-.cmn-btn.alt {
-  background-color: rgb(var(--nb4));
-  color: rgb(var(--nw1));
-}
-
 .cmn-btn {
   @apply bg-[#fff6e9] text-[#141414] font-[500] rounded-xl transition-all duration-500 ease-in-out capitalize relative overflow-hidden cursor-pointer z-[1] inline-flex whitespace-nowrap 
   
   before:content-[''] before:size-[60px] before:-translate-x-1/2 before:-translate-y-1/2 before:absolute before:-z-[1] before:bg-[#f73859] before:transition-all before:duration-500 before:ease-in-out before:-top-[26px] before:-left-[26px]
 
-  after:content-[''] after:size-[60px] after:-translate-x-1/2 after:-translate-y-1/2 after:absolute after:-z-[1] after:bg-[#f73859] after:transition-all after:duration-500 after:ease-in-out 
+  after:content-[''] after:size-[60px] after:-translate-x-1/2 after:-translate-y-1/2 after:absolute after:-z-[1] after:bg-[#f73859] after:transition-all after:duration-500 after:ease-in-out after:left-[calc(100%+1.7em)] after:top-[calc(100%+1.7em)]
   
   active:brightness-[0.8] focus:text-[#141414] active:text-[#141414] 
   
-  focus:before:size-[410px] focus:after:size-[410px]
+  focus:before:size-[410px] focus:after:size-[410px] focus:after:-bottom-[33px] focus:after:left-[calc(100%-3em)]
   
-  hover:before:size-[410px] hover:after:size-[410px]
+  hover:before:size-[410px] hover:after:size-[410px] hover:after:-bottom-[33px] hover:after:left-[calc(100%-3em)]
 
   hover:before:-top-[33px] focus:before:-top-[33px]
 
-  hover:before:left-[20%] focus:before:left-[20%];
+  hover:before:left-[20%] focus:before:left-[20%]
+
+  [&_i]:transition-all [&_i]:duration-300 [&_i]:ease-out [&:focus_i]:-rotate-45 [&:hover_i]:-rotate-45
+
+  [&_i.ti-trending-up]:duration-0 [&_i.ti-video]:duration-0 [&:focus.ti-trending-up_i]:rotate-0 [&:hover.ti-trending-up_i]:rotate-0 [&:focus_i.ti-video]:rotate-0 [&:hover_i.ti-video]:rotate-0;
 }
 
-.cmn-btn i {
-  @apply transition-all duration-300 ease-in-out;
+.cmn-btn.alt {
+  @apply bg-[#141414] text-[#fefefe];
 }
 
-.cmn-btn i.ti-trending-up,
-.cmn-btn i.ti-video {
-  @apply duration-0;
+.cmn-btn.cmn-btn-circle {
+  @apply size-[100px] min-w-[100px] lg:size-[146px] lg:min-w-[146px] bg-[#fff6e9] rounded-[50%];
 }
 
-.cmn-btn::after {
-  left: calc(100% + 1.7em);
-  top: calc(100% + 1.7em);
-}
-
-.cmn-btn:focus i,
-.cmn-btn:hover i {
-  transform: rotate(-45deg);
-}
-
-.cmn-btn:focus i.ti-trending-up,
-.cmn-btn:focus i.ti-video,
-.cmn-btn:hover i.ti-trending-up,
-.cmn-btn:hover i.ti-video {
-  transform: rotate(0);
-  transition: 0s;
-}
-
-.cmn-btn:focus::after,
-.cmn-btn:hover::after {
-  bottom: -33px;
-  left: calc(100% - 3em);
-}
-
-@media (min-width: 1400px) {
-  .cmn-btn.alt-xxl-bg {
-    background-color: rgb(var(--nb4));
-    color: rgb(var(--nw1));
-  }
-  .cmn-btn.alt-xxl-bg:hover {
-    color: rgb(var(--nb4));
-  }
+.cmn-btn.cmn-btn.alt-xxl-bg {
+  @apply 2xl:bg-[#141414] 2xl:text-[#fefefe] 2xl:hover:text-[#141414];
 }
 
 .cmn-btn.secondary-alt {
-  background-color: rgb(var(--s1));
-  color: rgb(var(--a2));
-}
-
-.cmn-btn.secondary-alt::before,
-.cmn-btn.secondary-alt::after {
-  background-color: rgb(var(--p1));
+  @apply bg-[#f73859] text-black before:bg-[#fff6e9] after:bg-[#fff6e9];
 }
 
 .cmn-btn.outline_btn {
@@ -527,22 +489,6 @@ input[type="checkbox"] {
 
 .cmn-btn.third-link i {
   color: rgba(var(--p1), 1);
-}
-
-.cmn-btn.cmn-btn-circle {
-  width: 146px;
-  min-width: 146px;
-  height: 146px;
-  background: rgba(var(--p1), 1);
-  border-radius: 50%;
-}
-
-@media (max-width: 991px) {
-  .cmn-btn.cmn-btn-circle {
-    width: 100px;
-    min-width: 100px;
-    height: 100px;
-  }
 }
 
 .rotate_eff {
@@ -640,54 +586,21 @@ input[type="checkbox"] {
 }
 
 .social-area a {
-  width: 40px;
-  min-width: 40px;
-  height: 40px;
-  background: rgb(var(--nb2));
+  @apply size-[40px] min-w-[40px] lg:size-[40px] lg:min-w-[40px] bg-[#141414] hover:bg-[#fff6e9]; /*group*/
 }
 
 .social-area a i,
 .social-area a span {
-  color: rgba(var(--nw1), 1);
-  transition: inherit;
-}
-
-.social-area a:hover {
-  background-color: rgba(var(--p1), 1);
-}
-
-.social-area a:hover i {
-  color: rgba(var(--nb4), 1);
-}
-
-@media (max-width: 991px) {
-  .social-area a {
-    width: 36px;
-    min-width: 36px;
-    height: 36px;
-  }
+  @apply text-[#fefefe] group-hover:text-[#141414]
+  /* transition: inherit; */;
 }
 
 .social-area.alt a {
-  background: rgba(0, 0, 0, 0);
+  @apply bg-black;
 }
 
 span {
   display: inline-block;
-}
-
-*::-webkit-scrollbar-track {
-  background: rgba(var(--n5), 1);
-}
-
-*::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-
-*::-webkit-scrollbar-button,
-*::-webkit-scrollbar-thumb {
-  background: rgba(var(--p1), 1);
 }
 
 .d-center {
@@ -1426,25 +1339,16 @@ span {
 }
 
 .provide-world .provide-world__card {
-  transition: var(--transition);
+  @apply transition-all ease-out duration-500 hover:bg-[#fff6e9]; /*group*/
 }
 
 .provide-world .provide-world__card h4,
 .provide-world .provide-world__card p {
-  transition: var(--transition);
+  @apply transition-all ease-out duration-500 group-hover:text-[#141414];
 }
 
 .provide-world .provide-world__card.secondary i {
-  transition: var(--transition);
-}
-
-.provide-world .provide-world__card:hover {
-  background: rgba(var(--p1), 1);
-}
-
-.provide-world .provide-world__card:hover h4,
-.provide-world .provide-world__card:hover p {
-  color: rgba(var(--nb4));
+  @apply transition-all ease-out duration-500;
 }
 
 .provide-world .provide-world__card:hover.secondary a,
@@ -1457,50 +1361,19 @@ span {
 }
 
 .provide-world .provide-card__icon {
-  width: 80px;
-  min-width: 80px;
-  height: 80px;
+  @apply size-[60px] min-w-[60px] lg:size-[80px] lg:min-w-[80px];
 }
 
-@media (max-width: 991px) {
-  .provide-world .provide-card__icon {
-    width: 60px;
-    min-width: 60px;
-    height: 60px;
-  }
-}
-
-@media (max-width: 1399px) {
-  .provide-world .animation img {
-    width: 15%;
-  }
+.provide-world .animation img {
+  @apply w-[15%]; /*2xl:?*/
 }
 
 .provide-world.our_mission .animation img {
-  right: 7%;
+  @apply right-[12%] 3xl:right-[7%];
 }
 
-@media (max-width: 1599px) {
-  .provide-world.our_mission .animation img {
-    width: 12%;
-  }
-}
-
-.provide-world.our_mission::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  background: rgba(var(--a2), 1);
-  height: 38%;
-  width: 100%;
-  z-index: -2;
-}
-
-@media (max-width: 1399px) {
-  .provide-world.our_mission::after {
-    display: none;
-  }
+.provide-world.our_mission {
+  @apply hidden 2xl:block after:content-[''] after:absolute after:bottom-0 after:left-0 after:bg-black after:h-[38%] after:w-full after:-z-[2] after:hidden 2xl:after:block;
 }
 
 .trade_on .animation img:first-child {
@@ -1540,22 +1413,15 @@ span {
 }
 
 .team .animation img {
-  position: absolute;
-  left: 150px;
-  top: 111px;
-}
-
-@media (max-width: 1599px) {
-  .team .animation img {
-    width: 6%;
-  }
+  @apply absolute left-[150px] top-[111px] w-[6%] ; /*3xl:?*/
 }
 
 .team .team__card .team__content h5,
 .team .team__card .team__content p {
-  transition: var(--transition);
+  @apply transition-all ease-out duration-500;
 }
 
+/* TODO: Kind of invalid */
 .team .team__card .team__content:after {
   bottom: 99%;
   -webkit-clip-path: polygon(100% 0, 0 100%, 100% 100%);
@@ -1567,6 +1433,7 @@ span {
   transition: var(--transition);
 }
 
+/* TODO: Kind of invalid */
 .team .team__card .team__content .team__title:after {
   width: 50px;
   height: 4px;
@@ -1585,11 +1452,13 @@ span {
   color: rgba(var(--a2), 1);
 }
 
+/* TODO: Kind of invalid */
 .team .team__card:hover .team__content:after {
   height: 0;
   background: rgba(var(--p1), 1);
 }
 
+/* TODO: Kind of invalid */
 .team .team__card:hover .team__content .team__title:after {
   background: rgba(var(--a2), 1);
 }
