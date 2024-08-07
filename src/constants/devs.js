@@ -17,7 +17,7 @@ export const devsInfo = [
       "Hardworking college student with a motivated attitude and active participation, possessing a variety of powerful, grasping, and innovative skills.",
     imageUrl: "assets/images/devs/saanvi.jpg",
     links: {
-      instagram: "https://www.instagram.com/saanvi._m.j",
+      web: "https://saanvi-mj.github.io",
       github: "https://github.com/Saanvi-MJ",
       linkedin: "https://www.linkedin.com/in/saanvi-m-j-77029627b",
       x: "https://x.com/SaanviMJ",

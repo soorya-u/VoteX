@@ -27,7 +27,7 @@ export const defaultMetadata = {
     },
     {
       name: "Saanvi MJ",
-      url: "https://github.com/Saanvi-MJ",
+      url: "https://saanvi-mj.github.io",
     },
     {
       name: "Likhith SV",
