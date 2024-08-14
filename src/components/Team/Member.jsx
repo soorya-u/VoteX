@@ -56,13 +56,9 @@ const Member = ({
                       <>
                         <p>Total Vote: {item?.voteCount}</p>
 
-                        <div
-                          style={{ cursor: "pointer" }}
-                          className="custom-actions"
-                        >
+                        <div className="custom-actions cursor-pointer">
                           <a
                             className="custom-read"
-                            style={{ cursor: "pointer" }}
                             onClick={() => giveVote(item?.address)}
                           >
                             Give Vote

@@ -3,7 +3,7 @@ import Link from "next/link";
 const Company = () => {
   return (
     <section className="company-story position-relative z-0  pt-120 pb-120 ">
-      <div className="animation position-absolute w-100 h-100 z-n1">
+      <div className="animation position-absolute w-100 h-100 -z-[1]">
         <img
           src="assets/images/star3.png"
           alt="vector"
@@ -29,7 +29,7 @@ const Company = () => {
                     Our Team Story
                   </span>
                   <h3 className="mb-3 mt-5">Who We Are</h3>
-                  <p  >
+                  <p>
                     We are a team of four passionate developers with a keen
                     interest in blockchain technology.
                   </p>
@@ -50,12 +50,7 @@ const Company = () => {
                     <h3 className="mb-3">What We Do</h3>
                     <p>
                       Our team,{"  "}
-                      <span
-                        style={{
-                          fontWeight: "bold",
-                          color: "#f73859",
-                        }}
-                      >
+                      <span className="font-bold text-secondary">
                         Block and Defeat
                       </span>{" "}
                       started with a passion for tech and a knack for chaos.

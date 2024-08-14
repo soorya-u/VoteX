@@ -5,7 +5,7 @@ import { devsInfo } from "@/constants/devs";
 const Team = () => {
   return (
     <section className="team pb-120 pt-120 pt-xxl-0 a2-bg position-relative z-0">
-      <div className="animation position-absolute top-0 left-0 w-100 h-100 z-n1">
+      <div className="animation position-absolute top-0 left-0 w-100 h-100 -z-[1]">
         <img
           src="assets/images/vector.png"
           alt="vector"
@@ -19,14 +19,7 @@ const Team = () => {
             <h3>Our Team</h3>
             <p className="mt-5 mt-xxl-6 mx-ch mx-auto">
               Innovative{" "}
-              <span
-                style={{
-                  fontWeight: "bold",
-                  color: "#f73859",
-                }}
-              >
-                Block and Defeat
-              </span>{" "}
+              <span className="font-bold text-secondary">Block and Defeat</span>{" "}
               pushing tech limits with creativity and camaraderie.
             </p>
           </div>

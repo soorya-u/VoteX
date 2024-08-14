@@ -11,10 +11,7 @@ const Footer = () => {
                 The source code is available on{" "}
                 <Link
                   href="https://github.com/soorya-u/DemocraChain"
-                  style={{
-                    textDecoration: "underline",
-                    color: "#B6B6B6",
-                  }}
+                  className="underline text-link"
                 >
                   GitHub
                 </Link>

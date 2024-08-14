@@ -165,10 +165,7 @@ const Details = ({
                         placeholder={"message"}
                       />
                     </div>
-                    <div
-                      style={{ cursor: "pointer" }}
-                      className="custom-actions"
-                    >
+                    <div className="custom-actions cursor-pointer">
                       <a
                         className="custom-read"
                         onClick={async () =>
@@ -178,10 +175,7 @@ const Details = ({
                         Approve
                       </a>
                     </div>
-                    <div
-                      style={{ cursor: "pointer" }}
-                      className="custom-actions"
-                    >
+                    <div className="custom-actions cursor-pointer">
                       <a
                         className="custom-read"
                         onClick={async () =>

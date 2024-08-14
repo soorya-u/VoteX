@@ -63,7 +63,7 @@ export default function CandidatePage() {
     <>
       {loading && <Preloader />}
       <section className="sign nb4-bg h-100 d-flex align-items-center position-relative z-0">
-        <div className="animation position-absolute top-0 left-0 w-100 h-100 z-n1">
+        <div className="animation position-absolute top-0 left-0 w-100 h-100 -z-[1]">
           <img
             src="assets/images/star.png"
             alt="vector"
@@ -80,33 +80,19 @@ export default function CandidatePage() {
               </div>
             </div>
             <div className="col-12 col-md-6 col-lg-5 col-xxl-5 offset-xxl-1 text-center ms-xl-auto">
-              <div className="sign__content ms-md-5 ms-xxl-0 pt-120 pb-120">
+              <div className="ms-md-5 ms-xxl-0 pt-120 pb-120">
                 <div className="head_part">
                   <Link
                     href="/"
-                    style={{
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "start",
-                      gap: 16,
-                    }}
+                    className="flex justify-center items-start gap-4"
                   >
                     <img
-                      style={{
-                        width: "3.2rem",
-                        height: "3.2rem",
-                      }}
                       src="/logo.png"
-                      className="logo"
+                      className="logo size-[3.2rem]"
                       alt="logo"
                     />
                     <h1
-                      style={{
-                        fontSize: "3.5rem",
-                        fontFamily: "Tiny5",
-                        fontWeight: 400,
-                        fontStyle: "normal",
-                      }}
+                    className="text-6xl font-tiny5 font-normal"
                     >
                       DemocraChain
                     </h1>

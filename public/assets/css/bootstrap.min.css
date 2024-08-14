@@ -4172,7 +4172,7 @@ fieldset:disabled .btn {
   opacity: 0;
 }
 
-.collapse:not(.show) {
+.bs-collapse:not(.show) {
   display: none;
 }
 

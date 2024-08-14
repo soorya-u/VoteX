@@ -40,47 +40,17 @@ const Header = () => {
               className="navbar-brand m-0 p-0 d-flex align-items-center gap-5 gap-xl-5 me-2"
               href="/"
             >
-              <img
-                style={{
-                  width: "3rem",
-                  height: "3rem",
-                }}
-                src="/logo.png"
-                className="logo small_logo d-sm-none"
-                alt="logo"
-              />
-              <div
-                style={{
-                  justifyContent: "center",
-                  alignItems: "center",
-                  gap: 16,
-                }}
-                className="d-none d-sm-flex"
-              >
-                <img
-                  style={{
-                    width: "2.5rem",
-                    height: "2.5rem",
-                  }}
-                  src="/logo.png"
-                  className="logo"
-                  alt="logo"
-                />
-                <h1
-                  style={{
-                    fontSize: "2.1rem",
-                    fontFamily: "Tiny5",
-                    fontWeight: 400,
-                    fontStyle: "normal",
-                  }}
-                >
+              <img src="/logo.png" className="sm:hidden size-12" alt="logo" />
+              <div className="hidden sm:flex justify-center items-center gap-4">
+                <img src="/logo.png" className="size-10" alt="logo" />
+                <h1 className="text-[2.1rem] font-tiny5 font-normal">
                   DemocraChain
                 </h1>
               </div>
             </Link>
           </div>
           <div className="nav_alt">
-            <div className="right-area position-relative ms-0 d-center gap-1 gap-xl-4 d-lg-none">
+            <div className="right-area position-relative ml-0 d-center gap-1 gap-xl-4 d-lg-none">
               {isConnected ? (
                 <>
                   <div className="single-item">
@@ -110,14 +80,14 @@ const Header = () => {
                     className="cmn-btn fw-bold py-2 px-2 px-sm-3 px-lg-4 align-items-center gap-1"
                   >
                     Connect Wallet{" "}
-                    <i className="ti ti-arrow-right fw-semibold fs-six-up"></i>
+                    <i className="ti ti-arrow-right fw-semibold fs-six-up" />
                   </button>
                 </div>
               )}
             </div>
           </div>
           <div
-            className={`collapse navbar-collapse justify-content-center ${
+            className={`bs-collapse navbar-collapse justify-content-center ${
               isNavBarOpen && "show"
             }`}
             id="navbar-content"
@@ -125,9 +95,8 @@ const Header = () => {
             <ul className="navbar-nav gap-2 gap-lg-3 gap-xxl-8 align-self-center mx-auto mt-4 mt-lg-0">
               <li className="dropdown show-dropdown">
                 <Link
-                  style={{ fontSize: 16 }}
                   href="/"
-                  className="dropdown-nav header-hover-link"
+                  className="dropdown-nav header-hover-link text-base"
                 >
                   Home
                 </Link>

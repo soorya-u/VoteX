@@ -3,22 +3,9 @@ import Link from "next/link";
 const PopUp = ({ candidate }) => {
   return (
     <div className="custom-new">
-      <div
-        style={{
-          position: "relative",
-        }}
-        className="custom-card"
-      >
+      <div className="custom-card relative">
         <Link
-          style={{
-            position: "absolute",
-            right: 25,
-            top: 10,
-            fontWeight: 500,
-            fontSize: "1.2rem",
-            fontFamily: "cursive",
-            rotate: "-185deg",
-          }}
+          className="absolute right-[25px] top-[10px] font-medium font-cursive -rotate-[185deg]"
           href="/"
         >
           x
@@ -27,12 +14,8 @@ const PopUp = ({ candidate }) => {
           <span className="custom-icon">
             <img
               src={candidate?.image}
-              style={{
-                with: "50px",
-                height: "50px",
-                borderRadius: "50px",
-              }}
-              alt=""
+              className="size-[50px] rounded-[50px]"
+              alt="candidate-image"
             />
           </span>
           <p className="custom-alert">Welcome {candidate?._name}!</p>

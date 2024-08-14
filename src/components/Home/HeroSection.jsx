@@ -5,7 +5,7 @@ const HeroSection = ({ initialData, highest }) => {
 
   return (
     <section className="hero-section position-relative z-0 ">
-      <div className="animation position-absolute top-0 left-0 w-100 h-100 z-n1">
+      <div className="animation position-absolute top-0 left-0 w-100 h-100 -z-[1]">
         <img
           src="assets/images/hero_vector.png"
           alt="vector"

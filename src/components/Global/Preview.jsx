@@ -1,14 +1,5 @@
 const Preview = ({ pdf }) => {
-  return (
-    <object
-      className="pdf"
-      data={pdf}
-      style={{
-        width: "100%",
-        height: "500px",
-      }}
-    ></object>
-  );
+  return <object className="w-full h-[500px]" data={pdf} />;
 };
 
 export default Preview;

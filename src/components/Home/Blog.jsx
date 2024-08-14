@@ -3,7 +3,7 @@ import Link from "next/link";
 const Blog = () => {
   return (
     <section className="blog_news pt-120 pb-120 position-relative z-0">
-      <div className="animation position-absolute top-0 left-0 w-100 h-100 z-n1">
+      <div className="animation position-absolute top-0 left-0 w-100 h-100 -z-[1]">
         <img
           src="assets/images/star.png"
           alt="vector"

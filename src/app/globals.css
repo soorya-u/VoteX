@@ -3,7 +3,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Tiny5&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap");
 
-/* //UPLOAD */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 .messageBox {
   width: 100%;
@@ -196,7 +198,6 @@
   top: -18rem;
   color: #f73859;
 }
-/* //END MEMBER POSITION */
 
 div.team__card:hover .new-custom-top > strong {
   color: #eee6e9;
