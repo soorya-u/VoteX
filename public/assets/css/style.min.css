@@ -2763,7 +2763,7 @@ iframe {
 }
 
 @media (max-width: 767px) {
-  .footer .start-earning .row.w-100 {
+  .footer .start-earning .row.w-full {
     width: unset !important;
   }
 }

@@ -6,14 +6,14 @@ const ContactFrom = () => {
       <div className="container ">
         <div className="row gy-18 justify-content-between">
           <div className="col-12 col-lg-5 col-xl-5">
-            <div className="submissions-area d-flex flex-column gap-8 gap-lg-10">
+            <div className="submissions-area flex flex-col gap-8 gap-lg-10">
               <div className="submissions">
                 <h3>Any Queries ?</h3>
                 <p className="fs-six-up mt-4">Contact us</p>
               </div>
-              <div className="contact__mail d-flex flex-column gap-5 gap-lg-6 pb-8 pb-lg-10 border-bottom border-color four">
-                <div className="d-flex align-items-center gap-3">
-                  <span className="box_12 p1-bg rounded-circle d-center">
+              <div className="contact__mail flex flex-col gap-5 gap-lg-6 pb-8 pb-lg-10 border-bottom border-color four">
+                <div className="flex items-center gap-3">
+                  <span className="box_12 p1-bg rounded-circle flex justify-center items-center">
                     <i className="ti ti-message-2 fs-four-up nb4-color"></i>
                   </span>
                   <span className="fs-six-up">
@@ -26,8 +26,8 @@ const ContactFrom = () => {
                     </a>
                   </span>
                 </div>
-                <div className="d-flex align-items-center gap-3">
-                  <span className="box_12 p1-bg rounded-circle d-center">
+                <div className="flex items-center gap-3">
+                  <span className="box_12 p1-bg rounded-circle flex justify-center items-center">
                     <i className="ti ti-phone fs-four-up nb4-color"></i>
                   </span>
                   <span className="fs-six-up">7019188609</span>
@@ -35,24 +35,24 @@ const ContactFrom = () => {
               </div>
               <div className="submissions">
                 <h3>Our socials media</h3>
-                <ul className="social-area d-center justify-content-start gap-2 gap-md-3 mt-7 mt-lg-8">
+                <ul className="social-area flex justify-center items-center justify-content-start gap-2 gap-md-3 mt-7 mt-lg-8">
                   <li>
-                    <Link className="d-center fs-four" href="/">
+                    <Link className="flex justify-center items-center fs-four" href="/">
                       <i className="ti ti-brand-facebook" />
                     </Link>
                   </li>
                   <li>
-                    <Link className="d-center fs-four" href="/">
+                    <Link className="flex justify-center items-center fs-four" href="/">
                       <i className="ti ti-brand-twitch" />
                     </Link>
                   </li>
                   <li>
-                    <Link className="d-center fs-four" href="/">
+                    <Link className="flex justify-center items-center fs-four" href="/">
                       <i className="ti ti-brand-instagram" />
                     </Link>
                   </li>
                   <li>
-                    <Link className="d-center fs-four" href="/">
+                    <Link className="flex justify-center items-center fs-four" href="/">
                       <i className="ti ti-brand-discord-filled" />
                     </Link>
                   </li>
@@ -70,7 +70,7 @@ const ContactFrom = () => {
               <h3 className="contact__title mb-7 mb-md-10 mb-lg-15">
                 Enquiry Form
               </h3>
-              <div className="d-flex gap-3 gap-sm-5 gap-lg-8 flex-column">
+              <div className="flex gap-3 gap-sm-5 gap-lg-8 flex-col">
                 <div className="row gap-3 gap-sm-0">
                   <div className="col-sm-6">
                     <div className="single-input">
@@ -132,7 +132,7 @@ const ContactFrom = () => {
               <span id="msg"></span>
               <button
                 type="submit"
-                className="cmn-btn py-3 px-5 px-lg-6 mt-8 mt-lg-10 d-flex ms-auto"
+                className="cmn-btn py-3 px-5 px-lg-6 mt-8 mt-lg-10 flex ml-auto"
                 name="submit"
                 id="submit"
               >

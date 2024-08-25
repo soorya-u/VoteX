@@ -23,7 +23,7 @@ const Banner = () => {
                   <Link href="/">Home</Link>
                 </li>
                 <li
-                  className="breadcrumb-item ms-2 ps-7 active"
+                  className="breadcrumb-item ml-2 pl-7 active"
                   aria-current="page"
                 >
                   <span>

@@ -4,21 +4,21 @@ const HeroSection = ({ initialData, highest }) => {
   const motto = "Vote Loud, Vote Proud ";
 
   return (
-    <section className="hero-section position-relative z-0 ">
-      <div className="animation position-absolute top-0 left-0 w-100 h-100 -z-[1]">
+    <section className="hero-section relative z-0 ">
+      <div className="animation absolute top-0 left-0 w-100 h-100 -z-[1]">
         <img
           src="assets/images/hero_vector.png"
           alt="vector"
-          className="position-absolute d-none d-xxxl-flex bottom-0 end-0 previewShapeRevX"
+          className="absolute d-none d-xxxl-flex bottom-0 end-0 previewShapeRevX"
         />
       </div>
       <div className="container pt-20 mt-12 mt-lg-20">
         <div className="row pt-4 pt-lg-10 gy-12 gy-lg-0 justify-content-center justify-content-lg-between align-items-center">
           <div className="col-lg-6 col-xxl-7">
-            <div className="hero-card p1-xxl-bg pt-xl-20 pb-xl-20 position-relative">
+            <div className="hero-card p1-xxl-bg pt-xl-20 pb-xl-20 relative">
               <div className="pt-xxl-10 pb-xxl-10">
-                <div className="circle-text first d-center cus-z1 position-absolute end-0 top-0 d-none d-xxl-flex  me-lg-10 mt-lg-10">
-                  <div className="text d-center">
+                <div className="circle-text first flex justify-center items-center z-[1] !absolute end-0 top-0 d-none d-xxl-flex  me-lg-10 mt-lg-10">
+                  <div className="text flex justify-center items-center">
                     <p className="fs-six">
                       {motto.split("").map((l, idx) => (
                         <span

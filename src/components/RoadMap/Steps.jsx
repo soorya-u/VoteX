@@ -2,7 +2,7 @@ const Steps = () => {
   return (
     <section className="roadmap pt-120 pb-120" id="roadmap">
       <div className="container">
-        <div className="row justify-content-center">
+        <div className="row justify-center">
           <div className="col-lg-8 col-xxl-7">
             <div className="heading__content mb-10 mb-lg-15 text-center">
               <h1 className="display-four mb-5 mb-lg-6">Roadmap to use</h1>
@@ -19,7 +19,7 @@ const Steps = () => {
             <div className="roadmap__content">
               <span className="roadmap__line"></span>
               <div className="roadmap__part">
-                <div className="event cus-rounded-1 p-4 p-md-5 p-xxl-10 me-5">
+                <div className="event cus-rounded-1 p-4 p-md-5 p-xxl-10 mr-5">
                   <span className="heading fs-three p1-color mb-3">1.</span>
                   <h4>Introducton</h4>
                   <p className="mt-4">
@@ -39,7 +39,7 @@ const Steps = () => {
                 </div>
               </div>
               <div className="roadmap__part">
-                <div className="event cus-rounded-1 p-4 p-md-5 p-xxl-10 me-5">
+                <div className="event cus-rounded-1 p-4 p-md-5 p-xxl-10 mr-5">
                   <span className="heading fs-three p1-color mb-3">3.</span>
                   <h4>Register as Voter / Candidate </h4>
                   <p className="mt-4">
@@ -58,7 +58,7 @@ const Steps = () => {
                 </div>
               </div>
               <div className="roadmap__part">
-                <div className="event cus-rounded-1 p-4 p-md-5 p-xxl-10 me-5">
+                <div className="event cus-rounded-1 p-4 p-md-5 p-xxl-10 mr-5">
                   <span className="heading fs-three p1-color mb-3">5.</span>
                   <h4>Ready to VOTE</h4>
                   <p className="mt-4">

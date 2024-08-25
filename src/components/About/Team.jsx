@@ -4,12 +4,12 @@ import { devsInfo } from "@/constants/devs";
 
 const Team = () => {
   return (
-    <section className="team pb-120 pt-120 pt-xxl-0 a2-bg position-relative z-0">
-      <div className="animation position-absolute top-0 left-0 w-100 h-100 -z-[1]">
+    <section className="team pb-120 pt-120 pt-xxl-0 a2-bg relative z-0">
+      <div className="animation absolute top-0 left-0 w-full h-full -z-[1]">
         <img
           src="assets/images/vector.png"
           alt="vector"
-          className="position-absolute jello d-none d-lg-flex top-0 pt-10 pt-xxl-0 "
+          className="absolute jello hidden d-lg-flex top-0 pt-10 pt-xxl-0 "
         />
       </div>
       <div className="container">

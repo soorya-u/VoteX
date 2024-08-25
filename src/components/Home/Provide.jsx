@@ -1,15 +1,15 @@
 const Provide = () => {
   return (
-    <section className="provide-world bg nb4-bg pt-120 pb-120  position-relative z-0">
-      <div className="animation position-absolute top-0 left-0 w-100 h-100 -z-[1] d-none d-md-flex">
+    <section className="provide-world bg nb4-bg pt-120 pb-120  relative z-0">
+      <div className="animation absolute top-0 left-0 w-full h-full -z-[1] hidden d-md-flex">
         <img
           src="assets/images/vector.png"
           alt="vector"
-          className="position-absolute pt-6 ml-8 pt-xl-15 previewShapeRevX pl-40"
+          className="absolute pt-6 ml-8 pt-xl-15 previewShapeRevX pl-40"
         />
       </div>
       <div className="container">
-        <div className="row justify-content-center">
+        <div className="row justify-center">
           <div className="col-lg-8 col-xxl-7">
             <div className="heading__content mb-10 mb-lg-15 text-center">
               <span className="heading p1-color fs-five mb-5">
@@ -28,7 +28,7 @@ const Provide = () => {
         <div className="row gy-6 gy-xxl-0">
           <div className="col-md-6 col-xxl-4">
             <div className="provide-world__card nb3-bg text-center cus-rounded-1 py-5 py-lg-10 px-4 px-lg-9">
-              <span className="provide-card__icon d-center nb4-bg p-4 rounded-circle mx-auto">
+              <span className="provide-card__icon flex justify-center items-center nb4-bg p-4 rounded-circle mx-auto">
                 <i className="ti ti-award-filled fs-three p1-color"></i>
               </span>
               <h4 className="mt-5 mb-5">At Best Reputation</h4>
@@ -42,7 +42,7 @@ const Provide = () => {
           </div>
           <div className="col-md-6 col-xxl-4">
             <div className="provide-world__card nb3-bg text-center cus-rounded-1 py-5 py-lg-10 px-4 px-lg-9">
-              <span className="provide-card__icon d-center nb4-bg p-4 rounded-circle mx-auto">
+              <span className="provide-card__icon flex justify-center items-center nb4-bg p-4 rounded-circle mx-auto">
                 <i className="ti ti-users fs-three p1-color"></i>
               </span>
               <h4 className="mt-5 mb-5">Welcome to Democrochain </h4>
@@ -55,7 +55,7 @@ const Provide = () => {
           </div>
           <div className="col-md-6 col-xxl-4">
             <div className="provide-world__card nb3-bg text-center cus-rounded-1 py-5 py-lg-10 px-4 px-lg-9">
-              <span className="provide-card__icon d-center nb4-bg p-4 rounded-circle mx-auto">
+              <span className="provide-card__icon flex justify-center items-center nb4-bg p-4 rounded-circle mx-auto">
                 <i className="ti ti-shield-check-filled fs-three p1-color"></i>
               </span>
               <h4 className="mt-5 mb-5">Trusted and Secure</h4>

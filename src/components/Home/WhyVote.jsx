@@ -2,23 +2,23 @@ import Link from "next/link";
 
 const WhyVote = () => {
   return (
-    <section className="why-trade s1-bg alt-color position-relative z-0">
-      <div className="animation position-absolute top-0 left-0 w-100 h-100 -z-[1]">
+    <section className="why-trade s1-bg alt-color relative z-0">
+      <div className="animation absolute top-0 left-0 w-full h-full -z-[1]">
         <img
           src="assets/images/sun.png"
           alt="vector"
-          className="position-absolute push_animat"
+          className="absolute push_animat"
         />
         <img
           src="assets/images/star.png"
           alt="vector"
-          className="position-absolute  d-xxxl-flex previewSkew"
+          className="absolute  d-xxxl-flex previewSkew"
         />
       </div>
       <div className="container">
-        <div className="row gy-3 gy-lg-0 justify-content-center">
+        <div className="row gy-3 gy-lg-0 justify-center">
           <div className="col-sm-7 col-lg-6 col-xxl-5 order-2 order-lg-0">
-            <div className="why-trade__thumbs h-100 d-flex align-items-end ps-20 ps-sm-5 ps-lg-0">
+            <div className="why-trade__thumbs h-full flex items-end pl-20 sm:pl-5 lg:pl-0">
               <img src="assets/images/why_trade.png" alt="Imgae" />
             </div>
           </div>
@@ -34,7 +34,7 @@ const WhyVote = () => {
                   </p>
                   <Link
                     href="/approved-voters"
-                    className="cmn-btn link secondary-link fs-six-up  gap-2 gap-lg-3 align-items-center mt-5"
+                    className="cmn-btn link secondary-link fs-six-up  gap-2 gap-lg-3 items-center mt-5"
                   >
                     {" "}
                     Check Voters{" "}
@@ -43,8 +43,8 @@ const WhyVote = () => {
                 </div>
               </div>
               <div className="col-xxl-12 mt-7 mt-md-8 mt-xxl-3">
-                <div className="why-trade__part d-flex align-items-center">
-                  <div className="vector d-none d-xxl-flex px-xxl-15">
+                <div className="why-trade__part flex items-center">
+                  <div className="vector hidden d-xxl-flex px-xxl-15">
                     <img
                       src="assets/images/trade_vector.png"
                       alt="Image"
@@ -60,7 +60,7 @@ const WhyVote = () => {
                     </p>
                     <Link
                       href="/approved-candidates"
-                      className="cmn-btn link secondary-link fs-six-up  gap-2 gap-lg-3 align-items-center mt-5"
+                      className="cmn-btn link secondary-link fs-six-up  gap-2 gap-lg-3 items-center mt-5"
                     >
                       {" "}
                       Check Candidates{" "}

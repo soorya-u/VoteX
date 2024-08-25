@@ -6,6 +6,7 @@ import { ownerPublicKey } from "@/constants/contract";
 import { shortenAddress } from "@/utils";
 
 import Preview from "../Global/Preview";
+import { NULL_ACCOUNT } from "@stellar/stellar-sdk/lib/contract";
 
 const Details = ({
   candidate,
@@ -22,11 +23,11 @@ const Details = ({
   const { publicKey } = useContract();
 
   return (
-    <section className="team-details pt-120 pb-120 position-relative z-0">
+    <section className="team-details pt-120 pb-120 relative z-0">
       <div className="container">
-        <div className="row justify-content-center">
+        <div className="row justify-center">
           <div className="col-12 col-sm-10 col-md-12 col-xxl-10">
-            <div className="team-details__card d-center flex-column flex-md-row gap-6">
+            <div className="team-details__card flex justify-center items-center flex-col flex-md-row gap-6">
               <div className="team-details__thumbs">
                 <img
                   src={candidate?.image}
@@ -34,9 +35,9 @@ const Details = ({
                   className="cus-rounded-1 max-auto max-lg-un"
                 />
               </div>
-              <div className="team__content pe-md-4">
+              <div className="team__content md:pr-4">
                 <h5 className="team__title mb-4">{candidate?._name}</h5>
-                <ul className="social-area d-flex align-items-center gap-2 gap-md-3 mt-8 mt-lg-10">
+                <ul className="social-area flex items-center gap-2 gap-md-3 mt-8 mt-lg-10">
                   <li>
                     <strong>Address :&nbsp;&nbsp; </strong>{" "}
                     {shortenAddress(candidate?.address)}
@@ -56,7 +57,7 @@ const Details = ({
                   )}
                 </ul>
                 {path === "voter" && (
-                  <ul className="social-area d-flex align-items-center gap-2 gap-md-3 mt-8 mt-lg-10">
+                  <ul className="social-area flex items-center gap-2 gap-md-3 mt-8 mt-lg-10">
                     <li>
                       <strong>Address Details:&nbsp;&nbsp; </strong>{" "}
                       {candidate?._addressDetails}
@@ -69,7 +70,7 @@ const Details = ({
                 )}
 
                 {path === "candidate" && (
-                  <ul className="social-area d-flex align-items-center gap-2 gap-md-3 mt-8 mt-lg-10">
+                  <ul className="social-area flex items-center gap-2 gap-md-3 mt-8 mt-lg-10">
                     <li>
                       <strong>Affidavit:&nbsp;&nbsp; </strong>{" "}
                       {candidate?._affidavit}
@@ -82,7 +83,7 @@ const Details = ({
                 )}
 
                 {path === "voter" && (
-                  <ul className="social-area d-flex align-items-center gap-2 gap-md-3 mt-8 mt-lg-10">
+                  <ul className="social-area flex items-center gap-2 gap-md-3 mt-8 mt-lg-10">
                     <li>
                       <strong>Date of Birth / Age :&nbsp;&nbsp; </strong>{" "}
                       {candidate?._dobOrAge}
@@ -95,7 +96,7 @@ const Details = ({
                 )}
 
                 {path === "candidate" && (
-                  <ul className="social-area d-flex align-items-center gap-2 gap-md-3 mt-8 mt-lg-10">
+                  <ul className="social-area flex items-center gap-2 gap-md-3 mt-8 mt-lg-10">
                     <li>
                       <strong>Criminal Antecedents :&nbsp;&nbsp; </strong>{" "}
                       {candidate?._criminalAntecedents}
@@ -108,7 +109,7 @@ const Details = ({
                 )}
 
                 {path === "voter" && (
-                  <ul className="social-area d-flex align-items-center gap-2 gap-md-3 mt-8 mt-lg-10">
+                  <ul className="social-area flex items-center gap-2 gap-md-3 mt-8 mt-lg-10">
                     <li>
                       <strong>Hologram And Barcode :&nbsp;&nbsp; </strong>{" "}
                       {candidate?._hologramAndBarcode}
@@ -121,7 +122,7 @@ const Details = ({
                 )}
 
                 {path === "candidate" && (
-                  <ul className="social-area d-flex align-items-center gap-2 gap-md-3 mt-8 mt-lg-10">
+                  <ul className="social-area flex items-center gap-2 gap-md-3 mt-8 mt-lg-10">
                     <li>
                       <strong>Electoral Roll Entry :&nbsp;&nbsp; </strong>{" "}
                       {candidate?._electoralRollEntry}
@@ -261,7 +262,7 @@ const Details = ({
         </div>
         {publicKey === ownerPublicKey ||
           (publicKey === candidate?.address && (
-            <p className="mt-16 align-items-center">
+            <p className="mt-16 items-center">
               <Preview pdf={candidate?.pdf} />
             </p>
           ))}

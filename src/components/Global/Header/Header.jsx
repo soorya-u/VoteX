@@ -17,13 +17,13 @@ const Header = () => {
   }, [publicKey]);
 
   return (
-    <header className="header-section a2-bg-0 header-section--secondary header-menu w-100">
-      <div className="container d-center">
-        <nav className="navbar a2-lg-bg py-5 p-lg-5 rounded-3 navbar-expand-lg w-100 justify-content-between">
-          <div className="d-flex align-items-center">
+    <header className="header-section a2-bg-0 header-section--secondary header-menu w-full">
+      <div className="container flex justify-center items-center">
+        <nav className="navbar a2-lg-bg py-5 p-lg-5 rounded-3 navbar-expand-lg w-full justify-content-between">
+          <div className="flex items-center">
             <button
               onClick={() => setIsNavBarOpen((prev) => !prev)}
-              className={`navbar-toggler ms-4 ${isNavBarOpen && "open"}`}
+              className={`navbar-toggler ml-4 ${isNavBarOpen && "open"}`}
               type="button"
               data-bs-toggle="collapse"
               aria-label="Navbar Toggler"
@@ -37,7 +37,7 @@ const Header = () => {
               <span></span>
             </button>
             <Link
-              className="navbar-brand m-0 p-0 d-flex align-items-center gap-5 gap-xl-5 me-2"
+              className="navbar-brand m-0 p-0 flex items-center gap-5 gap-xl-5 mr-2"
               href="/"
             >
               <img src="/logo.png" className="sm:hidden size-12" alt="logo" />
@@ -50,13 +50,13 @@ const Header = () => {
             </Link>
           </div>
           <div className="nav_alt">
-            <div className="right-area position-relative ml-0 d-center gap-1 gap-xl-4 d-lg-none">
+            <div className="right-area relative ml-0 flex justify-center items-center gap-1 gap-xl-4 d-lg-none">
               {isConnected ? (
                 <>
                   <div className="single-item">
                     <Link
                       href="/voter"
-                      className="rotate_eff flex-nowrap py-1 px-2 px-xl-3 d-center gap-1 fw-bold nw1-color"
+                      className="rotate_eff flex-nowrap py-1 px-2 px-xl-3 flex justify-center items-center gap-1 fw-bold nw1-color"
                     >
                       Voter <i className="ti ti-arrow-right fs-six-up"></i>
                     </Link>
@@ -64,7 +64,7 @@ const Header = () => {
                   <div className="single-item">
                     <Link
                       href="/candidate"
-                      className="cmn-btn fw-bold py-2 px-2 px-sm-3 px-lg-4 align-items-center gap-1"
+                      className="cmn-btn fw-bold py-2 px-2 px-sm-3 px-lg-4 items-center gap-1"
                     >
                       Candidate{" "}
                       <i className="ti ti-arrow-right fw-semibold fs-six-up"></i>
@@ -77,7 +77,7 @@ const Header = () => {
                     onClick={async () =>
                       await connectWallet().then(() => setIsConnected(true))
                     }
-                    className="cmn-btn fw-bold py-2 px-2 px-sm-3 px-lg-4 align-items-center gap-1"
+                    className="cmn-btn fw-bold py-2 px-2 px-sm-3 px-lg-4 items-center gap-1"
                   >
                     Connect Wallet{" "}
                     <i className="ti ti-arrow-right fw-semibold fs-six-up" />
@@ -87,7 +87,7 @@ const Header = () => {
             </div>
           </div>
           <div
-            className={`bs-collapse navbar-collapse justify-content-center ${
+            className={`bs-collapse navbar-collapse justify-center ${
               isNavBarOpen && "show"
             }`}
             id="navbar-content"
@@ -184,13 +184,13 @@ const Header = () => {
               </Dropdown>
             </ul>
           </div>
-          <div className="right-area position-relative ms-0 d-center gap-1 gap-xl-4 d-none d-lg-flex">
+          <div className="right-area relative ml-0 flex justify-center items-center gap-1 gap-xl-4 hidden d-lg-flex">
             {isConnected ? (
               <>
                 <div className="single-item">
                   <Link
                     href="/voter"
-                    className="rotate_eff flex-nowrap py-1 px-2 px-xl-3 d-center gap-1 fw-bold nw1-color"
+                    className="rotate_eff flex-nowrap py-1 px-2 px-xl-3 flex justify-center items-center gap-1 fw-bold nw1-color"
                   >
                     Voter <i className="ti ti-arrow-right fs-six-up" />
                   </Link>
@@ -198,7 +198,7 @@ const Header = () => {
                 <div className="single-item">
                   <Link
                     href="/candidate"
-                    className="cmn-btn fw-bold py-2 px-2 px-sm-3 px-lg-4 align-items-center gap-1"
+                    className="cmn-btn fw-bold py-2 px-2 px-sm-3 px-lg-4 items-center gap-1"
                   >
                     Candidate{" "}
                     <i className="ti ti-arrow-right fw-semibold fs-six-up" />
@@ -211,7 +211,7 @@ const Header = () => {
                   onClick={async () =>
                     await connectWallet().then(() => setIsConnected(true))
                   }
-                  className="cmn-btn fw-bold py-2 px-2 px-sm-3 px-lg-4 align-items-center gap-1"
+                  className="cmn-btn fw-bold py-2 px-2 px-sm-3 px-lg-4 items-center gap-1"
                 >
                   Connect Wallet{" "}
                   <i className="ti ti-arrow-right fw-semibold fs-six-up" />

@@ -26,23 +26,23 @@ export default function OwnerPage() {
   const [changeOwner, setChangeOwner] = useState("");
 
   return (
-    <section className="sign nb4-bg h-100 d-flex align-items-center position-relative z-0">
-      <div className="animation position-absolute top-0 left-0 w-100 h-100 -z-[1]">
+    <section className="sign nb4-bg h-full flex items-center relative z-0">
+      <div className="animation absolute top-0 left-0 w-full h-full -z-[1]">
         <img
           src="assets/images/star.png"
           alt="vector"
-          className="position-absolute push_animat"
+          className="absolute push_animat"
         />
       </div>
       <div className="container ">
-        <div className="row align-items-center justify-content-center justify-content-xl-start">
+        <div className="row items-center justify-center justify-content-xl-start">
           <div className="col-12 col-sm-10 col-md-6">
-            <div className="welcome alt-color text-center text-md-start pt-120 pb-120 position-relative z-0">
+            <div className="welcome alt-color text-center text-md-start pt-120 pb-120 relative z-0">
               <h1 className="display-one">Welcome Admin!</h1>
             </div>
           </div>
-          <div className="col-12 col-md-6 col-lg-5 col-xxl-5 offset-xxl-1 text-center ms-xl-auto mx-auto">
-            <div className="ms-md-5 ms-xxl-0 pt-120 pb-120">
+          <div className="col-12 col-md-6 col-lg-5 col-xxl-5 offset-xxl-1 text-center xl:ml-auto mx-auto">
+            <div className="md:ml-5 2xl:ml-0 pt-120 pb-120">
               <div className="head_part">
                 <Link
                   className="flex justify-center items-start gap-4"
@@ -66,7 +66,7 @@ export default function OwnerPage() {
                   id="frmContactus"
                   className="contact__form mt-8 mt-lg-10 text-start"
                 >
-                  <div className="d-flex flex-column gap-5 gap-lg-6 ">
+                  <div className="flex flex-col gap-5 gap-lg-6 ">
                     <Input
                       name={"Start Time"}
                       placeholder={"startTime"}
@@ -91,7 +91,7 @@ export default function OwnerPage() {
                     />
                     <div>
                       <button
-                        className="cmn-btn py-3 px-5 px-lg-6 w-100 d-center"
+                        className="cmn-btn py-3 px-5 px-lg-6 w-full flex justify-center items-center"
                         onClick={async () => await setVotingPeriod(voteTime)}
                       >
                         Set Voting Period
@@ -106,7 +106,7 @@ export default function OwnerPage() {
                     />
                     <div>
                       <button
-                        className="cmn-btn py-3 px-5 px-lg-6 w-100 d-center"
+                        className="cmn-btn py-3 px-5 px-lg-6 w-full flex justify-center items-center"
                         onClick={async () => await changeOwnerFn(changeOwner)}
                       >
                         Change Owner
@@ -116,7 +116,7 @@ export default function OwnerPage() {
 
                   <div className=" mt-7 mt-lg-16">
                     <button
-                      className="cmn-btn py-3 px-5 px-lg-6 mt-7 mt-lg-8 w-100 d-center"
+                      className="cmn-btn py-3 px-5 px-lg-6 mt-7 mt-lg-8 w-full flex justify-center items-center"
                       onClick={async () => await resetContract()}
                     >
                       Reset Contract
