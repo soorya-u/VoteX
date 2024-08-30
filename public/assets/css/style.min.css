@@ -2516,9 +2516,6 @@ iframe {
   .header-section .navbar .navbar-brand img {
     max-width: initial;
   }
-  .header-section .navbar .navbar-brand .small_logo {
-    max-width: 80%;
-  }
   .header-section .navbar .navbar-collapse .navbar-nav {
     max-height: 250px;
     overflow-y: auto;
