@@ -12,7 +12,7 @@
     "@stellar/freighter-api": "^2.0.0",
     "@stellar/stellar-sdk": "^12.1.0",
     "axios": "^1.7.2",
-    "next": "14.2.5",
+    "next": "14.2.10",
     "react": "^18",
     "react-dom": "^18",
     "react-dropzone": "^14.2.3",
