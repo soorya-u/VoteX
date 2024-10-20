@@ -72,7 +72,24 @@ impl VotingOrganization {
     }
 
     pub fn init(env: Env, owner_address: Address) {
+        const INITIAL_TIME: u64 = 0;
+        let empty_array: Vec<Address> = vec![&env];
         env.storage().persistent().set(&OWNER, &owner_address);
+        env.storage().persistent().set(&START_TIME, &INITIAL_TIME);
+        env.storage().persistent().set(&END_TIME, &INITIAL_TIME);
+        env.storage()
+            .persistent()
+            .set(&REGISTERED_VOTERS, &empty_array);
+        env.storage()
+            .persistent()
+            .set(&REGISTERED_CANDIDATES, &empty_array);
+        env.storage()
+            .persistent()
+            .set(&APPROVED_VOTERS, &empty_array);
+        env.storage()
+            .persistent()
+            .set(&APPROVED_CANDIDATES, &empty_array);
+        env.storage().persistent().set(&VOTED_VOTERS, &empty_array);
     }
 
     pub fn register_voter(env: Env, name: String, ipfs: String, address: Address) {
@@ -158,21 +175,7 @@ impl VotingOrganization {
         Self::owner_only(&env, owner_address);
 
         let key = Voters::Voter(address.clone());
-        let mut voter = env.storage().persistent().get(&key).unwrap_or(Voter {
-            name: String::from_str(&env, ""),
-            ipfs: String::from_str(&env, "NotFound"),
-            message: String::from_str(&env, ""),
-            has_voted: false,
-            register_id: U256::from_u32(&env, 0),
-            status: REJECTED.clone(),
-            voter_address: address.clone(),
-        });
-
-        assert_ne!(
-            voter.ipfs,
-            String::from_str(&env, "NotFound"),
-            "Voter not found"
-        );
+        let mut voter: Voter = env.storage().persistent().get(&key).unwrap();
 
         voter.status = APPROVED.clone();
         voter.message = message;
@@ -195,21 +198,7 @@ impl VotingOrganization {
         Self::owner_only(&env, owner_address);
 
         let key = Candidates::Candidate(address.clone());
-        let mut candidate = env.storage().persistent().get(&key).unwrap_or(Candidate {
-            name: String::from_str(&env, ""),
-            ipfs: String::from_str(&env, "NotFound"),
-            message: String::from_str(&env, ""),
-            register_id: U256::from_u32(&env, 0),
-            status: REJECTED.clone(),
-            candidate_address: address.clone(),
-            vote_count: U256::from_u32(&env, 0),
-        });
-
-        assert_ne!(
-            candidate.ipfs,
-            String::from_str(&env, "NotFound"),
-            "Voter not found"
-        );
+        let mut candidate: Candidate = env.storage().persistent().get(&key).unwrap();
 
         candidate.status = APPROVED.clone();
         candidate.message = message;
@@ -232,21 +221,7 @@ impl VotingOrganization {
         Self::owner_only(&env, owner_address);
 
         let key = Voters::Voter(address.clone());
-        let mut voter = env.storage().persistent().get(&key).unwrap_or(Voter {
-            name: String::from_str(&env, ""),
-            ipfs: String::from_str(&env, "NotFound"),
-            message: String::from_str(&env, ""),
-            has_voted: false,
-            register_id: U256::from_u32(&env, 0),
-            status: REJECTED.clone(),
-            voter_address: address.clone(),
-        });
-
-        assert_ne!(
-            voter.ipfs,
-            String::from_str(&env, "NotFound"),
-            "Voter not found"
-        );
+        let mut voter: Voter = env.storage().persistent().get(&key).unwrap();
 
         voter.status = REJECTED.clone();
         voter.message = message;
@@ -258,21 +233,7 @@ impl VotingOrganization {
         Self::owner_only(&env, owner_address);
 
         let key = Candidates::Candidate(address.clone());
-        let mut candidate = env.storage().persistent().get(&key).unwrap_or(Candidate {
-            name: String::from_str(&env, ""),
-            ipfs: String::from_str(&env, "NotFound"),
-            message: String::from_str(&env, ""),
-            vote_count: U256::from_u32(&env, 0),
-            register_id: U256::from_u32(&env, 0),
-            status: REJECTED.clone(),
-            candidate_address: address.clone(),
-        });
-
-        assert_ne!(
-            candidate.ipfs,
-            String::from_str(&env, "NotFound"),
-            "Candidate not found"
-        );
+        let mut candidate: Candidate = env.storage().persistent().get(&key).unwrap();
 
         candidate.status = REJECTED.clone();
         candidate.message = message;
@@ -289,166 +250,10 @@ impl VotingOrganization {
         env.storage().persistent().set(&END_TIME, &end_time);
     }
 
-    pub fn get_all_registered_voters(env: Env) -> Vec<Voter> {
-        let mut voters: Vec<Voter> = vec![&env];
-
-        let registered_voters: Vec<Address> = env
-            .storage()
-            .persistent()
-            .get(&REGISTERED_VOTERS)
-            .unwrap_or(vec![&env]);
-
-        for v in registered_voters.iter() {
-            let key = Voters::Voter(v.clone());
-            let voter = env.storage().persistent().get(&key).unwrap_or(Voter {
-                has_voted: false,
-                ipfs: String::from_str(&env, "NotFound"),
-                message: String::from_str(&env, ""),
-                name: String::from_str(&env, ""),
-                register_id: U256::from_u32(&env, 0),
-                status: REJECTED.clone(),
-                voter_address: v,
-            });
-
-            if voter.ipfs != String::from_str(&env, "NotFound") {
-                voters.push_back(voter);
-            }
-        }
-
-        return voters;
-    }
-
-    pub fn get_all_registered_candidates(env: Env) -> Vec<Candidate> {
-        let mut candidates: Vec<Candidate> = vec![&env];
-
-        let registered_candidates: Vec<Address> = env
-            .storage()
-            .persistent()
-            .get(&REGISTERED_CANDIDATES)
-            .unwrap_or(vec![&env]);
-
-        for c in registered_candidates.iter() {
-            let key = Candidates::Candidate(c.clone());
-            let candidate = env.storage().persistent().get(&key).unwrap_or(Candidate {
-                ipfs: String::from_str(&env, "NotFound"),
-                message: String::from_str(&env, ""),
-                name: String::from_str(&env, ""),
-                register_id: U256::from_u32(&env, 0),
-                status: REJECTED.clone(),
-                candidate_address: c,
-                vote_count: U256::from_u32(&env, 0),
-            });
-
-            if candidate.ipfs != String::from_str(&env, "NotFound") {
-                candidates.push_back(candidate);
-            }
-        }
-
-        return candidates;
-    }
-
-    pub fn get_all_approved_candidates(env: Env) -> Vec<Candidate> {
-        let mut approved_candidates: Vec<Candidate> = vec![&env];
-
-        let approved_address: Vec<Address> = env
-            .storage()
-            .persistent()
-            .get(&APPROVED_CANDIDATES)
-            .unwrap_or(vec![&env]);
-
-        for a in approved_address.iter() {
-            let key = Candidates::Candidate(a.clone());
-            let candidate = env.storage().persistent().get(&key).unwrap_or(Candidate {
-                ipfs: String::from_str(&env, "NotFound"),
-                message: String::from_str(&env, ""),
-                name: String::from_str(&env, ""),
-                register_id: U256::from_u32(&env, 0),
-                status: REJECTED.clone(),
-                candidate_address: a,
-                vote_count: U256::from_u32(&env, 0),
-            });
-
-            if candidate.ipfs != String::from_str(&env, "NotFound") {
-                approved_candidates.push_back(candidate);
-            }
-        }
-
-        return approved_candidates;
-    }
-
-    pub fn get_all_approved_voters(env: Env) -> Vec<Voter> {
-        let mut approved_voters: Vec<Voter> = vec![&env];
-
-        let approved_address: Vec<Address> = env
-            .storage()
-            .persistent()
-            .get(&APPROVED_VOTERS)
-            .unwrap_or(vec![&env]);
-
-        for a in approved_address.iter() {
-            let key = Voters::Voter(a.clone());
-            let voter = env.storage().persistent().get(&key).unwrap_or(Voter {
-                ipfs: String::from_str(&env, "NotFound"),
-                message: String::from_str(&env, ""),
-                name: String::from_str(&env, ""),
-                register_id: U256::from_u32(&env, 0),
-                status: REJECTED.clone(),
-                voter_address: a,
-                has_voted: false,
-            });
-
-            if voter.ipfs != String::from_str(&env, "NotFound") {
-                approved_voters.push_back(voter);
-            }
-        }
-
-        return approved_voters;
-    }
-
-    pub fn get_candidate(env: Env, addr: Address) -> Candidate {
-        let key = Candidates::Candidate(addr.clone());
-        let candidate = env.storage().persistent().get(&key).unwrap_or(Candidate {
-            ipfs: String::from_str(&env, "NotFound"),
-            message: String::from_str(&env, ""),
-            name: String::from_str(&env, ""),
-            register_id: U256::from_u32(&env, 0),
-            status: REJECTED.clone(),
-            candidate_address: addr,
-            vote_count: U256::from_u32(&env, 0),
-        });
-
-        return candidate;
-    }
-
-    pub fn get_voter(env: Env, addr: Address) -> Voter {
-        let key = Voters::Voter(addr.clone());
-        let voter = env.storage().persistent().get(&key).unwrap_or(Voter {
-            ipfs: String::from_str(&env, "NotFound"),
-            message: String::from_str(&env, ""),
-            name: String::from_str(&env, ""),
-            register_id: U256::from_u32(&env, 0),
-            status: REJECTED.clone(),
-            voter_address: addr,
-            has_voted: false,
-        });
-
-        return voter;
-    }
-
     pub fn update_voter(env: Env, name: String, ipfs: String, addr: Address) {
         const PENDING_MESSAGE: &str = "Currently your registration is pending";
         let key = Voters::Voter(addr.clone());
-        let mut voter = env.storage().persistent().get(&key).unwrap_or(Voter {
-            ipfs: String::from_str(&env, "NotFound"),
-            message: String::from_str(&env, ""),
-            name: String::from_str(&env, ""),
-            register_id: U256::from_u32(&env, 0),
-            status: REJECTED.clone(),
-            voter_address: addr,
-            has_voted: false,
-        });
-
-        assert_ne!(voter.ipfs, String::from_str(&env, "NotFound"));
+        let mut voter: Voter = env.storage().persistent().get(&key).unwrap();
 
         voter.name = name;
         voter.ipfs = ipfs;
@@ -461,17 +266,7 @@ impl VotingOrganization {
     pub fn update_candidate(env: Env, name: String, ipfs: String, addr: Address) {
         let key = Candidates::Candidate(addr.clone());
         const PENDING_MESSAGE: &str = "Currently your registration is pending";
-        let mut candidate = env.storage().persistent().get(&key).unwrap_or(Candidate {
-            ipfs: String::from_str(&env, "NotFound"),
-            message: String::from_str(&env, ""),
-            name: String::from_str(&env, ""),
-            register_id: U256::from_u32(&env, 0),
-            status: REJECTED.clone(),
-            candidate_address: addr,
-            vote_count: U256::from_u32(&env, 0),
-        });
-
-        assert_ne!(candidate.ipfs, String::from_str(&env, "NotFound"));
+        let mut candidate: Candidate = env.storage().persistent().get(&key).unwrap();
 
         candidate.name = name;
         candidate.ipfs = ipfs;
@@ -511,63 +306,50 @@ impl VotingOrganization {
             env.storage().persistent().remove(&key);
         }
 
-        env.storage().persistent().remove(&REGISTERED_VOTERS);
-        env.storage().persistent().remove(&REGISTERED_CANDIDATES);
-        env.storage().persistent().remove(&APPROVED_VOTERS);
-        env.storage().persistent().remove(&APPROVED_CANDIDATES);
-        env.storage().persistent().remove(&VOTED_VOTERS);
+        const INITIAL_TIME: u64 = 0;
+        let empty_array: Vec<Address> = vec![&env];
+        env.storage().persistent().set(&START_TIME, &INITIAL_TIME);
+        env.storage().persistent().set(&END_TIME, &INITIAL_TIME);
+        env.storage()
+            .persistent()
+            .set(&REGISTERED_VOTERS, &empty_array);
+        env.storage()
+            .persistent()
+            .set(&REGISTERED_CANDIDATES, &empty_array);
+        env.storage()
+            .persistent()
+            .set(&APPROVED_VOTERS, &empty_array);
+        env.storage()
+            .persistent()
+            .set(&APPROVED_CANDIDATES, &empty_array);
+        env.storage().persistent().set(&VOTED_VOTERS, &empty_array);
+
         env.storage().persistent().remove(&VOTER_ID_COUNTER);
         env.storage().persistent().remove(&CANDIDATE_ID_COUNTER);
-        env.storage().persistent().remove(&START_TIME);
-        env.storage().persistent().remove(&END_TIME);
     }
 
     pub fn vote(env: Env, candidate_address: Address, voter_address: Address) {
         Self::only_during_voting_period(&env);
-        let mut voter = env
+        let mut voter: Voter = env
             .storage()
             .persistent()
             .get(&Voters::Voter(voter_address.clone()))
-            .unwrap_or(Voter {
-                has_voted: false,
-                ipfs: String::from_str(&env, "NotFound"),
-                message: String::from_str(&env, ""),
-                name: String::from_str(&env, ""),
-                voter_address: voter_address.clone(),
-                register_id: U256::from_u32(&env, 0),
-                status: REJECTED.clone(),
-            });
+            .unwrap();
 
-        assert_ne!(
-            voter.ipfs,
-            String::from_str(&env, "NotFound"),
-            "Account Not Found"
-        );
         assert_eq!(
             voter.status,
             APPROVED.clone(),
             "You are not an approved voter."
         );
+
         assert!(!voter.has_voted, "You have already voted.");
 
-        let mut candidate = env
+        let mut candidate: Candidate = env
             .storage()
             .persistent()
             .get(&Candidates::Candidate(candidate_address.clone()))
-            .unwrap_or(Candidate {
-                ipfs: String::from_str(&env, "NotFound"),
-                message: String::from_str(&env, ""),
-                name: String::from_str(&env, ""),
-                candidate_address: candidate_address.clone(),
-                register_id: U256::from_u32(&env, 0),
-                status: REJECTED.clone(),
-                vote_count: U256::from_u32(&env, 0),
-            });
-        assert_ne!(
-            candidate.ipfs,
-            String::from_str(&env, "NotFound"),
-            "Account Not Found"
-        );
+            .unwrap();
+
         assert_eq!(
             candidate.status,
             APPROVED.clone(),
@@ -595,64 +377,5 @@ impl VotingOrganization {
         env.storage()
             .persistent()
             .set(&VOTED_VOTERS, &voters_who_voted)
-    }
-
-    pub fn get_all_voters_who_voted(env: Env) -> Vec<Voter> {
-        let voter_address: Vec<Address> = env
-            .storage()
-            .persistent()
-            .get(&VOTED_VOTERS)
-            .unwrap_or(vec![&env]);
-
-        let mut voters: Vec<Voter> = vec![&env];
-
-        for a in voter_address {
-            let v: Voter = env.storage().persistent().get(&Voters::Voter(a)).unwrap();
-            voters.push_back(v);
-        }
-
-        return voters;
-    }
-
-    pub fn get_current_voting_status(env: Env, address: Address) -> Candidate {
-        let mut winning_candidate = Candidate {
-            candidate_address: address.clone(),
-            ipfs: String::from_str(&env, "NotFound"),
-            message: String::from_str(&env, ""),
-            name: String::from_str(&env, ""),
-            register_id: U256::from_u32(&env, 0),
-            vote_count: U256::from_u32(&env, 0),
-            status: REJECTED.clone(),
-        };
-
-        let candidates: Vec<Address> = env
-            .storage()
-            .persistent()
-            .get(&APPROVED_CANDIDATES)
-            .unwrap_or(vec![&env]);
-
-        for c in candidates {
-            let key = Candidates::Candidate(c);
-            let cand: Candidate = env.storage().persistent().get(&key).unwrap();
-
-            if winning_candidate.vote_count.to_u128().unwrap() < cand.vote_count.to_u128().unwrap()
-            {
-                winning_candidate = cand;
-            }
-        }
-
-        return winning_candidate;
-    }
-
-    pub fn get_winning_candidate(env: Env, addr: Address) -> Candidate {
-        let end_time: u64 = env.storage().persistent().get(&END_TIME).unwrap_or(0);
-        assert!(env.ledger().timestamp() > end_time);
-        return Self::get_current_voting_status(env, addr);
-    }
-
-    pub fn get_voting_time(env: Env) -> Vec<u64> {
-        let start_time: u64 = env.storage().persistent().get(&START_TIME).unwrap_or(0);
-        let end_time: u64 = env.storage().persistent().get(&END_TIME).unwrap_or(0);
-        return vec![&env, start_time, end_time];
     }
 }

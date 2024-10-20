@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { uploadJson } from "@/lib/axios";
+import { uploadJson } from "@/lib/pinata";
 
 export async function POST(req) {
   const json = await req.json();

@@ -25,11 +25,8 @@ const Company = () => {
             <div className="row ms-xl-3 ms-xxl-10">
               <div className="col-xxl-6">
                 <div className="company-story__part">
-                  <span className="heading p1-color fs-five">
-                    Our Team Story
-                  </span>
-                  <h3 className="mb-3 mt-5">Who We Are</h3>
-                  <p  >
+                  <h3 className="mb-3">Who We Are</h3>
+                  <p>
                     We are a team of four passionate developers with a keen
                     interest in blockchain technology.
                   </p>

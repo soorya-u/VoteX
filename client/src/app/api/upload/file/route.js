@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { uploadFile } from "@/lib/axios";
+import { uploadFile } from "@/lib/pinata";
 
 export async function POST(req) {
   const data = await req.formData();

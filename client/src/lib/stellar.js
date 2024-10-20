@@ -3,22 +3,50 @@ import {
   Address,
   BASE_FEE,
   TransactionBuilder,
+  xdr,
+  StrKey,
+  SorobanRpc,
+  scValToNative,
 } from "@stellar/stellar-sdk";
 import { server, contract, networkPassphrase } from "@/constants/contract";
 import { signTransaction, retrievePublicKey } from "@/lib/freighter";
 
-export const stringToScValString = (value) => {
-  return nativeToScVal(value);
-};
-
-export const numberToU64 = (value) => {
-  return nativeToScVal(value, { type: "u64" });
-};
+export const stringToScValString = (value) => nativeToScVal(value);
+export const stringToScValSymbol = (value) => xdr.ScVal.scvSymbol(value);
+export const numberToU64 = (value) => nativeToScVal(value, { type: "u64" });
+export const objectToAddress = (xdrObj) =>
+  StrKey.encodeEd25519PublicKey(xdrObj._value._value.ed25519());
 
 export const stringToAddress = async (value = undefined) => {
   const pk = value || (await retrievePublicKey());
   const address = new Address(pk);
   return address.toScVal();
+};
+
+export const getContractData = async (key, type = null) => {
+  if (typeof key === "string") key = stringToScValSymbol(key);
+  if (Array.isArray(key)) {
+    const [symbolString, addressString] = key;
+    const symbol = stringToScValSymbol(symbolString);
+    const address = await stringToAddress(addressString);
+    key = nativeToScVal([symbol, address]);
+  }
+
+  const res = await server.getContractData(
+    contract,
+    key,
+    SorobanRpc.Durability.Persistent
+  );
+  const value = res.val.value().val();
+
+  switch (type) {
+    case "address":
+      return objectToAddress(value);
+    case "u64":
+      return Number(scValToNative(value));
+    default:
+      return scValToNative(value);
+  }
 };
 
 export const callContract = async (functionName, values, publicKey) => {

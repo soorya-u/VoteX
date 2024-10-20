@@ -3,15 +3,16 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import { scValToNative } from "@stellar/stellar-sdk";
 
-import { ContractFunctions } from "@/constants/contract";
+import { ContractFunctions, ContractVariables } from "@/constants/contract";
 import {
   numberToU64,
   stringToScValString,
   callContract as callContractFn,
   stringToAddress,
+  getContractData,
 } from "@/lib/stellar";
 import { retrievePublicKey, checkConnection } from "@/lib/freighter";
-import { notifyError, notifySuccess } from "@/lib/toast";
+import { notifyError, notifyLoading, notifySuccess } from "@/lib/toast";
 import { validObjectCheck } from "@/utils";
 
 export const ContractContext = createContext();
@@ -32,7 +33,7 @@ export const ContractProvider = ({ children }) => {
     const { _name: name } = updateCandidate;
     const jsonData = { ...updateCandidate, image, pdf };
     if (!validObjectCheck(jsonData)) return notifyError("Data Is Missing");
-    notifySuccess("Registering Candidate, kindly wait...");
+    notifyLoading("Registering Candidate, kindly wait...");
     setLoader(true);
 
     try {
@@ -60,7 +61,7 @@ export const ContractProvider = ({ children }) => {
     const jsonData = { ...updateVoter, image, pdf };
 
     if (!validObjectCheck(jsonData)) return notifyError("Data Is Missing");
-    notifySuccess("Registering Voter, kindly wait...");
+    notifyLoading("Registering Voter, kindly wait...");
     setLoader(true);
 
     try {
@@ -85,7 +86,7 @@ export const ContractProvider = ({ children }) => {
 
   const approveCandidate = async (address, message) => {
     if (!address || !message) return notifyError("Data Is Missing");
-    notifySuccess("kindly wait, approving candidate...");
+    notifyLoading("kindly wait, approving candidate...");
     setLoader(true);
 
     try {
@@ -110,7 +111,7 @@ export const ContractProvider = ({ children }) => {
 
   const approveVoter = async (address, message) => {
     if (!address || !message) return notifyError("Data Is Missing");
-    notifySuccess("kindly wait, approving voter...");
+    notifyLoading("kindly wait, approving voter...");
     setLoader(true);
 
     const ownerPk = await stringToAddress();
@@ -135,7 +136,7 @@ export const ContractProvider = ({ children }) => {
 
   const rejectCandidate = async (address, message) => {
     if (!address || !message) return notifyError("Data Is Missing");
-    notifySuccess("kindly wait, approving candidate...");
+    notifyLoading("kindly wait, approving candidate...");
     setLoader(true);
 
     try {
@@ -149,7 +150,7 @@ export const ContractProvider = ({ children }) => {
       ]);
 
       setLoader(false);
-      notifySuccess(" Candidate Rejected");
+      notifySuccess("Candidate Rejected");
       router.push("/all-candidates");
     } catch (error) {
       setLoader(false);
@@ -160,7 +161,7 @@ export const ContractProvider = ({ children }) => {
 
   const rejectVoter = async (address, message) => {
     if (!address || !message) return notifyError("Data Is Missing");
-    notifySuccess("kindly wait, approving voter...");
+    notifyLoading("kindly wait, approving voter...");
     setLoader(true);
 
     try {
@@ -186,7 +187,7 @@ export const ContractProvider = ({ children }) => {
   const setVotingPeriod = async (voteTime) => {
     if (!validObjectCheck(voteTime)) return notifyError("Data Is Missing");
 
-    notifySuccess("kindly wait...");
+    notifyLoading("kindly wait...");
     setLoader(true);
 
     const { startTime, endTime } = voteTime;
@@ -222,7 +223,7 @@ export const ContractProvider = ({ children }) => {
     const { _name: name } = updateVoter;
     const jsonData = { ...updateVoter, image, pdf };
     if (!validObjectCheck(jsonData)) return notifyError("Data Is Missing");
-    notifySuccess("Updating Voter, kindly wait...");
+    notifyLoading("Updating Voter, kindly wait...");
     setLoader(true);
 
     try {
@@ -249,7 +250,7 @@ export const ContractProvider = ({ children }) => {
     const { _name: name } = candidate;
     const jsonData = { ...candidate, image, pdf };
     if (!validObjectCheck(jsonData)) return notifyError("Data Is Missing");
-    notifySuccess("Updating Candidate, kindly wait...");
+    notifyLoading("Updating Candidate, kindly wait...");
     setLoader(true);
 
     try {
@@ -274,7 +275,7 @@ export const ContractProvider = ({ children }) => {
 
   const changeOwner = async (newOwner) => {
     if (!newOwner) return notifyError("Data Is Missing");
-    notifySuccess("kindly wait...");
+    notifyLoading("kindly wait...");
     setLoader(true);
 
     const newPk = await stringToAddress(newOwner);
@@ -294,7 +295,7 @@ export const ContractProvider = ({ children }) => {
   };
 
   const resetContract = async () => {
-    notifySuccess("kindly wait...");
+    notifyLoading("kindly wait...");
     setLoader(true);
 
     try {
@@ -302,18 +303,18 @@ export const ContractProvider = ({ children }) => {
       await callContract(ContractFunctions.resetContract, pk);
 
       setLoader(false);
-      notifySuccess("Successfully RESET");
+      notifySuccess("Successfully Reset");
       router.push("/");
     } catch (error) {
       setLoader(false);
-      notifyError("RESET failed, kindly connect the Owner");
+      notifyError("Reset failed, kindly connect the Owner");
       console.log(error);
     }
   };
 
   const giveVote = async (candidateAddress) => {
     if (!candidateAddress) return notifyError("Data Is Missing");
-    notifySuccess("kindly wait...");
+    notifyLoading("kindly wait...");
     setLoader(true);
 
     try {
@@ -333,15 +334,17 @@ export const ContractProvider = ({ children }) => {
 
   const initContractData = async () => {
     try {
-      const data = await callContract(ContractFunctions.getVotingTime);
-      if (!data) return;
-      const [startDateN, endDateN] = scValToNative(data);
+      const timestamp1 = await getContractData(
+        ContractVariables.startTime,
+        "u64"
+      );
+      const timestamp2 = await getContractData(
+        ContractVariables.endTime,
+        "u64"
+      );
 
-      const timestamp1 = Number(startDateN);
-      const timestamp2 = Number(endDateN);
-
-      const date1 = new Date(timestamp1 * 1000);
-      const date2 = new Date(timestamp2 * 1000);
+      const date1 = new Date(+timestamp1 * 1000);
+      const date2 = new Date(+timestamp2 * 1000);
 
       const options = {
         year: "numeric",
@@ -369,10 +372,14 @@ export const ContractProvider = ({ children }) => {
 
   const getRegisteredCandidates = async () => {
     try {
-      const data = await callContract(
-        ContractFunctions.getAllRegisteredCandidates
+      const candidateAddress = await getContractData(
+        ContractVariables.registeredCandidates
       );
-      const candidates = await scValToNative(data);
+      const candidates = await Promise.all(
+        candidateAddress.map(
+          async (c) => await getContractData([ContractVariables.candidate, c])
+        )
+      );
 
       return await Promise.all(
         candidates.map(
@@ -404,8 +411,15 @@ export const ContractProvider = ({ children }) => {
 
   const getRegisteredVoters = async () => {
     try {
-      const data = await callContract(ContractFunctions.getAllRegisteredVoters);
-      const voters = await scValToNative(data);
+      const voterAddress = await getContractData(
+        ContractVariables.registeredVoters
+      );
+      const voters = await Promise.all(
+        voterAddress.map(
+          async (v) => await getContractData([ContractVariables.voter, v])
+        )
+      );
+
       return await Promise.all(
         voters.map(
           async ({ ipfs, voter_address, register_id, has_voted, ...rest }) => {
@@ -430,8 +444,12 @@ export const ContractProvider = ({ children }) => {
 
   const votedVoters = async () => {
     try {
-      const data = await callContract(ContractFunctions.getAllVotersWhoVoted);
-      const voters = await scValToNative(data);
+      const voterAddress = await getContractData(ContractVariables.votedVoters);
+      const voters = await Promise.all(
+        voterAddress.map(
+          async (v) => await getContractData([ContractVariables.voter, v])
+        )
+      );
 
       const items = await Promise.all(
         voters.map(
@@ -463,25 +481,24 @@ export const ContractProvider = ({ children }) => {
 
   const highestVotedCandidate = async () => {
     try {
-      const pk = await stringToAddress();
-      const contractData = await callContract(
-        ContractFunctions.getCurrentVotingStatus,
-        pk
+      const candidateAddress = await getContractData(
+        ContractVariables.registeredCandidates
       );
-      if (!contractData) return;
-      const { candidate_address, register_id, vote_count, ...rest } =
-        await scValToNative(contractData);
-      if (rest.ipfs === "NotFound") return;
+      const candidates = await Promise.all(
+        candidateAddress.map(
+          async (c) => await getContractData([ContractVariables.candidate, c])
+        )
+      );
 
-      const { data } = await axios.get(rest.ipfs);
+      const highestCandidate = { noOfVotes: 0, address: "" };
 
-      return {
-        address: candidate_address,
-        registerId: Number(register_id),
-        voteCount: Number(vote_count),
-        ...rest,
-        ...data,
-      };
+      candidates.map((c) => {
+        if (c.vote_count > highestCandidate.noOfVotes)
+          highestCandidate.address = c.candidate_address;
+        highestCandidate.noOfVotes = c.vote_count;
+      });
+
+      return highestCandidate;
     } catch (error) {
       notifyError("Something went wrong");
       console.log(error);
@@ -514,14 +531,10 @@ export const ContractProvider = ({ children }) => {
   const getSingleVoter = async (address) => {
     try {
       if (!address) return notifyError("Kindly provide address");
-      const pk = await stringToAddress(address);
-      const contractData = await callContract(ContractFunctions.getVoter, pk);
+
       const { voter_address, register_id, has_voted, ...rest } =
-        scValToNative(contractData);
-      if (rest.ipfs === "NotFound")
-        return {
-          address: "",
-        };
+        await getContractData([ContractVariables.voter, address]);
+
       const { data } = await axios.get(rest.ipfs);
 
       return {
@@ -532,7 +545,7 @@ export const ContractProvider = ({ children }) => {
         ...data,
       };
     } catch (error) {
-      if (error instanceof TypeError) return;
+      if (+error.code === 404) return { address: "" };
       notifyError("Failed to get data, kindly reload page");
       console.log(error);
     }
@@ -542,19 +555,10 @@ export const ContractProvider = ({ children }) => {
     try {
       if (!address) return notifyError("Kindly provide address");
 
-      const pk = await stringToAddress(address);
-
-      const contractData = await callContract(
-        ContractFunctions.getCandidate,
-        pk
-      );
-
       const { candidate_address, register_id, vote_count, ...rest } =
-        await scValToNative(contractData);
-      if (rest.ipfs === "NotFound")
-        return {
-          address: "",
-        };
+        await getContractData([ContractVariables.candidate, address]);
+
+      if (rest.ipfs === "NotFound") return { address: "" };
 
       const { data } = await axios.get(rest.ipfs);
       return {
@@ -565,7 +569,7 @@ export const ContractProvider = ({ children }) => {
         ...data,
       };
     } catch (error) {
-      if (error instanceof TypeError) return;
+      if (+error.code === 404) return { address: "" };
       notifyError("Failed to get data, kindly reload page");
       console.log(error);
     }

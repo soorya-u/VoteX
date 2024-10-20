@@ -53,7 +53,7 @@ export default function ApprovedCandidatesPage() {
       <Header />
       <Team
         candidates={candidates}
-        path={"candidate"}
+        path="candidate"
         giveVote={giveVote}
         checkVote={checkVote}
         votingTime={votingTime}

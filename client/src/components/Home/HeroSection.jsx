@@ -70,7 +70,7 @@ const HeroSection = ({ initialData, highest }) => {
                   >
                     All Candidates <i className="ti ti-trending-up"></i>
                   </Link>
-                  {highest ? (
+                  {highest && highest.address ? (
                     <Link
                       href={{
                         pathname: "/candidate-details",

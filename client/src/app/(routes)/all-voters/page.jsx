@@ -13,6 +13,7 @@ export default function AllVotersPage() {
     setLoading(true);
     const fetchData = async () => {
       const items = await getRegisteredVoters();
+      console.log({ items });
       setVoters(items);
     };
 
