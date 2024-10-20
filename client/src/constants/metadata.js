@@ -29,14 +29,6 @@ export const defaultMetadata = {
       name: "Saanvi MJ",
       url: "https://saanvi-mj.github.io",
     },
-    {
-      name: "Likhith SV",
-      url: "",
-    },
-    {
-      name: "Hamsa CS",
-      url: "https://hamsacs.github.io/HamsaCS/",
-    },
   ],
   metadataBase: new URL("https://democrachain.soorya-u.dev"),
   appleWebApp: {

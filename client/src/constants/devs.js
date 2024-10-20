@@ -23,28 +23,4 @@ export const devsInfo = [
       x: "https://x.com/SaanviMJ",
     },
   },
-  {
-    name: "Likhith S V",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint voluptas qui numquam, quasi saepe impedit! obcaecati ducimus nisi!",
-    imageUrl: "assets/images/devs/likhith.jpg",
-    links: {
-      web: null,
-      github: null,
-      linkedin: null,
-      x: null,
-    },
-  },
-  {
-    name: "Hamsa C S",
-    description:
-      "My commitment to coding is driven by a desire to develop innovative solutions that have a meaningful impact on real-world issues.",
-    imageUrl: "assets/images/devs/hamsa.jpg",
-    links: {
-      web: "https://hamsacs.github.io/HamsaCS",
-      github: "https://github.com/HamsaCS",
-      linkedin: "http://linkedin.com/in/hamsa-cs-621a9627a",
-      instagram: "https://www.instagram.com/hamsa_c_s",
-    },
-  },
 ];

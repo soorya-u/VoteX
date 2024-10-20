@@ -20,20 +20,19 @@ export default function IndexPage() {
   const [highest, setHighest] = useState();
   const [loading, setLoading] = useState(false);
 
-  const { highestVotedCandidate, initContractData, publicKey } = useContract();
+  const { highestVotedCandidate, initContractData } = useContract();
 
   useEffect(() => {
-    if (!publicKey) return;
     setLoading(true);
-    const fetchData = async () => {
-      const items = await highestVotedCandidate();
-      setHighest(items);
-      const initialData = await initContractData();
-      setInitialData(initialData);
-    };
-
     fetchData().finally(() => setLoading(false));
-  }, [publicKey]);
+  }, []);
+
+  const fetchData = async () => {
+    const initialData = await initContractData();
+    setInitialData(initialData);
+    const items = await highestVotedCandidate();
+    setHighest(items);
+  };
 
   return (
     <>

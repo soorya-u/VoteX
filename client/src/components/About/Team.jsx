@@ -15,7 +15,6 @@ const Team = () => {
       <div className="container">
         <div className="row">
           <div className="heading__content text-center mb-10 mb-lg-15 ">
-            <span className="heading p1-color fs-five mb-5">Team</span>
             <h3>Our Team</h3>
             <p className="mt-5 mt-xxl-6 mx-ch mx-auto">
               Innovative{" "}
@@ -31,7 +30,7 @@ const Team = () => {
             </p>
           </div>
         </div>
-        <div className="row gy-6">
+        <div className="row gy-6 justify-content-center">
           {devsInfo.map((d, idx) => (
             <Dev
               name={d.name}
