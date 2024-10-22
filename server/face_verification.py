@@ -1,6 +1,6 @@
 import face_recognition
 
-def compare_faces(saved_image_path, current_image_path):
+def verify_face(saved_image_path: str, current_image_path: str) -> bool:
     saved_image = face_recognition.load_image_file(saved_image_path)
     current_image = face_recognition.load_image_file(current_image_path)
 
@@ -10,6 +10,6 @@ def compare_faces(saved_image_path, current_image_path):
     if len(saved_image_encoding) == 0 or len(current_image_encoding) == 0:
         return False
 
-    result = face_recognition.compare_faces([imageA_encoding[0]], selfie_encoding[0])
+    result = face_recognition.compare_faces([saved_image_encoding[0]], current_image_encoding[0])
 
     return result[0]
