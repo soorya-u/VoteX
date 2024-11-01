@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "democrachain"
+version = "0.1.0"
+description = ""
+authors = ["Soorya U <sooryau7@gmail.com>"]
+readme = "README.md"
+package-mode = false
+repository = "https://github.com/soorya-u/DemocraChain"
+homepage = "https://democrachain.soorya-u.dev"
+
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = {extras = ["standard"], version = "^0.115.3"}
+uvicorn = {extras = ["standard"], version = "^0.32.0"}
+face-recognition = "^1.3.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
