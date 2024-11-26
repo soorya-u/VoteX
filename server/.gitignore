@@ -2,3 +2,6 @@
 **/__pycache__
 app/bot/.rasa
 app/bot/models
+
+.env*
+!.env.example

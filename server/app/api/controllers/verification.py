@@ -1,15 +1,26 @@
-import face_recognition as fr
+import os
+from typing import List
+import cv2
+import pytesseract
+import re
 
-def verify_face(saved_image_path: str, current_image_path: str) -> bool | None:
-    saved_image = fr.load_image_file(saved_image_path)
-    current_image = fr.load_image_file(current_image_path)
+TESSERACT_PATH = os.getenv('TESSERACT_PATH')
 
-    saved_image_encoding = fr.face_encodings(saved_image)
-    current_image_encoding = fr.face_encodings(current_image)
 
-    if len(saved_image_encoding) == 0 or len(current_image_encoding) == 0:
-        return None
+def get_phone_number_from_aadhaar_card(image_path: str) -> str:
+    img = cv2.imread(image_path)
 
-    result = fr.compare_faces([saved_image_encoding[0]], current_image_encoding[0])
+    if img is None:
+        return "Error: Unable to load the image. Check the file path or format."
 
-    return result[0]
+    gray_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+    text = pytesseract.image_to_string(gray_img)
+
+    phone_pattern = r'\b[6-9]\d{9}\b'
+    phone_numbers: List[str] = re.findall(phone_pattern, text)
+
+    if phone_numbers:
+        return phone_numbers[0]
+    else:
+        return "No phone number found in the image."
