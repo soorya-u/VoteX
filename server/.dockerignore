@@ -1,0 +1,12 @@
+.venv
+**/__pycache__
+app/bot/.rasa
+
+.env*
+
+.git
+.gitignore
+
+Dockerfile
+compose.yml
+.dockerignore
