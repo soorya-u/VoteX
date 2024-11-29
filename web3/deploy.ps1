@@ -16,7 +16,7 @@ Write-Host "Deploying to $Network..."
 $contract_address = stellar contract deploy `
   --wasm $build_path `
   --source $Source `
-  --network $Network
+  --network $Network 2>$null
 
 Write-Host "Invoking Initialization Function..."
 

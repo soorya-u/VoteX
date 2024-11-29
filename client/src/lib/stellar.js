@@ -5,7 +5,7 @@ import {
   TransactionBuilder,
   xdr,
   StrKey,
-  SorobanRpc,
+  rpc,
   scValToNative,
 } from "@stellar/stellar-sdk";
 import { server, contract, networkPassphrase } from "@/constants/contract";
@@ -35,7 +35,7 @@ export const getContractData = async (key, type = null) => {
   const res = await server.getContractData(
     contract,
     key,
-    SorobanRpc.Durability.Persistent
+    rpc.Durability.Persistent
   );
   const value = res.val.value().val();
 

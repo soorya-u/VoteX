@@ -1,11 +1,10 @@
-import { Contract, SorobanRpc } from "@stellar/stellar-sdk";
+import { Contract, rpc } from "@stellar/stellar-sdk";
 
 export const ownerPublicKey = process.env.NEXT_PUBLIC_OWNER_ADDRESS;
 
-export const server = new SorobanRpc.Server(
-  "https://soroban-testnet.stellar.org",
-  { allowHttp: true }
-);
+export const server = new rpc.Server("https://soroban-testnet.stellar.org", {
+  allowHttp: true,
+});
 
 export const contract = new Contract(process.env.NEXT_PUBLIC_CONTRACT_ID);
 export const networkPassphrase = "Test SDF Network ; September 2015";
