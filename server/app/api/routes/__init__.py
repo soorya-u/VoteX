@@ -1,2 +1,2 @@
 from .recognition import recognition_route
-from .veritifcation import verification_route
+from .verification import verification_route

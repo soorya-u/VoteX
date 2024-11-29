@@ -5,7 +5,7 @@ from .routes import verification_route, recognition_route
 api_route = APIRouter(prefix="/api")
 
 
-@api_route.get('/')
+@api_route.get('/health')
 async def root_route_handler():
     return {"status": True}
 
