@@ -25,4 +25,4 @@ ENV SQLALCHEMY_SILENCE_UBER_WARNING=1
 
 EXPOSE 8000
 
-ENTRYPOINT [ "poetry", "run", "fastapi", "run" ]
+ENTRYPOINT [ "poetry", "run", "fastapi", "run", "src" ]
