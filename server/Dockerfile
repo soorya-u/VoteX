@@ -1,4 +1,4 @@
-FROM python:3.10.0-slim
+FROM python:3.11.0-slim
 
 WORKDIR /app
 
@@ -25,7 +25,6 @@ RUN poetry install
 
 COPY . .
 
-ENV SQLALCHEMY_SILENCE_UBER_WARNING=1
 ENV TESSERACT_PATH=/usr/bin/tesseract
 
 EXPOSE 8000

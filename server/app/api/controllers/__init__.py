@@ -1,2 +1,0 @@
-from .verification import get_phone_number_from_aadhaar_card
-from .recognition import verify_face
