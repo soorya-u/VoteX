@@ -14,6 +14,7 @@ headers = {
 }
 
 
+# The data must be of FormData type
 def pin_file_to_ipfs(data: Any):
     res = requests.post(PINATA_FILE_PIN_URL, data, headers=headers)
     return f"{PINATA_GATEWAY}/{res.json()['IpfsHash']}"
