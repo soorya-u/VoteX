@@ -8,7 +8,7 @@ ENV PYTHONDONTWRITEBYTECODE=1
 
 
 RUN apt update
-RUN apt upgrade -y
+
 RUN apt install -y curl
 RUN apt install -y tesseract-ocr # pytesseract dependency
 # Remove the below line after migrating to opencv-headless
@@ -21,6 +21,7 @@ ENV PATH="/root/.local/bin:$PATH"
 
 COPY poetry.lock pyproject.toml ./
 
+RUN pip install --no-cache-dir --no-binary dlib dlib==19.24.6
 RUN poetry install
 
 COPY . .
