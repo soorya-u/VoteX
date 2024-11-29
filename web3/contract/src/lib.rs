@@ -62,15 +62,6 @@ impl VotingOrganization {
         assert_eq!(stored_addr, address, "can only be called by owner");
     }
 
-    fn only_during_voting_period(env: &Env) {
-        let start_time = env.storage().persistent().get(&START_TIME).unwrap_or(0);
-        let end_time = env.storage().persistent().get(&END_TIME).unwrap_or(0);
-
-        if !(env.ledger().timestamp() >= start_time && env.ledger().timestamp() <= end_time) {
-            panic!("Voting is not active")
-        }
-    }
-
     pub fn init(env: Env, owner_address: Address) {
         const INITIAL_TIME: u64 = 0;
         let empty_array: Vec<Address> = vec![&env];
@@ -329,20 +320,11 @@ impl VotingOrganization {
     }
 
     pub fn vote(env: Env, candidate_address: Address, voter_address: Address) {
-        Self::only_during_voting_period(&env);
         let mut voter: Voter = env
             .storage()
             .persistent()
             .get(&Voters::Voter(voter_address.clone()))
             .unwrap();
-
-        assert_eq!(
-            voter.status,
-            APPROVED.clone(),
-            "You are not an approved voter."
-        );
-
-        assert!(!voter.has_voted, "You have already voted.");
 
         let mut candidate: Candidate = env
             .storage()
@@ -350,14 +332,17 @@ impl VotingOrganization {
             .get(&Candidates::Candidate(candidate_address.clone()))
             .unwrap();
 
-        assert_eq!(
-            candidate.status,
-            APPROVED.clone(),
-            "Candidate is not approved."
-        );
-
         voter.has_voted = true;
         candidate.vote_count = candidate.vote_count.add(&U256::from_u32(&env, 1));
+
+        env.storage().persistent().set(
+            &Candidates::Candidate(candidate_address.clone()),
+            &candidate,
+        );
+
+        env.storage()
+            .persistent()
+            .set(&Voters::Voter(voter_address.clone()), &voter);
 
         env.storage()
             .persistent()
