@@ -17,8 +17,8 @@ pytesseract = "^0.3.13"
 opencv-python = "^4.10.0.84"
 python-multipart = "^0.0.18"
 python-dotenv = "^1.0.1"
-requests = "^2.32.3"
 stellar-sdk = "^12.0.0"
+aiohttp = {extras = ["speedups"], version = "^3.11.8"}
 
 
 [build-system]
