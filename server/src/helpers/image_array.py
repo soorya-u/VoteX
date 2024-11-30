@@ -10,3 +10,9 @@ async def image_to_array_transformer(file: UploadFile):
     image = Image.open(BytesIO(file_content))
     image_array = np.array(image)
     return image_array
+
+
+def bytes_to_array_transformer(file_content: bytes):
+    image = Image.open(BytesIO(file_content))
+    image_array = np.array(image)
+    return image_array

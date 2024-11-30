@@ -1,2 +1,2 @@
 from .verification import get_phone_number_from_aadhaar_card
-from .recognition import register_face_handler, verify_face
+from .recognition import face_registration_handler, face_verification_handler
