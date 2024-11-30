@@ -27,4 +27,11 @@ async def pin_file_to_ipfs(data: FormData):
                                     "Unable to Upload to Pinata")
 
             ipfs_hash = response_json['IpfsHash']
-            return f"{PINATA_GATEWAY}/{ipfs_hash}"
+            return f"{ipfs_hash}"
+
+
+async def get_file_from_ipfs(ipfs_hash: str):
+    async with ClientSession() as session:
+        async with session.get(f"{PINATA_GATEWAY}/{ipfs_hash}") as res:
+            response_bytes = await res.read()
+            return response_bytes

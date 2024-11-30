@@ -1,7 +1,8 @@
 import os
-from stellar_sdk import Keypair, Network
+from stellar_sdk import Durability, Keypair, Network, SorobanServer
 from stellar_sdk.contract import ContractClient
 from stellar_sdk.scval import to_bool
+from stellar_sdk.xdr import SCVal
 from typing import List, Literal, Any
 
 RPC_URL = r"https://soroban-testnet.stellar.org"
@@ -29,6 +30,11 @@ contract_id = os.getenv("CONTRACT_ID") or ""
 owner_keypair = Keypair.from_secret(owner_secret)
 contract = ContractClient(contract_id, RPC_URL,
                           Network.TESTNET_NETWORK_PASSPHRASE)
+server = SorobanServer(RPC_URL)
+
+
+def get_contract_data(key: SCVal):
+    server.get_contract_data(contract_id, key, Durability.PERSISTENT)
 
 
 def invoke_contract_functions(function_name: CONTRACT_FUNCTIONS,
