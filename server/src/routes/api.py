@@ -7,7 +7,7 @@ api_route = APIRouter(prefix="/api")
 
 
 @api_route.get('/health')
-async def root_route_handler():
+async def health_route():
     return {"status": True}
 
 
