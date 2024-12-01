@@ -5,6 +5,26 @@ from ..helpers import image_to_array_transformer, get_file_payload, bytes_to_arr
 from ..lib.pinata import pin_file_to_ipfs, get_file_from_ipfs
 
 
+async def face_registration_handler(face_image: UploadFile, public_key: str):
+    image_array = await image_to_array_transformer(face_image)
+
+    face_encoding = fr.face_encodings(image_array)
+    if len(face_encoding) == 0:
+        raise HTTPException(status.HTTP_400_BAD_REQUEST,
+                            "Face could not be detected")
+    elif len(face_encoding) > 1:
+        raise HTTPException(status.HTTP_400_BAD_REQUEST,
+                            "Multiple Face has been detected")
+
+    file_payload = await get_file_payload(face_image, public_key)
+
+    pinned_url = await pin_file_to_ipfs(file_payload)
+
+    # TODO: Add pinned_url to Stellar
+
+    return {"message": pinned_url}
+
+
 async def face_verification_handler(face_image: UploadFile, public_key: str):
     current_image_array = await image_to_array_transformer(face_image)
 
@@ -39,23 +59,3 @@ async def face_verification_handler(face_image: UploadFile, public_key: str):
         return {"message": "Authorization Complete"}
     else:
         raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Face did not Match")
-
-
-async def face_registration_handler(face_image: UploadFile, public_key: str):
-    image_array = await image_to_array_transformer(face_image)
-
-    face_encoding = fr.face_encodings(image_array)
-    if len(face_encoding) == 0:
-        raise HTTPException(status.HTTP_400_BAD_REQUEST,
-                            "Face could not be detected")
-    elif len(face_encoding) > 1:
-        raise HTTPException(status.HTTP_400_BAD_REQUEST,
-                            "Multiple Face has been detected")
-
-    file_payload = await get_file_payload(face_image, public_key)
-
-    pinned_url = await pin_file_to_ipfs(file_payload)
-
-    # TODO: Add pinned_url to Stellar
-
-    return {"message": pinned_url}
