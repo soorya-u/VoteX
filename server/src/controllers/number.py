@@ -36,6 +36,7 @@ async def number_identification_handler(file: UploadFile, public_key: str):
     otp = generate_otp()
 
     hashed_otp = await hash_otp(otp)
+
     await set_data_to_redis(public_key, hashed_otp)
 
     await send_message_via_twilio(ph_no, otp)
@@ -43,7 +44,7 @@ async def number_identification_handler(file: UploadFile, public_key: str):
     return {"phone_number": ph_no}
 
 
-async def number_verification_handler(otp: int, public_key: str):
+async def number_verification_handler(otp: str, public_key: str):
     hashed_otp = await get_data_from_redis(public_key)
 
     if not hashed_otp:
@@ -56,5 +57,7 @@ async def number_verification_handler(otp: int, public_key: str):
         raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Incorrect OTP")
 
     await delete_data_from_redis(public_key)
+
+    # TODO: Update Voter Status to Approved
 
     return {"message": "OTP Verified"}

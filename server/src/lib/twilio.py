@@ -6,11 +6,10 @@ account_sid = os.getenv("TWILIO_ACCOUNT_SID") or ""
 auth_token = os.getenv("TWILIO_AUTH_TOKEN") or ""
 sender_phone_number = os.getenv("SENDER_PHONE_NUMBER")
 
-http_client = AsyncTwilioHttpClient()
-client = Client(account_sid, auth_token, http_client=http_client)
 
-
-async def send_message_via_twilio(number: str, otp: int):
+async def send_message_via_twilio(number: str, otp: str):
+    http_client = AsyncTwilioHttpClient()
+    client = Client(account_sid, auth_token, http_client=http_client)
     await client.messages.create_async(
         to=f"+91{number}",
         from_=sender_phone_number,

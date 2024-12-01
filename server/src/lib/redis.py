@@ -6,11 +6,11 @@ redis_url = os.getenv("REDIS_DATABASE_URL") or ""
 db = Redis.from_url(redis_url)
 
 
-async def set_data_to_redis(key: str, value: str):
+async def set_data_to_redis(key: str, value: bytes):
     await db.set(key, value, ex=10 * 60)  # 10 min expiry
 
 
-async def get_data_from_redis(key: str) -> str | None:
+async def get_data_from_redis(key: str) -> bytes | None:
     return await db.get(key)
 
 
