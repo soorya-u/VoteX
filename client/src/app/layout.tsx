@@ -1,4 +1,5 @@
 import { defaultMetadata } from "@/constants/metadata";
+import Providers from "@/providers";
 import "./globals.css";
 
 export const metadata = defaultMetadata;
@@ -10,7 +11,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <Providers>
+        <body>{children}</body>
+      </Providers>
     </html>
   );
 }
