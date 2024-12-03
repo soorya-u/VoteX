@@ -12,17 +12,9 @@ export async function checkConnection() {
 }
 
 export const retrievePublicKey = async () => {
-  let publicKey = "";
-  let error = "";
-  try {
-    publicKey = await requestAccess();
-  } catch (e) {
-    error = e;
-  }
-  if (error) {
-    return error;
-  }
-  return publicKey;
+  const { address, error } = await requestAccess();
+  if (error) console.log(error);
+  return address;
 };
 
 export const signTransaction = async (xdr, network, signWith) => {
@@ -36,4 +28,3 @@ export const signTransaction = async (xdr, network, signWith) => {
     return e.message;
   }
 };
-
