@@ -1,22 +1,23 @@
 import Link from "next/link";
-import { Audiowide, Outfit } from "next/font/google";
+import { Audiowide, Kode_Mono, Outfit } from "next/font/google";
 
-import Navigator from "./Navigator";
-import Hamburger from "./Hamburger";
-
-import { cn } from "@/utils/cn";
-import { Button } from "../ui/button";
-import ConnectButton from "./ConnectButton";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTrigger,
-} from "../ui/dialog";
+} from "@/components/ui/dialog";
 
-const audiowide = Audiowide({ weight: "400", subsets: ["latin"] });
-const outfit = Outfit({ weight: "400", subsets: ["latin"] });
+import Navigator from "./Navigator";
+import Hamburger from "./Hamburger";
+import ConnectButton from "./ConnectButton";
+
+import { cn } from "@/utils/cn";
+
+const kode = Kode_Mono({ weight: "400", subsets: ["latin"] });
+const outfit = Outfit({ weight: "500", subsets: ["latin"] });
 
 export default async function Header() {
   return (
@@ -27,8 +28,8 @@ export default async function Header() {
           <Link
             href="/"
             className={cn(
-              audiowide.className,
-              "text-nowrap text-2xl hidden sm:flex"
+              kode.className,
+              "text-nowrap text-3xl hidden sm:flex"
             )}
           >
             DemocraChain
@@ -72,13 +73,22 @@ const RegisterButtons = ({ className = "" }) => (
       <Button
         size="xs"
         variant="outline"
-        className={cn(outfit.className, "text-sm")}
+        className={cn(
+          outfit.className,
+          "text-sm  hover:translate-x-1 hover:-translate-y-1 transition-all"
+        )}
       >
         Register as Candidate
       </Button>
     </Link>
     <Link href="/auth/login">
-      <Button size="xs" className={cn(outfit.className, "text-sm")}>
+      <Button
+        size="xs"
+        className={cn(
+          outfit.className,
+          "text-sm hover:bg-secondary hover:text-primary hover:translate-x-1 hover:-translate-y-1 transition-all"
+        )}
+      >
         Register as Voter
       </Button>
     </Link>

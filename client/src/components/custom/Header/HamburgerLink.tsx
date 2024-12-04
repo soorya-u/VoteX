@@ -18,10 +18,8 @@ export default function HamburgerLink({ link }: { link: string }) {
         href={`/${link}`}
         className={cn(
           outfit.className,
-          "px-2 py-3 text-lg capitalize",
-          pathname === `/${link}`
-            ? "bg-white text-[#BE2E58]"
-            : "bg-transparent text-white"
+          "px-2 bg-transparent py-3 text-lg capitalize",
+          pathname === `/${link}` ? "text-primary" : "text-secondary"
         )}
       >
         {link}

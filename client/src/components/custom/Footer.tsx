@@ -22,7 +22,7 @@ export default function Footer() {
           </Link>
           . The source code is available on{" "}
           <Link
-            href="https://github.com/soorya-u/Grade-Grove"
+            href="https://github.com/soorya-u/Votix"
             className="underline underline-offset-2"
             target="_blank"
           >
@@ -41,7 +41,7 @@ export default function Footer() {
             width={28}
             height={28}
             alt="Belief-Logo"
-          ></Image>
+          />
         </Link>
       </div>
     </footer>
