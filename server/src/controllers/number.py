@@ -41,7 +41,10 @@ async def number_identification_handler(file: UploadFile, public_key: str):
 
     await send_message_via_twilio(ph_no, otp)
 
-    return {"phone_number": ph_no}
+    return {
+        "phone_number": ph_no,
+        "message": "Number Identification Successfull"
+    }
 
 
 async def number_verification_handler(otp: str, public_key: str):
@@ -60,4 +63,4 @@ async def number_verification_handler(otp: str, public_key: str):
 
     # TODO: Update Voter Status to Approved
 
-    return {"message": "OTP Verified"}
+    return {"message": "OTP has been Verified"}

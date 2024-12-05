@@ -1,11 +1,15 @@
 import face_recognition as fr
 from fastapi import HTTPException, UploadFile, status
+from typing import Literal
 
 from ..helpers import image_to_array_transformer, get_file_payload, bytes_to_array_transformer
 from ..lib.pinata import pin_file_to_ipfs, get_file_from_ipfs
 
+USER_TYPE = Literal["candidate", "voter"]
 
-async def face_registration_handler(face_image: UploadFile, public_key: str):
+
+async def face_registration_handler(face_image: UploadFile, public_key: str,
+                                    user_type: USER_TYPE):
     image_array = await image_to_array_transformer(face_image)
 
     face_encoding = fr.face_encodings(image_array)
@@ -18,14 +22,15 @@ async def face_registration_handler(face_image: UploadFile, public_key: str):
 
     file_payload = await get_file_payload(face_image, public_key)
 
-    pinned_url = await pin_file_to_ipfs(file_payload)
+    ipfs_hash = await pin_file_to_ipfs(file_payload)
 
     # TODO: Add pinned_url to Stellar
 
-    return {"message": pinned_url}
+    return {"message": "Face Registration Completed", "ipfs_hash": ipfs_hash}
 
 
-async def face_verification_handler(face_image: UploadFile, public_key: str):
+async def face_verification_handler(face_image: UploadFile, public_key: str,
+                                    user_type: USER_TYPE):
     current_image_array = await image_to_array_transformer(face_image)
 
     current_image_encoding = fr.face_encodings(current_image_array)

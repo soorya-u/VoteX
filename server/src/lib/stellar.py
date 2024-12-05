@@ -1,9 +1,10 @@
 import os
-from stellar_sdk import Durability, Keypair, Network, SorobanServer
+from stellar_sdk import Durability, Keypair, Network
+from stellar_sdk.soroban_server_async import SorobanServerAsync
 from stellar_sdk.contract import ContractClient
 from stellar_sdk.scval import to_bool, to_string, to_uint256, to_vec, to_void, to_struct, to_address, to_symbol, to_native
 from stellar_sdk.xdr import SCVal, LedgerEntryData
-from typing import Callable, Dict, List, Literal, Any, Type
+from typing import Callable, Dict, List, Literal, Any, Tuple, Type
 
 RPC_URL = r"https://soroban-testnet.stellar.org"
 CONTRACT_FUNCTIONS = Literal[
@@ -24,6 +25,21 @@ CONTRACT_FUNCTIONS = Literal[
     "get_winning_candidate",
 ]
 
+CONTRACT_VARIABLES = Literal[
+    "Owner",
+    "StartTime",
+    "EndTime",
+    "RegVot",
+    "Voter",
+    "Candidate",
+    "RegCan",
+    "ApproCan",
+    "ApproVot",
+    "VotVoted",
+    "votIdCntr",
+    "canIdCntr",
+]
+
 NATIVE_TO_SCVAL_MAPPER: Dict[Type, Callable[[Any], SCVal]] = {
     bool: lambda x: to_bool(x),
     int: lambda x: to_uint256(x),
@@ -35,16 +51,19 @@ contract_id = os.getenv("CONTRACT_ID") or ""
 owner_keypair = Keypair.from_secret(owner_secret)
 contract = ContractClient(contract_id, RPC_URL,
                           Network.TESTNET_NETWORK_PASSPHRASE)
-server = SorobanServer(RPC_URL)
 
 
-def get_contract_data(key: SCVal) -> Any:
-    ledger = server.get_contract_data(contract_id, key, Durability.PERSISTENT)
+async def get_contract_data(key: SCVal):
+    server = SorobanServerAsync(RPC_URL)
 
+    ledger = await server.get_contract_data(contract_id, key,
+                                            Durability.PERSISTENT)
     if ledger is None:
         return None
 
     ledger_data = LedgerEntryData.from_xdr(ledger.xdr)
+    await server.close()
+
     return to_native(ledger_data.contract_data.val)
 
 
@@ -82,8 +101,8 @@ def native_to_scval(param: Any) -> SCVal:
     return convertor(param)
 
 
-def get_scval_key(param: str | list):
-    if isinstance(param, list):
+def get_scval_key(param: CONTRACT_VARIABLES | Tuple[CONTRACT_VARIABLES, str]):
+    if isinstance(param, tuple):
         symbol, address = param
         return to_vec([to_symbol(symbol), to_address(address)])
     return to_symbol(param)
