@@ -1,34 +1,50 @@
 #![no_std]
 
 use soroban_sdk::{
-    contract, contractimpl, contracttype, symbol_short, vec, Address, Env, String, Symbol, Vec,
-    U256,
+    assert_with_error, contract, contracterror, contractimpl, contracttype, symbol_short, vec,
+    Address, Env, String, Symbol, Vec, U256,
 };
-
-const PENDING: Symbol = symbol_short!("Pending");
-const APPROVED: Symbol = symbol_short!("Approved");
-const REJECTED: Symbol = symbol_short!("Rejected");
 
 #[contracttype]
 pub struct Voter {
     voter_address: Address,
     name: String,
-    ipfs: String,
-    register_id: U256,
+    gender: String,
+    date_of_birth: U256,
+    email: String,
+    voter_id: String,
+    location: String,
+    face_ipfs_hash: String,
     status: Symbol,
     has_voted: bool,
-    message: String,
 }
 
 #[contracttype]
 pub struct Candidate {
     candidate_address: Address,
     name: String,
-    ipfs: String,
-    register_id: U256,
+    gender: String,
+    date_of_birth: U256,
+    party_name: String,
+    email: String,
+    location: String,
+    degree_details: String,
+    current_income: U256,
     status: Symbol,
     vote_count: U256,
-    message: String,
+}
+
+#[contracterror]
+#[derive(Copy, Clone, Debug, Eq, PartialEq, PartialOrd, Ord)]
+#[repr(u32)]
+pub enum ContractError {
+    NotOwnerError = 1,
+    CandidateNotApprovedError = 2,
+    VoterAlreadyVotedError = 3,
+    NotVotingPeriodError = 4,
+    UpdateNotAllowedError = 5,
+    NotFoundError = 6,
+    ValueError = 7,
 }
 
 #[contracttype]
@@ -41,14 +57,21 @@ pub enum Candidates {
     Candidate(Address),
 }
 
-const OWNER: Symbol = symbol_short!("Owner");
+const NOT_VERIFIED: Symbol = symbol_short!("NotVer");
+const PENDING: Symbol = symbol_short!("Pending");
+const APPROVED: Symbol = symbol_short!("Approved");
+const REJECTED: Symbol = symbol_short!("Rejected");
+
+const ADMIN: Symbol = symbol_short!("Admin");
+
 const REGISTERED_VOTERS: Symbol = symbol_short!("RegVot");
 const REGISTERED_CANDIDATES: Symbol = symbol_short!("RegCan");
+
 const APPROVED_VOTERS: Symbol = symbol_short!("ApproVot");
 const APPROVED_CANDIDATES: Symbol = symbol_short!("ApproCan");
+
 const VOTED_VOTERS: Symbol = symbol_short!("VotVoted");
-const VOTER_ID_COUNTER: Symbol = symbol_short!("votIdCntr");
-const CANDIDATE_ID_COUNTER: Symbol = symbol_short!("canIdCntr");
+
 const START_TIME: Symbol = symbol_short!("StartTime");
 const END_TIME: Symbol = symbol_short!("EndTime");
 
@@ -57,87 +80,117 @@ pub struct VotingOrganization;
 
 #[contractimpl]
 impl VotingOrganization {
-    fn owner_only(env: &Env, address: Address) {
-        let stored_addr: Address = env.storage().persistent().get(&OWNER).unwrap();
-        assert_eq!(stored_addr, address, "can only be called by owner");
-    }
-
-    pub fn init(env: Env, owner_address: Address) {
+    pub fn __constructor(env: Env, admin_address: Address) {
         const INITIAL_TIME: u64 = 0;
+
         let empty_array: Vec<Address> = vec![&env];
-        env.storage().persistent().set(&OWNER, &owner_address);
+
+        env.storage().persistent().set(&ADMIN, &admin_address);
+
         env.storage().persistent().set(&START_TIME, &INITIAL_TIME);
         env.storage().persistent().set(&END_TIME, &INITIAL_TIME);
+
         env.storage()
             .persistent()
             .set(&REGISTERED_VOTERS, &empty_array);
         env.storage()
             .persistent()
             .set(&REGISTERED_CANDIDATES, &empty_array);
+
         env.storage()
             .persistent()
             .set(&APPROVED_VOTERS, &empty_array);
         env.storage()
             .persistent()
             .set(&APPROVED_CANDIDATES, &empty_array);
+
         env.storage().persistent().set(&VOTED_VOTERS, &empty_array);
     }
 
-    pub fn register_voter(env: Env, name: String, ipfs: String, address: Address) {
-        const PENDING_MESSAGE: &str = "Currently your registration is pending";
+    fn admin_authorization(env: &Env, address: Address) {
+        let stored_addr: Address = env.storage().persistent().get(&ADMIN).unwrap();
+        assert_with_error!(&env, stored_addr == address, ContractError::NotOwnerError);
+    }
+
+    fn append_to_vector(
+        env: &Env,
+        addr: Address,
+    ) -> impl FnOnce(Option<Vec<Address>>) -> Vec<Address> {
+        let new_vector: Vec<Address> = vec![env];
+
+        |v: Option<Vec<Address>>| -> Vec<Address> {
+            let mut vector = match v {
+                Some(v) => v,
+                None => new_vector,
+            };
+
+            vector.push_back(addr);
+
+            vector
+        }
+    }
+
+    pub fn register_voter(
+        env: Env,
+        address: Address,
+        name: String,
+        email: String,
+        gender: String,
+        date_of_birth: u64,
+        location: String,
+        voter_id: String,
+    ) {
         let voter_id_key = Voters::Voter(address.clone());
 
-        let id_counter = env
-            .storage()
-            .persistent()
-            .get(&VOTER_ID_COUNTER)
-            .unwrap_or(1);
+        let voter_address = address.clone();
 
         let new_voter = Voter {
-            voter_address: address.clone(),
             name,
-            ipfs,
+            voter_address,
+            email,
+            gender,
+            date_of_birth: U256::from_u128(&env, date_of_birth as u128),
+            voter_id,
+            location,
+            face_ipfs_hash: String::from_str(&env, ""),
+            status: NOT_VERIFIED,
             has_voted: false,
-            message: String::from_str(&env, PENDING_MESSAGE),
-            register_id: U256::from_u32(&env, id_counter.clone()),
-            status: PENDING.clone(),
         };
 
         env.storage().persistent().set(&voter_id_key, &new_voter);
-        let mut registered_voters: Vec<Address> = env
-            .storage()
-            .persistent()
-            .get(&REGISTERED_VOTERS)
-            .unwrap_or(vec![&env]);
-
-        registered_voters.push_back(address);
 
         env.storage()
             .persistent()
-            .set(&REGISTERED_VOTERS, &registered_voters);
-
-        env.storage()
-            .persistent()
-            .set(&VOTER_ID_COUNTER, &(id_counter + 1));
+            .update(&REGISTERED_VOTERS, Self::append_to_vector(&env, address));
     }
 
-    pub fn register_candidate(env: Env, name: String, ipfs: String, address: Address) {
-        const PENDING_MESSAGE: &str = "Currently your registration is pending";
+    pub fn register_candidate(
+        env: Env,
+        address: Address,
+        name: String,
+        email: String,
+        gender: String,
+        date_of_birth: u64,
+        party_name: String,
+        degree_details: String,
+        current_income: u64,
+        location: String,
+    ) {
         let candidate_id_key = Candidates::Candidate(address.clone());
 
-        let id_counter = env
-            .storage()
-            .persistent()
-            .get(&CANDIDATE_ID_COUNTER)
-            .unwrap_or(1);
+        let candidate_address = address.clone();
 
         let new_candidate = Candidate {
-            candidate_address: address.clone(),
+            candidate_address,
             name,
-            ipfs,
-            message: String::from_str(&env, PENDING_MESSAGE),
-            register_id: U256::from_u32(&env, id_counter),
-            status: PENDING.clone(),
+            email,
+            gender,
+            date_of_birth: U256::from_u128(&env, date_of_birth as u128),
+            party_name,
+            degree_details,
+            current_income: U256::from_u128(&env, current_income as u128),
+            location,
+            status: NOT_VERIFIED,
             vote_count: U256::from_u32(&env, 0),
         };
 
@@ -145,135 +198,160 @@ impl VotingOrganization {
             .persistent()
             .set(&candidate_id_key, &new_candidate);
 
-        let mut registered_candidates: Vec<Address> = env
-            .storage()
-            .persistent()
-            .get(&REGISTERED_CANDIDATES)
-            .unwrap_or(vec![&env]);
-
-        registered_candidates.push_back(address);
-
         env.storage()
             .persistent()
-            .set(&REGISTERED_CANDIDATES, &registered_candidates);
-
-        env.storage()
-            .persistent()
-            .set(&CANDIDATE_ID_COUNTER, &(id_counter + 1));
+            .update(&REGISTERED_VOTERS, Self::append_to_vector(&env, address));
     }
 
-    pub fn approve_voter(env: Env, address: Address, message: String, owner_address: Address) {
-        Self::owner_only(&env, owner_address);
+    pub fn set_voter_as_approved(
+        env: Env,
+        address: Address,
+        face_ipfs_hash: String,
+        admin_address: Address,
+    ) {
+        Self::admin_authorization(&env, admin_address);
 
         let key = Voters::Voter(address.clone());
-        let mut voter: Voter = env.storage().persistent().get(&key).unwrap();
 
-        voter.status = APPROVED.clone();
-        voter.message = message;
+        env.storage().persistent().update(&key, |v: Option<Voter>| {
+            let mut voter = v.unwrap();
+            voter.face_ipfs_hash = face_ipfs_hash;
+            voter.status = APPROVED;
 
-        env.storage().persistent().set(&key, &voter);
+            voter
+        });
 
-        let mut approved_voters: Vec<Address> = env
-            .storage()
-            .persistent()
-            .get(&APPROVED_VOTERS)
-            .unwrap_or(vec![&env]);
-
-        approved_voters.push_back(address);
         env.storage()
             .persistent()
-            .set(&APPROVED_VOTERS, &approved_voters);
+            .update(&APPROVED_VOTERS, Self::append_to_vector(&env, address));
     }
 
-    pub fn approve_candidate(env: Env, address: Address, message: String, owner_address: Address) {
-        Self::owner_only(&env, owner_address);
+    pub fn set_candidate_as_verified(env: Env, address: Address, admin_address: Address) {
+        Self::admin_authorization(&env, admin_address);
+        let key = Candidates::Candidate(address);
+
+        let update_fn = |c: Option<Candidate>| {
+            let mut candidate = c.unwrap();
+            candidate.status = PENDING;
+            candidate
+        };
+
+        env.storage().persistent().update(&key, update_fn);
+    }
+
+    pub fn approve_candidate(env: Env, address: Address, admin_address: Address) {
+        Self::admin_authorization(&env, admin_address);
 
         let key = Candidates::Candidate(address.clone());
-        let mut candidate: Candidate = env.storage().persistent().get(&key).unwrap();
 
-        candidate.status = APPROVED.clone();
-        candidate.message = message;
+        let update_fn = |c: Option<Candidate>| {
+            let mut candidate = c.unwrap();
+            assert_with_error!(
+                &env,
+                candidate.status == PENDING,
+                ContractError::CandidateNotApprovedError
+            );
+            candidate.status = APPROVED;
+            candidate
+        };
 
-        env.storage().persistent().set(&key, &candidate);
+        env.storage().persistent().update(&key, update_fn);
 
-        let mut approved_candidate: Vec<Address> = env
-            .storage()
-            .persistent()
-            .get(&APPROVED_CANDIDATES)
-            .unwrap_or(vec![&env]);
-
-        approved_candidate.push_back(address);
         env.storage()
             .persistent()
-            .set(&APPROVED_CANDIDATES, &approved_candidate);
+            .update(&APPROVED_CANDIDATES, Self::append_to_vector(&env, address));
     }
 
-    pub fn reject_voter(env: Env, address: Address, message: String, owner_address: Address) {
-        Self::owner_only(&env, owner_address);
-
-        let key = Voters::Voter(address.clone());
-        let mut voter: Voter = env.storage().persistent().get(&key).unwrap();
-
-        voter.status = REJECTED.clone();
-        voter.message = message;
-
-        env.storage().persistent().set(&key, &voter);
-    }
-
-    pub fn reject_candidate(env: Env, address: Address, message: String, owner_address: Address) {
-        Self::owner_only(&env, owner_address);
+    pub fn reject_candidate(env: Env, address: Address, admin_address: Address) {
+        Self::admin_authorization(&env, admin_address);
 
         let key = Candidates::Candidate(address.clone());
-        let mut candidate: Candidate = env.storage().persistent().get(&key).unwrap();
 
-        candidate.status = REJECTED.clone();
-        candidate.message = message;
-
-        env.storage().persistent().set(&key, &candidate);
+        env.storage()
+            .persistent()
+            .update(&key, |c: Option<Candidate>| {
+                let mut candidate = c.unwrap();
+                candidate.status = REJECTED;
+                candidate
+            });
     }
 
     pub fn set_voting_period(env: Env, start_time: u64, end_time: u64, address: Address) {
-        Self::owner_only(&env, address.clone());
+        Self::admin_authorization(&env, address);
 
-        assert!(start_time < end_time, "Start time must be before end time.");
+        assert_with_error!(&env, start_time < end_time, ContractError::ValueError);
 
         env.storage().persistent().set(&START_TIME, &start_time);
         env.storage().persistent().set(&END_TIME, &end_time);
     }
 
-    pub fn update_voter(env: Env, name: String, ipfs: String, addr: Address) {
-        const PENDING_MESSAGE: &str = "Currently your registration is pending";
-        let key = Voters::Voter(addr.clone());
-        let mut voter: Voter = env.storage().persistent().get(&key).unwrap();
+    pub fn update_voter(
+        env: Env,
+        address: Address,
+        name: String,
+        email: String,
+        gender: String,
+        date_of_birth: u64,
+        location: String,
+        voter_id: String,
+    ) {
+        let key = Voters::Voter(address);
 
-        voter.name = name;
-        voter.ipfs = ipfs;
-        voter.message = String::from_str(&env, PENDING_MESSAGE);
-        voter.status = PENDING.clone();
+        let update_fn = |v: Option<Voter>| {
+            let mut voter = v.unwrap();
 
-        env.storage().persistent().set(&key, &voter)
+            voter.name = name;
+            voter.email = email;
+            voter.gender = gender;
+            voter.date_of_birth = U256::from_u128(&env, date_of_birth as u128);
+            voter.location = location;
+            voter.voter_id = voter_id;
+
+            voter
+        };
+
+        env.storage().persistent().update(&key, update_fn);
     }
 
-    pub fn update_candidate(env: Env, name: String, ipfs: String, addr: Address) {
-        let key = Candidates::Candidate(addr.clone());
-        const PENDING_MESSAGE: &str = "Currently your registration is pending";
-        let mut candidate: Candidate = env.storage().persistent().get(&key).unwrap();
+    pub fn update_candidate(
+        env: Env,
+        address: Address,
+        name: String,
+        email: String,
+        gender: String,
+        date_of_birth: u64,
+        party_name: String,
+        degree_details: String,
+        location: String,
+        current_income: u64,
+    ) {
+        let key = Candidates::Candidate(address);
 
-        candidate.name = name;
-        candidate.ipfs = ipfs;
-        candidate.message = String::from_str(&env, PENDING_MESSAGE);
-        candidate.status = PENDING.clone();
+        let update_fn = |c: Option<Candidate>| {
+            let mut candidate = c.unwrap();
 
-        env.storage().persistent().set(&key, &candidate)
+            candidate.name = name;
+            candidate.email = email;
+            candidate.gender = gender;
+            candidate.date_of_birth = U256::from_u128(&env, date_of_birth as u128);
+            candidate.party_name = party_name;
+            candidate.degree_details = degree_details;
+            candidate.location = location;
+            candidate.current_income = U256::from_u128(&env, current_income as u128);
+
+            candidate
+        };
+
+        env.storage().persistent().update(&key, update_fn);
     }
 
     pub fn change_owner(env: Env, new_owner: Address, address: Address) {
-        Self::owner_only(&env, address.clone());
-        env.storage().persistent().set(&OWNER, &new_owner);
+        Self::admin_authorization(&env, address);
+        env.storage().persistent().set(&ADMIN, &new_owner);
     }
 
     pub fn reset_contract(env: Env, address: Address) {
-        Self::owner_only(&env, address.clone());
+        Self::admin_authorization(&env, address);
 
         let voters: Vec<Address> = env
             .storage()
@@ -299,68 +377,67 @@ impl VotingOrganization {
 
         const INITIAL_TIME: u64 = 0;
         let empty_array: Vec<Address> = vec![&env];
+
         env.storage().persistent().set(&START_TIME, &INITIAL_TIME);
         env.storage().persistent().set(&END_TIME, &INITIAL_TIME);
+
         env.storage()
             .persistent()
             .set(&REGISTERED_VOTERS, &empty_array);
+
         env.storage()
             .persistent()
             .set(&REGISTERED_CANDIDATES, &empty_array);
+
         env.storage()
             .persistent()
             .set(&APPROVED_VOTERS, &empty_array);
+
         env.storage()
             .persistent()
             .set(&APPROVED_CANDIDATES, &empty_array);
-        env.storage().persistent().set(&VOTED_VOTERS, &empty_array);
 
-        env.storage().persistent().remove(&VOTER_ID_COUNTER);
-        env.storage().persistent().remove(&CANDIDATE_ID_COUNTER);
+        env.storage().persistent().set(&VOTED_VOTERS, &empty_array);
     }
 
     pub fn vote(env: Env, candidate_address: Address, voter_address: Address) {
-        let mut voter: Voter = env
-            .storage()
-            .persistent()
-            .get(&Voters::Voter(voter_address.clone()))
-            .unwrap();
-
-        let mut candidate: Candidate = env
-            .storage()
-            .persistent()
-            .get(&Candidates::Candidate(candidate_address.clone()))
-            .unwrap();
-
-        voter.has_voted = true;
-        candidate.vote_count = candidate.vote_count.add(&U256::from_u32(&env, 1));
-
-        env.storage().persistent().set(
-            &Candidates::Candidate(candidate_address.clone()),
-            &candidate,
-        );
+        let voter_key = Voters::Voter(voter_address.clone());
+        let candidate_key = Voters::Voter(candidate_address.clone());
 
         env.storage()
             .persistent()
-            .set(&Voters::Voter(voter_address.clone()), &voter);
+            .update(&voter_key, |v: Option<Voter>| {
+                let mut voter = v.unwrap();
+
+                assert_with_error!(
+                    &env,
+                    voter.has_voted == false,
+                    ContractError::VoterAlreadyVotedError
+                );
+
+                voter.has_voted = true;
+
+                voter
+            });
 
         env.storage()
             .persistent()
-            .set(&Candidates::Candidate(candidate_address), &candidate);
+            .update(&candidate_key, |c: Option<Candidate>| {
+                let mut candidate = c.unwrap();
+
+                assert_with_error!(
+                    &env,
+                    candidate.status == APPROVED,
+                    ContractError::CandidateNotApprovedError
+                );
+
+                candidate.vote_count = candidate.vote_count.add(&U256::from_u32(&env, 1));
+
+                candidate
+            });
+
         env.storage()
             .persistent()
-            .set(&Voters::Voter(voter_address.clone()), &voter);
-
-        let mut voters_who_voted: Vec<Address> = env
-            .storage()
-            .persistent()
-            .get(&VOTED_VOTERS)
-            .unwrap_or(vec![&env]);
-
-        voters_who_voted.push_back(voter_address);
-
-        env.storage()
-            .persistent()
-            .set(&VOTED_VOTERS, &voters_who_voted)
+            .update(&VOTED_VOTERS, Self::append_to_vector(&env, voter_address));
     }
 }
