@@ -62,7 +62,7 @@ const PENDING: Symbol = symbol_short!("Pending");
 const APPROVED: Symbol = symbol_short!("Approved");
 const REJECTED: Symbol = symbol_short!("Rejected");
 
-const OWNER: Symbol = symbol_short!("Owner");
+const ADMIN: Symbol = symbol_short!("Admin");
 
 const REGISTERED_VOTERS: Symbol = symbol_short!("RegVot");
 const REGISTERED_CANDIDATES: Symbol = symbol_short!("RegCan");
@@ -80,8 +80,8 @@ pub struct VotingOrganization;
 
 #[contractimpl]
 impl VotingOrganization {
-    fn owner_only(env: &Env, address: Address) {
-        let stored_addr: Address = env.storage().persistent().get(&OWNER).unwrap();
+    fn admin_authorization(env: &Env, address: Address) {
+        let stored_addr: Address = env.storage().persistent().get(&ADMIN).unwrap();
         assert_with_error!(&env, stored_addr == address, ContractError::NotOwnerError);
     }
 
@@ -103,12 +103,12 @@ impl VotingOrganization {
         }
     }
 
-    pub fn init(env: Env, owner_address: Address) {
+    pub fn __constructor(env: Env, admin_address: Address) {
         const INITIAL_TIME: u64 = 0;
 
         let empty_array: Vec<Address> = vec![&env];
 
-        env.storage().persistent().set(&OWNER, &owner_address);
+        env.storage().persistent().set(&ADMIN, &admin_address);
         env.storage().persistent().set(&START_TIME, &INITIAL_TIME);
         env.storage().persistent().set(&END_TIME, &INITIAL_TIME);
         env.storage()
@@ -203,9 +203,9 @@ impl VotingOrganization {
         env: Env,
         address: Address,
         face_ipfs_hash: String,
-        owner_address: Address,
+        admin_address: Address,
     ) {
-        Self::owner_only(&env, owner_address);
+        Self::admin_authorization(&env, admin_address);
 
         let key = Voters::Voter(address.clone());
 
@@ -222,8 +222,8 @@ impl VotingOrganization {
             .update(&APPROVED_VOTERS, Self::append_to_vector(&env, address));
     }
 
-    pub fn set_candidate_as_verified(env: Env, address: Address, owner_address: Address) {
-        Self::owner_only(&env, owner_address);
+    pub fn set_candidate_as_verified(env: Env, address: Address, admin_address: Address) {
+        Self::admin_authorization(&env, admin_address);
         let key = Candidates::Candidate(address);
 
         let update_fn = |c: Option<Candidate>| {
@@ -235,8 +235,8 @@ impl VotingOrganization {
         env.storage().persistent().update(&key, update_fn);
     }
 
-    pub fn approve_candidate(env: Env, address: Address, owner_address: Address) {
-        Self::owner_only(&env, owner_address);
+    pub fn approve_candidate(env: Env, address: Address, admin_address: Address) {
+        Self::admin_authorization(&env, admin_address);
 
         let key = Candidates::Candidate(address.clone());
 
@@ -260,8 +260,8 @@ impl VotingOrganization {
             .set(&APPROVED_CANDIDATES, &approved_candidate);
     }
 
-    pub fn reject_candidate(env: Env, address: Address, owner_address: Address) {
-        Self::owner_only(&env, owner_address);
+    pub fn reject_candidate(env: Env, address: Address, admin_address: Address) {
+        Self::admin_authorization(&env, admin_address);
 
         let key = Candidates::Candidate(address.clone());
 
@@ -275,7 +275,7 @@ impl VotingOrganization {
     }
 
     pub fn set_voting_period(env: Env, start_time: u64, end_time: u64, address: Address) {
-        Self::owner_only(&env, address);
+        Self::admin_authorization(&env, address);
 
         assert_with_error!(&env, start_time < end_time, ContractError::ValueError);
 
@@ -344,12 +344,12 @@ impl VotingOrganization {
     }
 
     pub fn change_owner(env: Env, new_owner: Address, address: Address) {
-        Self::owner_only(&env, address);
-        env.storage().persistent().set(&OWNER, &new_owner);
+        Self::admin_authorization(&env, address);
+        env.storage().persistent().set(&ADMIN, &new_owner);
     }
 
     pub fn reset_contract(env: Env, address: Address) {
-        Self::owner_only(&env, address);
+        Self::admin_authorization(&env, address);
 
         let voters: Vec<Address> = env
             .storage()
