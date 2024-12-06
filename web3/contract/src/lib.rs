@@ -107,12 +107,12 @@ impl VotingOrganization {
         env.storage().persistent().set(&VOTED_VOTERS, &empty_array);
     }
 
-    fn admin_authorization(env: &Env, address: Address) {
+    fn _admin_authorization(env: &Env, address: Address) {
         let stored_addr: Address = env.storage().persistent().get(&ADMIN).unwrap();
         assert_with_error!(&env, stored_addr == address, ContractError::NotOwnerError);
     }
 
-    fn append_to_vector(
+    fn _append_to_vector(
         env: &Env,
         addr: Address,
     ) -> impl FnOnce(Option<Vec<Address>>) -> Vec<Address> {
@@ -161,7 +161,7 @@ impl VotingOrganization {
 
         env.storage()
             .persistent()
-            .update(&REGISTERED_VOTERS, Self::append_to_vector(&env, address));
+            .update(&REGISTERED_VOTERS, Self::_append_to_vector(&env, address));
     }
 
     pub fn register_candidate(
@@ -200,7 +200,7 @@ impl VotingOrganization {
 
         env.storage()
             .persistent()
-            .update(&REGISTERED_VOTERS, Self::append_to_vector(&env, address));
+            .update(&REGISTERED_VOTERS, Self::_append_to_vector(&env, address));
     }
 
     pub fn set_voter_as_approved(
@@ -209,7 +209,7 @@ impl VotingOrganization {
         face_ipfs_hash: String,
         admin_address: Address,
     ) {
-        Self::admin_authorization(&env, admin_address);
+        Self::_admin_authorization(&env, admin_address);
 
         let key = Voters::Voter(address.clone());
 
@@ -223,11 +223,11 @@ impl VotingOrganization {
 
         env.storage()
             .persistent()
-            .update(&APPROVED_VOTERS, Self::append_to_vector(&env, address));
+            .update(&APPROVED_VOTERS, Self::_append_to_vector(&env, address));
     }
 
     pub fn set_candidate_as_verified(env: Env, address: Address, admin_address: Address) {
-        Self::admin_authorization(&env, admin_address);
+        Self::_admin_authorization(&env, admin_address);
         let key = Candidates::Candidate(address);
 
         let update_fn = |c: Option<Candidate>| {
@@ -240,7 +240,7 @@ impl VotingOrganization {
     }
 
     pub fn approve_candidate(env: Env, address: Address, admin_address: Address) {
-        Self::admin_authorization(&env, admin_address);
+        Self::_admin_authorization(&env, admin_address);
 
         let key = Candidates::Candidate(address.clone());
 
@@ -259,11 +259,11 @@ impl VotingOrganization {
 
         env.storage()
             .persistent()
-            .update(&APPROVED_CANDIDATES, Self::append_to_vector(&env, address));
+            .update(&APPROVED_CANDIDATES, Self::_append_to_vector(&env, address));
     }
 
     pub fn reject_candidate(env: Env, address: Address, admin_address: Address) {
-        Self::admin_authorization(&env, admin_address);
+        Self::_admin_authorization(&env, admin_address);
 
         let key = Candidates::Candidate(address.clone());
 
@@ -276,8 +276,8 @@ impl VotingOrganization {
             });
     }
 
-    pub fn set_voting_period(env: Env, start_time: u64, end_time: u64, address: Address) {
-        Self::admin_authorization(&env, address);
+    pub fn set_voting_period(env: Env, start_time: U256, end_time: U256, address: Address) {
+        Self::_admin_authorization(&env, address);
 
         assert_with_error!(&env, start_time < end_time, ContractError::ValueError);
 
@@ -345,13 +345,13 @@ impl VotingOrganization {
         env.storage().persistent().update(&key, update_fn);
     }
 
-    pub fn change_owner(env: Env, new_owner: Address, address: Address) {
-        Self::admin_authorization(&env, address);
-        env.storage().persistent().set(&ADMIN, &new_owner);
+    pub fn change_admin(env: Env, new_admin: Address, address: Address) {
+        Self::_admin_authorization(&env, address);
+        env.storage().persistent().set(&ADMIN, &new_admin);
     }
 
     pub fn reset_contract(env: Env, address: Address) {
-        Self::admin_authorization(&env, address);
+        Self::_admin_authorization(&env, address);
 
         let voters: Vec<Address> = env
             .storage()
@@ -438,6 +438,6 @@ impl VotingOrganization {
 
         env.storage()
             .persistent()
-            .update(&VOTED_VOTERS, Self::append_to_vector(&env, voter_address));
+            .update(&VOTED_VOTERS, Self::_append_to_vector(&env, voter_address));
     }
 }
