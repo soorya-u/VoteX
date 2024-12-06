@@ -3,13 +3,16 @@ from fastapi import HTTPException, UploadFile, status
 import os
 import pytesseract
 import re
-from typing import List
+from typing import List, Literal, Optional
 
 from ..lib.redis import set_data_to_redis, get_data_from_redis, delete_data_from_redis
 from ..lib.twilio import send_message_via_twilio
+from ..lib.stellar import invoke_contract_functions, admin_keypair
+
 from ..helpers import image_to_buffer_array_transformer, generate_otp, hash_otp, verify_otp
 
 TESSERACT_PATH = os.getenv('TESSERACT_PATH')
+Candidate = Literal["candidate"]
 
 
 async def number_identification_handler(file: UploadFile, public_key: str):
@@ -47,7 +50,8 @@ async def number_identification_handler(file: UploadFile, public_key: str):
     }
 
 
-async def number_verification_handler(otp: str, public_key: str):
+async def number_verification_handler(otp: str, public_key: str,
+                                      user_type: Optional[Candidate]):
     hashed_otp = await get_data_from_redis(public_key)
 
     if not hashed_otp:
@@ -61,6 +65,8 @@ async def number_verification_handler(otp: str, public_key: str):
 
     await delete_data_from_redis(public_key)
 
-    # TODO: Update Voter Status to Approved
+    if user_type is not Candidate:
+        await invoke_contract_functions("set_candidate_as_verified",
+                                        [public_key, admin_keypair.public_key])
 
     return {"message": "OTP has been Verified"}

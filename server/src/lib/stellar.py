@@ -36,14 +36,17 @@ NATIVE_TO_SCVAL_MAPPER: Dict[Type, Callable[[Any], SCVal]] = {
     int: lambda x: to_uint256(x),
 }
 
-owner_secret = os.getenv("OWNER_SECRET") or ""
+admin_secret = os.getenv("ADMIN_SECRET") or ""
 contract_id = os.getenv("CONTRACT_ID") or ""
 
-owner_keypair = Keypair.from_secret(owner_secret)
+admin_keypair = Keypair.from_secret(admin_secret)
 
 
-async def get_contract_data(key: SCVal):
+async def get_contract_data(param: CONTRACT_VARIABLES
+                            | Tuple[CONTRACT_VARIABLES, str]):
+
     server = SorobanServerAsync(RPC_URL)
+    key = get_scval_key(param)
 
     ledger = await server.get_contract_data(contract_id, key,
                                             Durability.PERSISTENT)
@@ -64,8 +67,8 @@ async def invoke_contract_functions(function_name: CONTRACT_FUNCTIONS,
 
     scval_params = list(map(native_to_scval, params)) or None
     transaction = await contract.invoke(function_name, scval_params,
-                                        owner_keypair.public_key)
-    await transaction.sign_and_submit(owner_keypair)
+                                        admin_keypair.public_key)
+    await transaction.sign_and_submit(admin_keypair)
 
 
 def native_to_scval(param: Any) -> SCVal:
