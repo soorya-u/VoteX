@@ -80,6 +80,33 @@ pub struct VotingOrganization;
 
 #[contractimpl]
 impl VotingOrganization {
+    pub fn __constructor(env: Env, admin_address: Address) {
+        const INITIAL_TIME: u64 = 0;
+
+        let empty_array: Vec<Address> = vec![&env];
+
+        env.storage().persistent().set(&ADMIN, &admin_address);
+
+        env.storage().persistent().set(&START_TIME, &INITIAL_TIME);
+        env.storage().persistent().set(&END_TIME, &INITIAL_TIME);
+
+        env.storage()
+            .persistent()
+            .set(&REGISTERED_VOTERS, &empty_array);
+        env.storage()
+            .persistent()
+            .set(&REGISTERED_CANDIDATES, &empty_array);
+
+        env.storage()
+            .persistent()
+            .set(&APPROVED_VOTERS, &empty_array);
+        env.storage()
+            .persistent()
+            .set(&APPROVED_CANDIDATES, &empty_array);
+
+        env.storage().persistent().set(&VOTED_VOTERS, &empty_array);
+    }
+
     fn admin_authorization(env: &Env, address: Address) {
         let stored_addr: Address = env.storage().persistent().get(&ADMIN).unwrap();
         assert_with_error!(&env, stored_addr == address, ContractError::NotOwnerError);
@@ -101,29 +128,6 @@ impl VotingOrganization {
 
             vector
         }
-    }
-
-    pub fn __constructor(env: Env, admin_address: Address) {
-        const INITIAL_TIME: u64 = 0;
-
-        let empty_array: Vec<Address> = vec![&env];
-
-        env.storage().persistent().set(&ADMIN, &admin_address);
-        env.storage().persistent().set(&START_TIME, &INITIAL_TIME);
-        env.storage().persistent().set(&END_TIME, &INITIAL_TIME);
-        env.storage()
-            .persistent()
-            .set(&REGISTERED_VOTERS, &empty_array);
-        env.storage()
-            .persistent()
-            .set(&REGISTERED_CANDIDATES, &empty_array);
-        env.storage()
-            .persistent()
-            .set(&APPROVED_VOTERS, &empty_array);
-        env.storage()
-            .persistent()
-            .set(&APPROVED_CANDIDATES, &empty_array);
-        env.storage().persistent().set(&VOTED_VOTERS, &empty_array);
     }
 
     pub fn register_voter(
@@ -149,7 +153,7 @@ impl VotingOrganization {
             voter_id,
             location,
             face_ipfs_hash: String::from_str(&env, ""),
-            status: NOT_VERIFIED.clone(),
+            status: NOT_VERIFIED,
             has_voted: false,
         };
 
@@ -186,7 +190,7 @@ impl VotingOrganization {
             degree_details,
             current_income: U256::from_u128(&env, current_income as u128),
             location,
-            status: NOT_VERIFIED.clone(),
+            status: NOT_VERIFIED,
             vote_count: U256::from_u32(&env, 0),
         };
 
@@ -212,7 +216,7 @@ impl VotingOrganization {
         env.storage().persistent().update(&key, |v: Option<Voter>| {
             let mut voter = v.unwrap();
             voter.face_ipfs_hash = face_ipfs_hash;
-            voter.status = APPROVED.clone();
+            voter.status = APPROVED;
 
             voter
         });
@@ -228,7 +232,7 @@ impl VotingOrganization {
 
         let update_fn = |c: Option<Candidate>| {
             let mut candidate = c.unwrap();
-            candidate.status = PENDING.clone();
+            candidate.status = PENDING;
             candidate
         };
 
@@ -242,22 +246,20 @@ impl VotingOrganization {
 
         let update_fn = |c: Option<Candidate>| {
             let mut candidate = c.unwrap();
-            candidate.status = APPROVED.clone();
+            assert_with_error!(
+                &env,
+                candidate.status == PENDING,
+                ContractError::CandidateNotApprovedError
+            );
+            candidate.status = APPROVED;
             candidate
         };
 
         env.storage().persistent().update(&key, update_fn);
 
-        let mut approved_candidate: Vec<Address> = env
-            .storage()
-            .persistent()
-            .get(&APPROVED_CANDIDATES)
-            .unwrap_or(vec![&env]);
-
-        approved_candidate.push_back(address);
         env.storage()
             .persistent()
-            .set(&APPROVED_CANDIDATES, &approved_candidate);
+            .update(&APPROVED_CANDIDATES, Self::append_to_vector(&env, address));
     }
 
     pub fn reject_candidate(env: Env, address: Address, admin_address: Address) {
@@ -269,7 +271,7 @@ impl VotingOrganization {
             .persistent()
             .update(&key, |c: Option<Candidate>| {
                 let mut candidate = c.unwrap();
-                candidate.status = REJECTED.clone();
+                candidate.status = REJECTED;
                 candidate
             });
     }

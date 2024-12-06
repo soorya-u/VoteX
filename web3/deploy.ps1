@@ -5,7 +5,7 @@ param(
 
 $build_path = "target/wasm32-unknown-unknown/release/democrachain.wasm"
 
-$owner_address = stellar keys address $Source
+$admin_address = stellar keys address $Source
 
 Write-Host "Building Contract..."
 
@@ -17,8 +17,7 @@ $contract_address = stellar contract deploy `
   --wasm $build_path `
   --source $Source `
   --network $Network `
-  -- --owner-address $owner_address `
-  > $null 2>&1
+  -- --admin-address $admin_address 2>$null
 
 Write-Host "Deployment Completed with Address of " -NoNewline
 Write-Host $contract_address -ForegroundColor Blue
