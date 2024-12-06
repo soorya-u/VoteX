@@ -1,15 +1,17 @@
+from typing import Any
 import face_recognition as fr
 from fastapi import HTTPException, UploadFile, status
-from typing import Literal
+
+from ..lib.pinata import pin_file_to_ipfs, get_file_from_ipfs
+from ..lib.stellar import invoke_contract_functions, get_contract_data, admin_keypair
 
 from ..helpers import image_to_array_transformer, get_file_payload, bytes_to_array_transformer
-from ..lib.pinata import pin_file_to_ipfs, get_file_from_ipfs
-
-USER_TYPE = Literal["candidate", "voter"]
 
 
-async def face_registration_handler(face_image: UploadFile, public_key: str,
-                                    user_type: USER_TYPE):
+async def face_registration_handler(
+    face_image: UploadFile,
+    public_key: str,
+):
     image_array = await image_to_array_transformer(face_image)
 
     face_encoding = fr.face_encodings(image_array)
@@ -24,13 +26,17 @@ async def face_registration_handler(face_image: UploadFile, public_key: str,
 
     ipfs_hash = await pin_file_to_ipfs(file_payload)
 
-    # TODO: Add pinned_url to Stellar
+    await invoke_contract_functions(
+        "set_voter_as_approved",
+        [public_key, ipfs_hash, admin_keypair.public_key])
 
     return {"message": "Face Registration Completed", "ipfs_hash": ipfs_hash}
 
 
-async def face_verification_handler(face_image: UploadFile, public_key: str,
-                                    user_type: USER_TYPE):
+async def face_verification_handler(
+    face_image: UploadFile,
+    public_key: str,
+):
     current_image_array = await image_to_array_transformer(face_image)
 
     current_image_encoding = fr.face_encodings(current_image_array)
@@ -42,10 +48,14 @@ async def face_verification_handler(face_image: UploadFile, public_key: str,
         raise HTTPException(status.HTTP_400_BAD_REQUEST,
                             "Multiple Face has been detected")
 
-    # TODO: Fetch Face Recognition Image from Pinata
-    test_ipfs_hash = "QmPRTw2AD3su3SvHbXYVed9SV2N7qNVnzg85j1jyw8oxSa"
+    voter: Any = await get_contract_data(("Voter", public_key))
 
-    file_bytes = await get_file_from_ipfs(test_ipfs_hash)
+    if not voter or not isinstance(voter["face_ipfs_hash"], str):
+        return HTTPException(
+            status.HTTP_502_BAD_GATEWAY,
+            "Unable to find the Saved Image or it is corrupted")
+
+    file_bytes = await get_file_from_ipfs(voter["face_ipfs_hash"])
     saved_image_array = bytes_to_array_transformer(file_bytes)
 
     saved_image_encoding = fr.face_encodings(saved_image_array)
