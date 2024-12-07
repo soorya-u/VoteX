@@ -3,7 +3,14 @@ param(
   [string]$Network
 )
 
-$build_path = "target/wasm32-unknown-unknown/release/democrachain.wasm"
+try {
+  stellar --version  > $null 2>&1
+} catch {
+  Write-Host "Stellar is either not installed or its PATH is not set." -ForegroundColor Red
+  exit
+}
+
+$build_path = "target\wasm32-unknown-unknown\release\democrachain.wasm"
 
 $admin_address = stellar keys address $Source
 
