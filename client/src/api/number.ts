@@ -1,27 +1,33 @@
-import { AxiosError } from "axios";
-import { api, APIError } from ".";
-import { TAPIResponse, TPhoneIdentification, TUserType } from "@/types/api";
+import { api } from ".";
+
+import {
+  TAPIError,
+  TAPIResponse,
+  TAPIResponseWithTag,
+  TPhoneIdentification,
+  TUserType,
+} from "@/types/api";
 
 export const identifyNumber = async (
   formData: FormData,
   publicKey: string,
   user_type: TUserType
-) => {
+): Promise<(TAPIResponseWithTag & TPhoneIdentification) | TAPIError> => {
   try {
-    const { status, data } = await api.post<
-      TAPIResponse & TPhoneIdentification
-    >(`/number/identify/${publicKey}`, formData, { params: { user_type } });
-    return { status, data };
+    const { data } = await api.post<TAPIResponse & TPhoneIdentification>(
+      `/number/identify/${publicKey}`,
+      formData,
+      { params: { user_type } }
+    );
+    return { ...data, _tag: "success" };
   } catch (err) {
     console.log("Error Identifying number: ", err);
 
-    if (err instanceof AxiosError) {
-      const res = err.response;
-      return { status: res?.status, data: res?.data };
-    } else
-      throw new APIError({
-        description: "Unable to Identify Number! Please try again Later",
-      });
+    return {
+      _tag: "error",
+      title: "Something went Wrong!",
+      description: "Unable to Identify Number! Please try again Later",
+    };
   }
 };
 
@@ -29,21 +35,23 @@ export const verifyNumber = async (
   otp: string,
   publicKey: string,
   user_type: TUserType
-) => {
+): Promise<TAPIResponseWithTag | TAPIError> => {
   try {
-    const { status, data } = await api.get(`/number/verify/${publicKey}`, {
-      params: { otp, user_type },
-    });
+    const { data } = await api.get<TAPIResponse>(
+      `/number/verify/${publicKey}`,
+      {
+        params: { otp, user_type },
+      }
+    );
 
-    return { status, data };
+    return { _tag: "success", ...data };
   } catch (err) {
     console.log("Error Comparing Face: ", err);
-    if (err instanceof AxiosError) {
-      const res = err.response;
-      return { status: res?.status, data: res?.data };
-    } else
-      throw new APIError({
-        description: "Unable to Compare Face! Please try again Later",
-      });
+
+    return {
+      _tag: "error",
+      title: "Seomthing went Wrong!",
+      description: "Unable to Compare Face! Please try again Later",
+    };
   }
 };
