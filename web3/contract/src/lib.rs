@@ -182,7 +182,7 @@ impl VotingOrganization {
         degree_details: String,
         current_income: u64,
         location: String,
-        profile_ipfs_hash: String
+        profile_ipfs_hash: String,
     ) {
         let candidate_id_key = Candidates::Candidate(address.clone());
 
@@ -207,9 +207,10 @@ impl VotingOrganization {
             .persistent()
             .set(&candidate_id_key, &new_candidate);
 
-        env.storage()
-            .persistent()
-            .update(&REGISTERED_VOTERS, Self::_append_to_vector(&env, address));
+        env.storage().persistent().update(
+            &REGISTERED_CANDIDATES,
+            Self::_append_to_vector(&env, address),
+        );
     }
 
     pub fn set_voter_as_approved(
