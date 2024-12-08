@@ -3,7 +3,6 @@ import { Outfit } from "next/font/google";
 import { defaultMetadata } from "@/constants/metadata";
 
 import Header from "@/components/custom/Header";
-import Footer from "@/components/custom/Footer";
 
 import Providers from "@/providers";
 
@@ -20,15 +19,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <Providers>
-        <body
-          className={`${outfit.className} flex flex-col bg-img text-secondary min-h-screen`}
-        >
+      <body
+        className={`${outfit.className} flex flex-col bg-img text-secondary min-h-screen`}
+      >
+        <Providers>
           <Header />
           {children}
-          <Footer />
-        </body>
-      </Providers>
+        </Providers>
+      </body>
     </html>
   );
 }

@@ -5,14 +5,14 @@ from fastapi import HTTPException, UploadFile, status
 from ..lib.pinata import pin_file_to_ipfs, get_file_from_ipfs
 from ..lib.stellar import invoke_contract_functions, get_contract_data, admin_keypair
 
-from ..helpers import image_to_array_transformer, get_file_payload, bytes_to_array_transformer
+from ..helpers import image_to_array_transformer, get_file_payload, bytes_to_array_transformer, image_base64_transformer
 
 
 async def face_registration_handler(
     face_image: UploadFile,
     public_key: str,
 ):
-    image_array = await image_to_array_transformer(face_image)
+    image_array = await image_base64_transformer(face_image)
 
     face_encoding = fr.face_encodings(image_array)
     if len(face_encoding) == 0:

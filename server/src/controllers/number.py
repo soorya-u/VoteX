@@ -13,6 +13,7 @@ from ..helpers import image_to_buffer_array_transformer, generate_otp, hash_otp,
 
 TESSERACT_PATH = os.getenv('TESSERACT_PATH')
 Candidate = Literal["candidate"]
+Voter = Literal["voter"]
 
 
 async def number_identification_handler(file: UploadFile, public_key: str):
@@ -51,7 +52,7 @@ async def number_identification_handler(file: UploadFile, public_key: str):
 
 
 async def number_verification_handler(otp: str, public_key: str,
-                                      user_type: Optional[Candidate]):
+                                      user_type: Optional[Candidate | Voter]):
     hashed_otp = await get_data_from_redis(public_key)
 
     if not hashed_otp:
@@ -65,7 +66,7 @@ async def number_verification_handler(otp: str, public_key: str,
 
     await delete_data_from_redis(public_key)
 
-    if user_type is not Candidate:
+    if user_type == "candidate":
         await invoke_contract_functions("set_candidate_as_verified",
                                         [public_key, admin_keypair.public_key])
 

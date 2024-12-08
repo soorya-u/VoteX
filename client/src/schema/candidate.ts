@@ -1,21 +1,24 @@
+"use client";
+
 import { z } from "zod";
 
 const required_error = "This field is required";
 
 export const candidateSchema = z.object({
-  name: z.string({ required_error }),
-  gender: z.union(
-    [z.literal("Male"), z.literal("Female"), z.literal("Transgender")],
-    { required_error }
-  ),
+  name: z.string().min(1, required_error),
+  gender: z.union([
+    z.literal("Male"),
+    z.literal("Female"),
+    z.literal("Transgender"),
+  ]),
   dateOfBirth: z.date({ required_error }),
-  partyName: z.string({ required_error }),
-  email: z.string({ required_error }).email(),
-  city: z.string({ required_error }),
-  state: z.string({ required_error }),
-  highestDegree: z.string({ required_error }),
-  specializationOfDegree: z.string({ required_error }),
-  annualIncome: z.number({ required_error }),
+  partyName: z.string().min(1, required_error),
+  email: z.string().email(),
+  city: z.string().min(1, required_error),
+  state: z.string().min(1, required_error),
+  highestStudies: z.string().min(1, required_error),
+  specializationOfDegree: z.string().optional(),
+  annualIncome: z.coerce.number().min(1, required_error),
   profilePhoto: z
     .instanceof(FileList)
     .refine((arg) => arg.length == 1, required_error),
