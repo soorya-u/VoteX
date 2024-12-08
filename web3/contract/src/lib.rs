@@ -13,8 +13,10 @@ pub struct Voter {
     date_of_birth: U256,
     email: String,
     voter_id: String,
+    occupation: String,
     location: String,
     face_ipfs_hash: String,
+    profile_ipfs_hash: String,
     status: Symbol,
     has_voted: bool,
 }
@@ -30,6 +32,7 @@ pub struct Candidate {
     location: String,
     degree_details: String,
     current_income: U256,
+    profile_ipfs_hash: String,
     status: Symbol,
     vote_count: U256,
 }
@@ -38,7 +41,7 @@ pub struct Candidate {
 #[derive(Copy, Clone, Debug, Eq, PartialEq, PartialOrd, Ord)]
 #[repr(u32)]
 pub enum ContractError {
-    NotOwnerError = 1,
+    NotAdminError = 1,
     CandidateNotApprovedError = 2,
     VoterAlreadyVotedError = 3,
     NotVotingPeriodError = 4,
@@ -109,7 +112,7 @@ impl VotingOrganization {
 
     fn _admin_authorization(env: &Env, address: Address) {
         let stored_addr: Address = env.storage().persistent().get(&ADMIN).unwrap();
-        assert_with_error!(&env, stored_addr == address, ContractError::NotOwnerError);
+        assert_with_error!(&env, stored_addr == address, ContractError::NotAdminError);
     }
 
     fn _append_to_vector(
@@ -139,6 +142,8 @@ impl VotingOrganization {
         date_of_birth: u64,
         location: String,
         voter_id: String,
+        occupation: String,
+        profile_ipfs_hash: String,
     ) {
         let voter_id_key = Voters::Voter(address.clone());
 
@@ -149,6 +154,8 @@ impl VotingOrganization {
             voter_address,
             email,
             gender,
+            occupation,
+            profile_ipfs_hash,
             date_of_birth: U256::from_u128(&env, date_of_birth as u128),
             voter_id,
             location,
@@ -175,6 +182,7 @@ impl VotingOrganization {
         degree_details: String,
         current_income: u64,
         location: String,
+        profile_ipfs_hash: String
     ) {
         let candidate_id_key = Candidates::Candidate(address.clone());
 
@@ -185,6 +193,7 @@ impl VotingOrganization {
             name,
             email,
             gender,
+            profile_ipfs_hash,
             date_of_birth: U256::from_u128(&env, date_of_birth as u128),
             party_name,
             degree_details,
@@ -294,6 +303,7 @@ impl VotingOrganization {
         date_of_birth: u64,
         location: String,
         voter_id: String,
+        occupation: String,
     ) {
         let key = Voters::Voter(address);
 
@@ -306,6 +316,7 @@ impl VotingOrganization {
             voter.date_of_birth = U256::from_u128(&env, date_of_birth as u128);
             voter.location = location;
             voter.voter_id = voter_id;
+            voter.occupation = occupation;
 
             voter
         };
