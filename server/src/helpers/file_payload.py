@@ -3,7 +3,7 @@ from aiohttp import FormData
 import mimetypes
 
 
-async def get_file_payload(file: UploadFile, public_key) -> FormData:
+async def get_file_payload(file: UploadFile, public_key: str = "") -> FormData:
     file_name = public_key or file.filename or "no_name"
     file_content = await file.read()
     file_type = file.content_type or mimetypes.guess_type(
