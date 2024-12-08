@@ -35,7 +35,7 @@ export default async function Hamburger({ className }: { className: string }) {
         </SheetTitle>
         <SheetDescription className=" flex  flex-col justify-between ">
           <div className="flex flex-col gap-1">
-            {["candidates", "voters", "owner", "about"].map((link, idx) => (
+            {["candidates", "voters", "admin", "about"].map((link, idx) => (
               <HamburgerLink link={link} key={idx} />
             ))}
           </div>

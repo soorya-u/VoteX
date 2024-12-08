@@ -10,16 +10,15 @@ import {
 
 export const identifyNumber = async (
   formData: FormData,
-  publicKey: string,
-  user_type: TUserType
+  publicKey: string
 ): Promise<(TAPIResponseWithTag & TPhoneIdentification) | TAPIError> => {
   try {
     const { data } = await api.post<TAPIResponse & TPhoneIdentification>(
       `/number/identify/${publicKey}`,
-      formData,
-      { params: { user_type } }
+      formData
     );
-    return { ...data, _tag: "success" };
+
+    return { _tag: "success", ...data };
   } catch (err) {
     console.log("Error Identifying number: ", err);
 
@@ -51,7 +50,7 @@ export const verifyNumber = async (
     return {
       _tag: "error",
       title: "Seomthing went Wrong!",
-      description: "Unable to Compare Face! Please try again Later",
+      description: "Unable to Verify Number! Please try again Later",
     };
   }
 };
