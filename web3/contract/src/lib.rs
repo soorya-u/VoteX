@@ -357,11 +357,6 @@ impl VotingOrganization {
         env.storage().persistent().update(&key, update_fn);
     }
 
-    pub fn change_admin(env: Env, new_admin: Address, address: Address) {
-        Self::_admin_authorization(&env, address);
-        env.storage().persistent().set(&ADMIN, &new_admin);
-    }
-
     pub fn reset_contract(env: Env, address: Address) {
         Self::_admin_authorization(&env, address);
 

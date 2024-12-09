@@ -1,20 +1,21 @@
 import os
+
 from stellar_sdk import Durability, Keypair, Network
 from stellar_sdk.soroban_server_async import SorobanServerAsync
 from stellar_sdk.contract import ContractClientAsync
-from stellar_sdk.contract import ContractClient
 from stellar_sdk.scval import to_bool, to_string, to_uint256, to_vec, to_void, to_struct, to_address, to_symbol, to_native
 from stellar_sdk.xdr import SCVal, LedgerEntryData
+
 from typing import Callable, Dict, List, Literal, Any, Tuple, Type
 
 RPC_URL = r"https://soroban-testnet.stellar.org"
+
 CONTRACT_FUNCTIONS = Literal[
     "set_voter_as_approved",
     "set_candidate_as_verified",
     "approve_candidate",
     "reject_candidate",
     "set_voting_period",
-    "change_admin",
     "reset_contract",
 ]
 
