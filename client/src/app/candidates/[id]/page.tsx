@@ -23,6 +23,21 @@ export default async function CandidateDetailsPage({
     id,
   ])) as TContractCandidate;
 
+  const startTime = (await getContractData(
+    ContractVariables.StartTime,
+    "u64"
+  )) as number;
+  const endTime = (await getContractData(
+    ContractVariables.EndTime,
+    "u64"
+  )) as number;
+
+  const shouldDisplayVoteCount =
+    startTime &&
+    endTime &&
+    moment().toDate().getTime() > startTime &&
+    moment().toDate().getTime() < endTime;
+
   if (!candidate) return notFound();
 
   return (
@@ -67,14 +82,18 @@ export default async function CandidateDetailsPage({
                   <p className="font-semibold">Gender</p>
                   <p>{candidate.gender}</p>
                 </div>
-                <Separator
-                  className="bg-secondary/45 h-10 hidden xs:block"
-                  orientation="vertical"
-                />
-                <div className="text-secondary flex flex-col justify-center items-center">
-                  <p className="font-semibold">Date of Birth</p>
-                  <p>{moment(candidate.dateOfBirth).format("MMM DD, YYYY")}</p>
-                </div>
+                {candidate.status === "Approved" && shouldDisplayVoteCount && (
+                  <>
+                    <Separator
+                      className="bg-secondary/45 h-10 hidden xs:block"
+                      orientation="vertical"
+                    />
+                    <div className="text-secondary flex flex-col justify-center items-center">
+                      <p className="font-semibold">Vote Count</p>
+                      <p>{candidate.voteCount}</p>
+                    </div>
+                  </>
+                )}
                 <Separator
                   className="bg-secondary/45 h-10 hidden xs:block"
                   orientation="vertical"
@@ -94,8 +113,14 @@ export default async function CandidateDetailsPage({
                   <p className="text-secondary text-lg">{candidate.location}</p>
                 </div>
                 <div className="flex justify-center items-center gap-1">
+                  <Cake className="size-4" />
+                  <p className="text-secondary text-md">
+                    {moment(candidate.dateOfBirth).format("MMM DD, YYYY")}
+                  </p>
+                </div>
+                <div className="flex justify-center items-center gap-1">
                   <GraduationCap className="size-4" />
-                  <p className="text-secondary text-lg">
+                  <p className="text-secondary text-md">
                     {candidate.degreeDetails}
                   </p>
                 </div>

@@ -18,16 +18,12 @@ export default function CandidateRegistrationPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        await getContractData([ContractVariables.Voter, publicKey]);
-        setIsRegistered(true);
-      } catch {
-        setIsRegistered(false);
-      } finally {
-        setLoading(false);
-      }
-    };
+    const fetchData = async () =>
+      await getContractData([ContractVariables.Voter, publicKey])
+        .then(() => setIsRegistered(true))
+        .catch(() => setIsRegistered(false))
+        .finally(() => setLoading(false));
+
     fetchData();
   }, [publicKey]);
 

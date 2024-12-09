@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
+import Link from "next/link";
 
 import { useContract } from "@/hooks/use-context";
 
@@ -10,10 +11,8 @@ import { getContractData } from "@/lib/stellar";
 import { ContractVariables } from "@/constants/contract";
 
 import CandidateForm from "@/components/custom/Form/Candidate";
-import { Button } from "@/components/ui/button";
 
 import { TContractCandidate } from "@/types/contract";
-import Link from "next/link";
 
 export default function CandidateUpdationPage() {
   const { publicKey } = useContract();
@@ -49,10 +48,10 @@ export default function CandidateUpdationPage() {
         You have not been registered as a Candidate
       </h2>
       <Link
-        href="/auth/voter"
+        href="/auth/candidate"
         className="w-full mt-8 bg-primary hover:bg-[#e62d4e] text-white transition-colors duration-200"
       >
-        Regitser as a Candidate
+        Register as a Candidate
       </Link>
     </div>
   );
