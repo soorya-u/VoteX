@@ -5,7 +5,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { PropsWithChildren, useEffect } from "react";
 
-export default function AuthLayout({ children }: PropsWithChildren) {
+export default function UpdateLayout({ children }: PropsWithChildren) {
   const router = useRouter();
   const { publicKey } = useContract();
   const { toast } = useToast();
@@ -14,11 +14,11 @@ export default function AuthLayout({ children }: PropsWithChildren) {
     if (!publicKey) {
       toast({
         title: "Wallet hasn't been Connected",
-        description:
-          "Registration cannot proceed until the Wallet is Connected",
+        description: "Updation cannot proceed until the Wallet is Connected",
         variant: "destructive",
       });
-      router.push("/");
+
+      return router.push("/");
     }
   }, [publicKey, toast, router]);
 

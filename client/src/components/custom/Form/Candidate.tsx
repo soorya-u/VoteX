@@ -13,7 +13,15 @@ import { useCandidate } from "@/hooks/use-candidate";
 import { TCandidate } from "@/schema/candidate";
 import FormModal from "./Modal";
 
-export default function CandidateForm() {
+type CandidateFormProps = {
+  defaultValues?: TCandidate;
+  isUpdateForm?: boolean;
+};
+
+export default function CandidateForm({
+  defaultValues = undefined,
+  isUpdateForm = false,
+}: CandidateFormProps) {
   const {
     errors,
     handleSubmit,
@@ -22,7 +30,7 @@ export default function CandidateForm() {
     genderController,
     phoneNumber,
     isSubmitting,
-  } = useCandidate();
+  } = useCandidate(defaultValues);
 
   return (
     <>
@@ -32,7 +40,7 @@ export default function CandidateForm() {
         className="w-full max-w-3xl mx-auto md:bg-[#3c3b3b7b] bg-transparent p-8 rounded-lg shadow-lg"
       >
         <h2 className="text-4xl font-bold mb-8 text-[#F73859] text-center">
-          Candidate Registration Form
+          Candidate {isUpdateForm ? "Updation" : "Registration"} Form
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -108,22 +116,26 @@ export default function CandidateForm() {
             register={register}
             errors={errors}
           />
-          <FormInput<TCandidate>
-            id="profilePhoto"
-            label="Profile Photo"
-            type="file"
-            placeholder="Upload your profile photo"
-            register={register}
-            errors={errors}
-          />
-          <FormInput<TCandidate>
-            id="aadhaarCardPhoto"
-            label="Aadhaar Card Photo"
-            type="file"
-            placeholder="Uplaod your aadhaar card photo"
-            register={register}
-            errors={errors}
-          />
+          {!isUpdateForm && (
+            <>
+              <FormInput<TCandidate>
+                id="profilePhoto"
+                label="Profile Photo"
+                type="file"
+                placeholder="Upload your profile photo"
+                register={register}
+                errors={errors}
+              />
+              <FormInput<TCandidate>
+                id="aadhaarCardPhoto"
+                label="Aadhaar Card Photo"
+                type="file"
+                placeholder="Uplaod your aadhaar card photo"
+                register={register}
+                errors={errors}
+              />
+            </>
+          )}
         </div>
         <Button
           type="submit"
