@@ -1,3 +1,4 @@
 from .number import number_identification_handler, number_verification_handler
 from .face import face_registration_handler, face_verification_handler
 from .ipfs import pin_image_handler
+from .contract import candidate_approval_handler, candidate_rejection_handler, contract_resetter_handler, voting_period_setter_handler
