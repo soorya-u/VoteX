@@ -49,7 +49,7 @@ export default function CandidateUpdationPage() {
       </h2>
       <Link
         href="/auth/voter"
-        className="w-full mt-8 bg-[#F73859] hover:bg-[#e62d4e] text-white transition-colors duration-200"
+        className="w-full mt-8 bg-primary hover:bg-[#e62d4e] text-white transition-colors duration-200"
       >
         Register as a Voter
       </Link>
