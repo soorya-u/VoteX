@@ -19,7 +19,7 @@ import {
 
 import { snakeToCamelConvertor } from "@/utils/case-convertor";
 
-import { signTransaction, retrievePublicKey } from "@/lib/freighter";
+import { signTransaction } from "@/lib/freighter";
 
 export const server = new rpc.Server(RPC_URL, { allowHttp: true });
 export const contract = new Contract(process.env.NEXT_PUBLIC_CONTRACT_ID!);
@@ -118,7 +118,7 @@ const getContractKey = async (
   if (Array.isArray(key)) {
     const [symbolString, addressString] = key;
     const symbol = nativeToScVal(symbolString, "symbol");
-    const address = await stringToAddress(addressString);
+    const address = nativeToScVal(addressString);
     return stellarNativeToScVal([symbol, address]);
   }
 
@@ -145,11 +145,3 @@ const nativeToScVal = (value: any, type: "symbol" | "" = ""): xdr.ScVal => {
 
 export const objectToAddress = (xdrObj: any) =>
   StrKey.encodeEd25519PublicKey(xdrObj._value._value.ed25519());
-
-export const stringToAddress = async (
-  value: string | undefined = undefined
-) => {
-  const pk = value || (await retrievePublicKey());
-  const address = new Address(pk);
-  return address.toScVal();
-};

@@ -62,7 +62,7 @@ export function FormInput<T extends Record<string, any>>({
         placeholder={placeholder}
         // @ts-ignore
         {...register(String(id))}
-        className="bg-[#2a2a2a] text-white border-[#fff6e9] focus:border-[#F73859] rounded-md"
+        className="bg-[#2a2a2a] text-white border-secondary focus:border-primary rounded-md"
       />
       {errors[id] && (
         <span className="text-red-500 text-sm">
@@ -138,7 +138,7 @@ export const FormSelect = <T extends Record<string, any>>({
     <Select value={control.value as string} onValueChange={control.onChange}>
       <SelectTrigger
         id={String(id)}
-        className="bg-[#2a2a2a] text-white border-[#fff6e9] focus:border-[#F73859]"
+        className="bg-[#2a2a2a] text-white border-secondary focus:border-primary"
       >
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>

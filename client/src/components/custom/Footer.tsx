@@ -22,7 +22,7 @@ export default function Footer() {
           </Link>
           . The source code is available on{" "}
           <Link
-            href="https://github.com/soorya-u/Votix"
+            href="https://github.com/soorya-u/DemocraChain"
             className="underline underline-offset-2"
             target="_blank"
           >

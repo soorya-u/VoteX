@@ -12,6 +12,7 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTrigger,
+  DialogClose,
 } from "@/components/ui/dialog";
 
 import { cn } from "@/utils/cn";
@@ -36,7 +37,7 @@ export default function ConnectButton() {
         <DialogContent className="rounded-md mx-auto">
           <DialogHeader>
             <DialogDescription>
-              <RegisterButtons className="flex flex-col" />
+              <RegisterButtons isInsideDialog className="flex flex-col" />
             </DialogDescription>
           </DialogHeader>
         </DialogContent>
@@ -56,30 +57,65 @@ export default function ConnectButton() {
   );
 }
 
-const RegisterButtons = ({ className = "" }) => (
+const RegisterButtons = ({ className = "", isInsideDialog = false }) => (
   <div className={cn("items-center justify-center gap-4", className)}>
-    <Link href="/auth/candidate">
-      <Button
-        size="xs"
-        variant="outline"
-        className={cn(
-          outfit.className,
-          "text-sm hover:translate-x-1 hover:-translate-y-1 transition-all"
-        )}
-      >
-        Register as Candidate
-      </Button>
-    </Link>
-    <Link href="/auth/voter">
-      <Button
-        size="xs"
-        className={cn(
-          outfit.className,
-          "text-sm hover:bg-secondary hover:text-primary hover:translate-x-1 hover:-translate-y-1 transition-all"
-        )}
-      >
-        Register as Voter
-      </Button>
-    </Link>
+    {isInsideDialog ? (
+      <DialogClose asChild>
+        <Link href="/auth/candidate">
+          <Button
+            size="xs"
+            variant="outline"
+            className={cn(
+              outfit.className,
+              "text-sm hover:translate-x-1 hover:-translate-y-1 transition-all"
+            )}
+          >
+            Register as Candidate
+          </Button>
+        </Link>
+      </DialogClose>
+    ) : (
+      <Link href="/auth/candidate">
+        <Button
+          size="xs"
+          variant="outline"
+          className={cn(
+            outfit.className,
+            "text-sm hover:translate-x-1 hover:-translate-y-1 transition-all"
+          )}
+        >
+          Register as Candidate
+        </Button>
+      </Link>
+    )}
+    {isInsideDialog ? (
+      <DialogClose asChild>
+        <Link href="/auth/voter">
+          <Button
+            size="xs"
+            className={cn(
+              outfit.className,
+              "text-sm hover:bg-secondary hover:text-primary hover:translate-x-1 hover:-translate-y-1 transition-all"
+            )}
+          >
+            Register as Voter
+          </Button>
+        </Link>
+      </DialogClose>
+    ) : (
+      <Link href="/auth/candidate">
+        <Link href="/auth/voter">
+          <Button
+            size="xs"
+            className={cn(
+              outfit.className,
+              "text-sm hover:bg-secondary hover:text-primary hover:translate-x-1 hover:-translate-y-1 transition-all"
+            )}
+          >
+            Register as Voter
+          </Button>
+        </Link>
+      </Link>
+    )}
   </div>
 );

@@ -78,7 +78,7 @@ export default function UserCards({ users, userType }: CardsProps) {
       {currentUsers.length > 0 ? (
         <div className="grid place-items-center grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-8">
           {currentUsers.map((user, index) => (
-            <UserCard key={index} user={user} />
+            <UserCard userType={userType} key={index} user={user} />
           ))}
         </div>
       ) : (
@@ -92,8 +92,14 @@ export default function UserCards({ users, userType }: CardsProps) {
   );
 }
 
-const UserCard = ({ user }: { user: User }) => (
-  <Card className="w-full max-w-sm bg-[#3c3b3b7b] border-[#fff6e9] overflow-hidden flex flex-col relative">
+const UserCard = ({
+  user,
+  userType,
+}: {
+  user: User;
+  userType: "Candidates" | "Voters";
+}) => (
+  <Card className="w-full max-w-sm bg-[#3c3b3b7b] border-secondary overflow-hidden flex flex-col relative">
     <div className="absolute top-2 right-2 z-10">
       <Badge
         variant="default"
@@ -127,8 +133,8 @@ const UserCard = ({ user }: { user: User }) => (
         Date of Birth: {moment(user.dateOfBirth).format("MMM DD, YYYY")}
       </p>
       <Link
-        href={`/candidates/${user.address}`}
-        className="w-full rounded-md py-2 bg-[#F73859] hover:bg-[#e62d4e] text-white transition-colors duration-200"
+        href={`/${userType.toLowerCase()}/${user.address}`}
+        className="w-full rounded-md py-2 bg-primary hover:bg-[#e62d4e] text-white transition-colors duration-200"
       >
         View Profile
       </Link>

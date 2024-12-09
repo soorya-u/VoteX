@@ -89,13 +89,13 @@ export default async function HomePage() {
               className="text-md hover:-translate-x-1 hover:-translate-y-1 transition-all"
               variant="outline"
             >
-              <Link href="/semester">Check out Candidates</Link>
+              <Link href="/candidates">Check out Candidates</Link>
             </Button>
             <Button
               className="text-md hover:translate-x-1 hover:-translate-y-1 transition-all"
               variant="outline"
             >
-              <Link href="https://github.com/soorya-u/Grade-Grove">
+              <Link href="https://github.com/soorya-u/DemocraChain">
                 View Source Code
               </Link>
             </Button>
