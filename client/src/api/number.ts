@@ -45,7 +45,7 @@ export const verifyNumber = async (
 
     return { _tag: "success", ...data };
   } catch (err) {
-    console.log("Error Comparing Face: ", err);
+    console.log("Error Verifying Number: ", err);
 
     return {
       _tag: "error",

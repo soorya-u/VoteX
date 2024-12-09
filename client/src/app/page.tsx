@@ -16,13 +16,9 @@ const sarpanch = Sarpanch({ weight: "500", subsets: ["latin"] });
 
 export default async function HomePage() {
   const startTime = (await getContractData(
-    ContractVariables.StartTime,
-    "u64"
+    ContractVariables.StartTime
   )) as number;
-  const endTime = (await getContractData(
-    ContractVariables.EndTime,
-    "u64"
-  )) as number;
+  const endTime = (await getContractData(ContractVariables.EndTime)) as number;
 
   return (
     <>
@@ -55,15 +51,23 @@ export default async function HomePage() {
         {startTime && endTime ? (
           <div>
             {moment(startTime) > moment() ? (
-              <p>
+              <p className="text-center">
                 Voting Period will start from{" "}
                 {moment(startTime).format("MMM DD, YYYY")} and end at{" "}
                 {moment(endTime).format("MMM DD, YYYY")}
               </p>
             ) : moment() > moment(startTime) && moment() < moment(endTime) ? (
-              <div>
+              <div className="flex flex-col justify-center items-center">
                 <p>Voting Period has been started</p>
-                <p>Cast you vote with no worries of Privacy and Security</p>
+                <p>
+                  <Link
+                    href="/candidates"
+                    className="underline hover:text-primary transition-all"
+                  >
+                    Cast you vote
+                  </Link>{" "}
+                  with no worries of Privacy and Security
+                </p>
               </div>
             ) : (
               moment() > moment(endTime) && (

@@ -18,7 +18,7 @@ export default function UpdateLayout({ children }: PropsWithChildren) {
         variant: "destructive",
       });
 
-      return router.push("/");
+      return router.replace("/");
     }
   }, [publicKey, toast, router]);
 

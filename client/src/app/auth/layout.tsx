@@ -18,7 +18,7 @@ export default function AuthLayout({ children }: PropsWithChildren) {
           "Registration cannot proceed until the Wallet is Connected",
         variant: "destructive",
       });
-      router.push("/");
+      router.replace("/");
     }
   }, [publicKey, toast, router]);
 

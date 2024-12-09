@@ -25,8 +25,7 @@ export const server = new rpc.Server(RPC_URL, { allowHttp: true });
 export const contract = new Contract(process.env.NEXT_PUBLIC_CONTRACT_ID!);
 
 export const getContractData = async (
-  nativeKey: ContractVariables | [ContractVariables, string],
-  type: "u64" | "address" | null = null
+  nativeKey: ContractVariables | [ContractVariables, string]
 ) => {
   const key = await getContractKey(nativeKey);
 
@@ -41,7 +40,8 @@ export const getContractData = async (
 
   const native = stellarScValToNative(value);
 
-  if (Array.isArray(native) || typeof native !== "object") return native;
+  if (Array.isArray(native) || typeof native !== "object")
+    return typeof native === "bigint" ? Number(native) : native;
 
   const camelObject = snakeToCamelConvertor(native);
   Object.entries(camelObject).map(([k, v]) => {

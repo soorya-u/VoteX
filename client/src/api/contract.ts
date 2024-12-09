@@ -15,7 +15,7 @@ export const approveCandidate = async (
     return {
       title: "Something went Wrong!",
       _tag: "error",
-      description: "Unable to Register Face! Please try again Later",
+      description: "Unable to Approve Candidate! Please try again Later",
     };
   }
 };
@@ -34,7 +34,7 @@ export const rejectCandidate = async (
     return {
       title: "Something went Wrong!",
       _tag: "error",
-      description: "Unable to Register Face! Please try again Later",
+      description: "Unable to Reject Candidate! Please try again Later",
     };
   }
 };
@@ -54,7 +54,7 @@ export const setVotingPeriod = async (
     return {
       title: "Something went Wrong!",
       _tag: "error",
-      description: "Unable to Register Face! Please try again Later",
+      description: "Unable to Set Voting Period! Please try again Later",
     };
   }
 };
@@ -71,7 +71,7 @@ export const resetContract = async (): Promise<
     return {
       title: "Something went Wrong!",
       _tag: "error",
-      description: "Unable to Register Face! Please try again Later",
+      description: "Unable to Reset Contract! Please try again Later",
     };
   }
 };

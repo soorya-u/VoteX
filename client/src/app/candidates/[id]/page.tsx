@@ -24,13 +24,9 @@ export default async function CandidateDetailsPage({
   ])) as TContractCandidate;
 
   const startTime = (await getContractData(
-    ContractVariables.StartTime,
-    "u64"
+    ContractVariables.StartTime
   )) as number;
-  const endTime = (await getContractData(
-    ContractVariables.EndTime,
-    "u64"
-  )) as number;
+  const endTime = (await getContractData(ContractVariables.EndTime)) as number;
 
   const shouldDisplayVoteCount =
     startTime &&

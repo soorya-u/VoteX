@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/input-otp";
 import { useOTP } from "@/hooks/use-otp";
 import { useCallback, useRef, useState } from "react";
-import { base64ToFile } from "@/utils/file-conversion";
+import { bas64ToImage } from "@/utils/base64-image";
 import { useToast } from "@/hooks/use-toast";
 import { registerFace } from "@/api/face";
 import { useContract } from "@/hooks/use-context";
@@ -123,19 +123,7 @@ const WebCamModalContent = () => {
           variant: "destructive",
         });
 
-      const base64Data = imageSrc.replace(/^data:image\/\w+;base64,/, "");
-      const byteCharacters = atob(base64Data);
-
-      const byteNumbers = new Array(byteCharacters.length);
-      for (let i = 0; i < byteCharacters.length; i++)
-        byteNumbers[i] = byteCharacters.charCodeAt(i);
-
-      const byteArray = new Uint8Array(byteNumbers);
-
-      const blob = new Blob([byteArray], { type: "image/png" });
-      const file = new File([blob], "user-face-registration.png", {
-        type: "image/png",
-      });
+      const file = bas64ToImage(imageSrc);
 
       const formData = new FormData();
       formData.append("file", file);
