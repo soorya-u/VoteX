@@ -39,7 +39,7 @@ export default function CandidateForm({
         onSubmit={handleSubmit}
         className="w-full max-w-3xl mx-auto md:bg-[#3c3b3b7b] bg-transparent p-8 rounded-lg shadow-lg"
       >
-        <h2 className="text-4xl font-bold mb-8 text-[#F73859] text-center">
+        <h2 className="text-4xl font-bold mb-8 text-primary text-center">
           Candidate {isUpdateForm ? "Updation" : "Registration"} Form
         </h2>
 

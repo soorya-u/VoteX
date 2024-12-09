@@ -13,6 +13,7 @@ const config: Config = {
       "2xs": "400px",
       xss: "475px",
       xs: "450px",
+      "xs-sm": "590px",
       sm: "640px",
       md: "768px",
       "md-lg": "875px",
