@@ -12,7 +12,7 @@ import { useContract } from "./use-context";
 
 import { callContract } from "@/lib/stellar";
 
-import { UserContractFunctions } from "@/constants/contract";
+import { ContractFunctions } from "@/constants/contract";
 
 export const useCandidate = (
   defaultValues: TCandidate | undefined = undefined
@@ -86,7 +86,7 @@ export const useCandidate = (
 
     try {
       await callContract(
-        UserContractFunctions.RegisterCandidate,
+        ContractFunctions.RegisterCandidate,
         [
           publicKey,
           name,

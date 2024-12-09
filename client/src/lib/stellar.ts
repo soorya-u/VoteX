@@ -12,7 +12,7 @@ import {
 
 import {
   networkPassphrase,
-  UserContractFunctions,
+  ContractFunctions,
   ContractVariables,
   RPC_URL,
 } from "@/constants/contract";
@@ -39,26 +39,20 @@ export const getContractData = async (
   const contract_data = res.val.value() as xdr.ContractDataEntry;
   const value = contract_data.val();
 
-  switch (type) {
-    case "address":
-      return objectToAddress(value);
-    case "u64":
-      return Number(stellarScValToNative(value));
-    default:
-      const native = stellarScValToNative(value);
+  const native = stellarScValToNative(value);
 
-      if (typeof native !== "object") return native;
+  if (Array.isArray(native) || typeof native !== "object") return native;
 
-      const camelObject = snakeToCamelConvertor(native);
-      Object.entries(camelObject).map(([k, v]) => {
-        if (typeof v === "bigint") camelObject[k] = Number(v);
-      });
-      return camelObject;
-  }
+  const camelObject = snakeToCamelConvertor(native);
+  Object.entries(camelObject).map(([k, v]) => {
+    if (typeof v === "bigint") camelObject[k] = Number(v);
+  });
+
+  return camelObject;
 };
 
 export const callContract = async (
-  functionName: UserContractFunctions,
+  functionName: ContractFunctions,
   values: any = null,
   publicKey: string
 ) => {
@@ -113,7 +107,7 @@ export const callContract = async (
       if (txResponse.status === "SUCCESS") return txResponse.returnValue;
     }
   } catch (err) {
-    console.log("Catch-2", err);
+    console.error("Unable to process transaction: ", err);
     return;
   }
 };

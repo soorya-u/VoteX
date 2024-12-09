@@ -7,7 +7,7 @@ import { useToast } from "./use-toast";
 import { useContract } from "./use-context";
 import { pinProfilePhoto } from "@/api/ipfs";
 import { callContract } from "@/lib/stellar";
-import { UserContractFunctions } from "@/constants/contract";
+import { ContractFunctions } from "@/constants/contract";
 import { identifyNumber } from "@/api/number";
 
 export const useVoter = (values: TVoter | undefined = undefined) => {
@@ -69,7 +69,7 @@ export const useVoter = (values: TVoter | undefined = undefined) => {
 
     try {
       await callContract(
-        UserContractFunctions.RegisterVoter,
+        ContractFunctions.RegisterVoter,
         [
           publicKey,
           name,
