@@ -18,10 +18,16 @@ export const voterSchema = z.object({
   city: z.string().min(1, required_error),
   state: z.string().min(1, required_error),
   profilePhoto: z
-    .instanceof(FileList)
+    .unknown()
+    .transform((value) => {
+      return value as FileList;
+    })
     .refine((arg) => arg.length == 1, required_error),
   aadhaarCardPhoto: z
-    .instanceof(FileList)
+    .unknown()
+    .transform((value) => {
+      return value as FileList;
+    })
     .refine((arg) => arg.length == 1, required_error),
 });
 

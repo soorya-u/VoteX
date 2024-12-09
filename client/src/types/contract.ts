@@ -1,29 +1,32 @@
+type TGender = "Male" | "Female" | "Transgender";
+type TStatus = "NotVer" | "Pending" | "Approved" | "Rejected";
+
 export type TContractCandidate = {
-  candidate_address: string;
-  name: string;
-  gender: string;
-  date_of_birth: number;
-  party_name: string;
+  candidateAddress: string;
+  currentIncome: number;
+  dateOfBirth: number;
+  degreeDetails: string;
   email: string;
+  gender: TGender;
   location: string;
-  degree_details: string;
-  current_income: number;
-  status: string;
-  vote_count: number;
+  name: string;
+  partyName: string;
+  profileIpfsHash: string;
+  status: TStatus;
+  voteCount: number;
 };
 
 export type TContractVoter = {
-  voter_address: string;
-  name: string;
-  gender: string;
-  date_of_birth: number;
+  dateOfBirth: string;
   email: string;
-  voter_id: string;
-  occupation: string;
+  faceIpfsHash: string;
+  gender: TGender;
+  hasVoted: boolean;
   location: string;
-  face_ipfs_hash: string;
-  status: string;
-  has_voted: boolean;
+  name: string;
+  occupation: string;
+  profileIpfsHash: string;
+  status: TStatus;
+  voterAddress: string;
+  voterId: string;
 };
-
-type TContract = TContractVoter;

@@ -17,6 +17,8 @@ import {
   RPC_URL,
 } from "@/constants/contract";
 
+import { snakeToCamelConvertor } from "@/utils/case-convertor";
+
 import { signTransaction, retrievePublicKey } from "@/lib/freighter";
 
 export const server = new rpc.Server(RPC_URL, { allowHttp: true });
@@ -33,8 +35,9 @@ export const getContractData = async (
     key,
     rpc.Durability.Persistent
   );
-  // @ts-ignore
-  const value = res.val.value().val();
+
+  const contract_data = res.val.value() as xdr.ContractDataEntry;
+  const value = contract_data.val();
 
   switch (type) {
     case "address":
@@ -42,7 +45,15 @@ export const getContractData = async (
     case "u64":
       return Number(stellarScValToNative(value));
     default:
-      return stellarScValToNative(value);
+      const native = stellarScValToNative(value);
+
+      if (typeof native !== "object") return native;
+
+      const camelObject = snakeToCamelConvertor(native);
+      Object.entries(camelObject).map(([k, v]) => {
+        if (typeof v === "bigint") camelObject[k] = Number(v);
+      });
+      return camelObject;
   }
 };
 

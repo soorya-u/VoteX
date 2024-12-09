@@ -24,8 +24,6 @@ export default async function HomePage() {
     "u64"
   )) as number;
 
-  console.log({ startTime, endTime });
-
   return (
     <>
       <section className="flex flex-1 max-w-full flex-col flex-wrap items-center justify-center gap-6">

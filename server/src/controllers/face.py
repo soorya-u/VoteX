@@ -37,7 +37,7 @@ async def face_verification_handler(
     face_image: UploadFile,
     public_key: str,
 ):
-    current_image_array = await image_to_array_transformer(face_image)
+    current_image_array = await image_base64_transformer(face_image)
 
     current_image_encoding = fr.face_encodings(current_image_array)
 

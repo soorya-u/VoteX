@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
+import Link from "next/link";
 
 import { useContract } from "@/hooks/use-context";
 
@@ -10,7 +11,6 @@ import { getContractData } from "@/lib/stellar";
 import { ContractVariables } from "@/constants/contract";
 
 import VoterForm from "@/components/custom/Form/Voter";
-import { Button } from "@/components/ui/button";
 
 export default function CandidateRegistrationPage() {
   const { publicKey } = useContract();
@@ -43,9 +43,12 @@ export default function CandidateRegistrationPage() {
       <h2 className="text-3xl text-primary text-center">
         You have already been registered as a Voter
       </h2>
-      <Button className="w-full mt-8 bg-[#F73859] hover:bg-[#e62d4e] text-white transition-colors duration-200">
+      <Link
+        href="/voters"
+        className="w-full mt-8 bg-[#F73859] hover:bg-[#e62d4e] text-white transition-colors duration-200"
+      >
         View Voter List
-      </Button>
+      </Link>
     </div>
   ) : (
     <VoterForm />

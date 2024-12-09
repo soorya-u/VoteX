@@ -14,7 +14,9 @@ import { callContract } from "@/lib/stellar";
 
 import { UserContractFunctions } from "@/constants/contract";
 
-export const useCandidate = (values: TCandidate | undefined = undefined) => {
+export const useCandidate = (
+  defaultValues: TCandidate | undefined = undefined
+) => {
   const [phoneNumber, setPhoneNumber] = useState("");
 
   const {
@@ -22,7 +24,10 @@ export const useCandidate = (values: TCandidate | undefined = undefined) => {
     handleSubmit,
     control,
     formState: { errors, isSubmitting },
-  } = useForm<TCandidate>({ resolver: zodResolver(candidateSchema), values });
+  } = useForm<TCandidate>({
+    resolver: zodResolver(candidateSchema),
+    defaultValues,
+  });
 
   const { publicKey } = useContract();
 

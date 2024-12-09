@@ -20,10 +20,16 @@ export const candidateSchema = z.object({
   specializationOfDegree: z.string().optional(),
   annualIncome: z.coerce.number().min(1, required_error),
   profilePhoto: z
-    .instanceof(FileList)
+    .unknown()
+    .transform((value) => {
+      return value as FileList;
+    })
     .refine((arg) => arg.length == 1, required_error),
   aadhaarCardPhoto: z
-    .instanceof(FileList)
+    .unknown()
+    .transform((value) => {
+      return value as FileList;
+    })
     .refine((arg) => arg.length == 1, required_error),
 });
 
