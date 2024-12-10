@@ -1,49 +1,26 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Loader2 } from "lucide-react";
 import Link from "next/link";
+import { Loader2 } from "lucide-react";
 
 import { useUser } from "@/hooks/use-context";
 
-import { getContractData } from "@/lib/stellar";
-
-import { ContractVariables } from "@/constants/contract";
-
-import CandidateForm from "@/components/custom/CreateProfile/Candidate";
-
-import { TContractCandidate } from "@/types/contract";
+import CandidateUpdateForm from "@/components/custom/UpdateProfile/Candidate";
 
 export default function CandidateUpdationPage() {
-  const { publicKey } = useUser();
-  const [isRegistered, setIsRegistered] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [candidate, setCandidate] = useState<TContractCandidate | null>(null);
+  const { isCandidateLoading, userAsCandidate } = useUser();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      await getContractData([ContractVariables.Candidate, publicKey])
-        .then((res: TContractCandidate) => {
-          setCandidate(res);
-          setIsRegistered(true);
-        })
-        .catch(() => setIsRegistered(false))
-        .finally(() => setLoading(false));
-    };
-    fetchData();
-  }, [publicKey]);
-
-  if (loading)
+  if (isCandidateLoading)
     return (
-      <div className="w-full min-h-[650px] max-w-3xl flex justify-center items-center mx-auto md:bg-[#3c3b3b7b] bg-transparent p-8 rounded-lg shadow-lg">
+      <div className="w-full min-h-[650px] max-w-3xl flex justify-center items-center mx-auto bg-transparent p-8 rounded-lg shadow-lg">
         <Loader2 className="animate-spin size-24 text-primary" />
       </div>
     );
 
-  return isRegistered ? (
-    <CandidateForm />
+  return userAsCandidate ? (
+    <CandidateUpdateForm />
   ) : (
-    <div className="w-full min-h-[650px] max-w-3xl flex items-start flex-col justify-center md:items-center mx-auto md:bg-[#3c3b3b7b] bg-transparent p-8 rounded-lg shadow-lg">
+    <div className="w-full min-h-[650px] max-w-3xl flex items-start flex-col justify-center md:items-center mx-auto bg-transparent p-8 rounded-lg shadow-lg">
       <h2 className="text-3xl text-primary text-center">
         You have not been registered as a Candidate
       </h2>
