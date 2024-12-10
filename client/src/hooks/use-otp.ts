@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useController, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { TOtp, otpSchema } from "@/schema/otp";
+import { TOtp, otpSchema } from "@/schema/others";
 import { useUser } from "./use-context";
 import { verifyNumber } from "@/api/number";
 import { useToast } from "./use-toast";

@@ -18,10 +18,9 @@ type CandidateDetailsPageProp = {
 export default async function CandidateDetailsPage({
   params: { id },
 }: CandidateDetailsPageProp) {
-  const candidate = (await getContractData([
-    ContractVariables.Candidate,
-    id,
-  ])) as TContractCandidate;
+  const candidate = await getContractData([ContractVariables.Candidate, id])
+    .then((res) => res as TContractCandidate)
+    .catch(() => notFound());
 
   const startTime = (await getContractData(
     ContractVariables.StartTime
@@ -33,8 +32,6 @@ export default async function CandidateDetailsPage({
     endTime &&
     moment().toDate().getTime() > startTime &&
     moment().toDate().getTime() < endTime;
-
-  if (!candidate) return notFound();
 
   return (
     <div className="w-full p-8">

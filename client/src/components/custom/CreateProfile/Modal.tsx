@@ -27,6 +27,7 @@ import {
 } from "@/components/ui/input-otp";
 
 import { bas64ToImage } from "@/utils/base64-image";
+import { useMutation } from "@tanstack/react-query";
 
 type FormModalProps = {
   phoneNumber: string;
@@ -98,9 +99,6 @@ const WebCamModalContent = () => {
 
   const [isCapturedState, setIsCapturedState] = useState(false);
   const [imageSrc, setImageSrc] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  console.log({ imageSrc });
 
   const { publicKey } = useUser();
   const { toast } = useToast();
@@ -116,9 +114,8 @@ const WebCamModalContent = () => {
     setIsCapturedState(false);
   };
 
-  const submitFunc = async () => {
+  const mutationFn = async () => {
     try {
-      setLoading(true);
       if (!imageSrc)
         return toast({
           title: "Invalid Image",
@@ -151,10 +148,10 @@ const WebCamModalContent = () => {
         description: "Something went wrong while capturing Image",
         variant: "destructive",
       });
-    } finally {
-      setLoading(false);
     }
   };
+
+  const { isPending: loading, mutateAsync } = useMutation({ mutationFn });
 
   return (
     <>
@@ -187,7 +184,7 @@ const WebCamModalContent = () => {
             <Button disabled={loading} onClick={reCapture}>
               {loading ? <Loader2 className="animate-spin" /> : "Recapture"}
             </Button>
-            <Button disabled={loading} onClick={submitFunc}>
+            <Button disabled={loading} onClick={() => mutateAsync()}>
               {loading ? <Loader2 className="animate-spin" /> : "Submit"}
             </Button>
           </>
