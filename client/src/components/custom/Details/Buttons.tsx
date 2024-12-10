@@ -32,6 +32,7 @@ import { bas64ToImage } from "@/utils/base64-image";
 import { Input } from "@/components/ui/input";
 import { usePayment } from "@/hooks/use-payment";
 import { Label } from "@/components/ui/label";
+import { useMutation } from "@tanstack/react-query";
 
 export function CandidateDetailsButtons({
   status,
@@ -42,72 +43,96 @@ export function CandidateDetailsButtons({
 }) {
   const { admin, publicKey } = useUser();
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
-
   if (!publicKey) return;
 
-  const approveCandidateFunc = async () => {
-    try {
-      setLoading(true);
-      const res = await approveCandidate(publicKey);
-      if (res._tag === "error")
-        return toast({
-          title: res.title,
-          description: res.description,
-          variant: "destructive",
-        });
-
-      toast({
-        title: "Candidate has been Approved",
-        description: "Candidate has been Approved and can now recieve Votes",
+  const approveCandidateMutateFunc = async () => {
+    const res = await approveCandidate(publicKey);
+    if (res._tag === "error")
+      return toast({
+        title: res.title,
+        description: res.description,
+        variant: "destructive",
       });
 
-      return router.replace("/");
-    } finally {
-      setLoading(false);
-    }
+    toast({
+      title: "Candidate has been Approved",
+      description: "Candidate has been Approved and can now recieve Votes",
+    });
+
+    return router.replace("/candidates");
   };
 
-  const rejectCandidateFunc = async () => {
-    try {
-      setLoading(true);
-      const res = await rejectCandidate(publicKey);
-      if (res._tag === "error")
-        return toast({
-          title: res.title,
-          description: res.description,
-          variant: "destructive",
-        });
+  const approveCandidateFailure = (err: any) => {
+    console.log("Couldn't approve Candidate: ", err);
+    return toast({
+      title: "Candidate Approval Unsuccessfull",
+      description: "Failed to approve Candidate! Try again Later",
+    });
+  };
 
-      toast({
-        title: "Candidate has been Rejected",
-        description:
-          "Candidate has been Rejected and cannot participate in Election",
+  const rejectCandidateMutateFunc = async () => {
+    const res = await rejectCandidate(publicKey);
+    if (res._tag === "error")
+      return toast({
+        title: res.title,
+        description: res.description,
+        variant: "destructive",
       });
 
-      return router.replace("/");
-    } finally {
-      setLoading(false);
-    }
+    toast({
+      title: "Candidate has been Rejected",
+      description:
+        "Candidate has been Rejected and cannot participate in Election",
+    });
+
+    return router.replace("/candidates");
   };
+
+  const rejectCandidateFailure = (err: any) => {
+    console.log("Couldn't reject Candidate: ", err);
+    return toast({
+      title: "Candidate Rejection Unsuccessfull",
+      description: "Failed to reject Candidate! Try again Later",
+    });
+  };
+
+  const { mutateAsync: approveCandidateFn, isPending: isApprovalPending } =
+    useMutation({
+      mutationFn: approveCandidateMutateFunc,
+      onError: approveCandidateFailure,
+    });
+
+  const { mutateAsync: rejectCandidateFn, isPending: isRejectionPending } =
+    useMutation({
+      mutationFn: rejectCandidateMutateFunc,
+      onError: rejectCandidateFailure,
+    });
 
   return (
     <div className="flex flex-col justify-center item-center gap-4 pb-8">
       {admin === publicKey && status === "Pending" && (
         <div className="flex justify-center items-center gap-4">
           <Button
-            disabled={loading}
-            onClick={approveCandidateFunc}
+            disabled={isApprovalPending || isRejectionPending}
+            onClick={() => approveCandidateFn()}
             className="bg-green-500 hover:bg-green-600 text-white"
           >
-            {loading ? <Loader2 className="animate-spin" /> : "Approve"}
+            {isApprovalPending ? (
+              <Loader2 className="animate-spin" />
+            ) : (
+              "Approve"
+            )}
           </Button>
           <Button
-            disabled={loading}
-            onClick={rejectCandidateFunc}
+            disabled={isApprovalPending || isRejectionPending}
+            onClick={() => rejectCandidateFn()}
             className="bg-red-500 hover:bg-red-600 text-white"
           >
-            {loading ? <Loader2 className="animate-spin" /> : "Reject"}
+            {isRejectionPending ? (
+              <Loader2 className="animate-spin" />
+            ) : (
+              "Reject"
+            )}
           </Button>
         </div>
       )}

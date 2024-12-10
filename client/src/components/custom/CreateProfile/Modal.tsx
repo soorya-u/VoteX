@@ -1,6 +1,8 @@
 "use client";
 
 import { useCallback, useRef, useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import Webcam from "react-webcam";
 
@@ -27,7 +29,6 @@ import {
 } from "@/components/ui/input-otp";
 
 import { bas64ToImage } from "@/utils/base64-image";
-import { useMutation } from "@tanstack/react-query";
 
 type FormModalProps = {
   phoneNumber: string;
@@ -100,7 +101,9 @@ const WebCamModalContent = () => {
   const [isCapturedState, setIsCapturedState] = useState(false);
   const [imageSrc, setImageSrc] = useState("");
 
-  const { publicKey } = useUser();
+  const router = useRouter();
+
+  const { publicKey, refetchUserVoter } = useUser();
   const { toast } = useToast();
 
   const capture = useCallback(() => {
@@ -137,11 +140,15 @@ const WebCamModalContent = () => {
           variant: "destructive",
         });
 
-      return toast({
+      toast({
         title: "Face Registration Successfull",
         description: "Your face has been registered",
         variant: "default",
       });
+
+      await refetchUserVoter();
+
+      return router.push("/voters");
     } catch (err) {
       return toast({
         title: "Something went Wrong!",
