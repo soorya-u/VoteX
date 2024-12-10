@@ -67,13 +67,8 @@ const REJECTED: Symbol = symbol_short!("Rejected");
 
 const ADMIN: Symbol = symbol_short!("Admin");
 
-const REGISTERED_VOTERS: Symbol = symbol_short!("RegVot");
-const REGISTERED_CANDIDATES: Symbol = symbol_short!("RegCan");
-
-const APPROVED_VOTERS: Symbol = symbol_short!("ApproVot");
-const APPROVED_CANDIDATES: Symbol = symbol_short!("ApproCan");
-
-const VOTED_VOTERS: Symbol = symbol_short!("VotVoted");
+const REGISTERED_VOTERS: Symbol = symbol_short!("Voters");
+const REGISTERED_CANDIDATES: Symbol = symbol_short!("Candids");
 
 const START_TIME: Symbol = symbol_short!("StartTime");
 const END_TIME: Symbol = symbol_short!("EndTime");
@@ -99,15 +94,6 @@ impl VotingOrganization {
         env.storage()
             .persistent()
             .set(&REGISTERED_CANDIDATES, &empty_array);
-
-        env.storage()
-            .persistent()
-            .set(&APPROVED_VOTERS, &empty_array);
-        env.storage()
-            .persistent()
-            .set(&APPROVED_CANDIDATES, &empty_array);
-
-        env.storage().persistent().set(&VOTED_VOTERS, &empty_array);
     }
 
     fn _admin_authorization(env: &Env, address: Address) {
@@ -230,10 +216,6 @@ impl VotingOrganization {
 
             voter
         });
-
-        env.storage()
-            .persistent()
-            .update(&APPROVED_VOTERS, Self::_append_to_vector(&env, address));
     }
 
     pub fn set_candidate_as_verified(env: Env, address: Address, admin_address: Address) {
@@ -266,10 +248,6 @@ impl VotingOrganization {
         };
 
         env.storage().persistent().update(&key, update_fn);
-
-        env.storage()
-            .persistent()
-            .update(&APPROVED_CANDIDATES, Self::_append_to_vector(&env, address));
     }
 
     pub fn reject_candidate(env: Env, address: Address, admin_address: Address) {
@@ -395,16 +373,6 @@ impl VotingOrganization {
         env.storage()
             .persistent()
             .set(&REGISTERED_CANDIDATES, &empty_array);
-
-        env.storage()
-            .persistent()
-            .set(&APPROVED_VOTERS, &empty_array);
-
-        env.storage()
-            .persistent()
-            .set(&APPROVED_CANDIDATES, &empty_array);
-
-        env.storage().persistent().set(&VOTED_VOTERS, &empty_array);
     }
 
     pub fn vote(env: Env, candidate_address: Address, voter_address: Address) {
@@ -442,9 +410,5 @@ impl VotingOrganization {
 
                 candidate
             });
-
-        env.storage()
-            .persistent()
-            .update(&VOTED_VOTERS, Self::_append_to_vector(&env, voter_address));
     }
 }

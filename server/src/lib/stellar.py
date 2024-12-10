@@ -23,11 +23,8 @@ CONTRACT_VARIABLES = Literal[
     "Admin",
     "StartTime",
     "EndTime",
-    "RegVot",
-    "RegCan",
-    "ApproVot",
-    "ApproCan",
-    "VotVoted",
+    "Voters",
+    "Candids",
     "Voter",
     "Candidate",
 ]

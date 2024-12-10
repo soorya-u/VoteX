@@ -14,9 +14,9 @@ type User = {
 };
 
 export default async function CandidatesPage() {
-  const candidatesAddress = ((await getContractData(
-    ContractVariables.RegisteredCandidates
-  )) || []) as string[];
+  const candidatesAddress = await getContractData(ContractVariables.Candidates)
+    .then((res) => res as string[])
+    .catch(() => [] as string[]);
 
   const candidateFields: Promise<User>[] = candidatesAddress.map(
     async (candidate) => {
