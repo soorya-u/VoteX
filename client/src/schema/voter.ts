@@ -32,3 +32,10 @@ export const voterSchema = z.object({
 });
 
 export type TVoter = z.infer<typeof voterSchema>;
+
+export const voterUpdateSchema = voterSchema.omit({
+  aadhaarCardPhoto: true,
+  profilePhoto: true,
+});
+
+export type TVoterUpdate = z.infer<typeof voterUpdateSchema>;

@@ -17,7 +17,7 @@ export type TContractCandidate = {
 };
 
 export type TContractVoter = {
-  dateOfBirth: string;
+  dateOfBirth: number;
   email: string;
   faceIpfsHash: string;
   gender: TGender;
