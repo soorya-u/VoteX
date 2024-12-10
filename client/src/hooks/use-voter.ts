@@ -4,23 +4,23 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { TVoter, voterSchema } from "@/schema/voter";
 import { useToast } from "./use-toast";
-import { useContract } from "./use-context";
+import { useUser } from "./use-context";
 import { pinProfilePhoto } from "@/api/ipfs";
 import { callContract } from "@/lib/stellar";
 import { ContractFunctions } from "@/constants/contract";
 import { identifyNumber } from "@/api/number";
 
-export const useVoter = (values: TVoter | undefined = undefined) => {
+export const useVoter = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const { toast } = useToast();
-  const { publicKey } = useContract();
+  const { publicKey } = useUser();
 
   const {
     register,
     handleSubmit,
     control,
     formState: { errors, isSubmitting },
-  } = useForm<TVoter>({ resolver: zodResolver(voterSchema), values });
+  } = useForm<TVoter>({ resolver: zodResolver(voterSchema) });
 
   const { field: genderController } = useController<TVoter>({
     control,

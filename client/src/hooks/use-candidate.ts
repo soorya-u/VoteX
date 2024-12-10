@@ -8,15 +8,13 @@ import { pinProfilePhoto } from "@/api/ipfs";
 import { identifyNumber } from "@/api/number";
 
 import { useToast } from "./use-toast";
-import { useContract } from "./use-context";
+import { useUser } from "./use-context";
 
 import { callContract } from "@/lib/stellar";
 
 import { ContractFunctions } from "@/constants/contract";
 
-export const useCandidate = (
-  defaultValues: TCandidate | undefined = undefined
-) => {
+export const useCandidate = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
 
   const {
@@ -26,10 +24,9 @@ export const useCandidate = (
     formState: { errors, isSubmitting },
   } = useForm<TCandidate>({
     resolver: zodResolver(candidateSchema),
-    defaultValues,
   });
 
-  const { publicKey } = useContract();
+  const { publicKey } = useUser();
 
   const { field: genderController } = useController<TCandidate>({
     control,
@@ -71,7 +68,7 @@ export const useCandidate = (
       partyName,
       highestStudies,
       specializationOfDegree,
-      annualIncome,
+      currentIncome,
       city,
       state,
     } = val;
@@ -95,7 +92,7 @@ export const useCandidate = (
           dateOfBirth.getTime(),
           partyName,
           degreeDetails,
-          annualIncome,
+          currentIncome,
           location,
           photoIpfsHash,
         ],

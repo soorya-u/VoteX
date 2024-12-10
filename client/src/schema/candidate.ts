@@ -18,7 +18,7 @@ export const candidateSchema = z.object({
   state: z.string().min(1, required_error),
   highestStudies: z.string().min(1, required_error),
   specializationOfDegree: z.string().optional(),
-  annualIncome: z.coerce.number().min(1, required_error),
+  currentIncome: z.coerce.number().min(1, required_error),
   profilePhoto: z
     .unknown()
     .transform((value) => {
@@ -34,3 +34,10 @@ export const candidateSchema = z.object({
 });
 
 export type TCandidate = z.infer<typeof candidateSchema>;
+
+export const candidateUpdateSchema = candidateSchema.omit({
+  aadhaarCardPhoto: true,
+  profilePhoto: true,
+});
+
+export type TCandidateUpdate = z.infer<typeof candidateUpdateSchema>;

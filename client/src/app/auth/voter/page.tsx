@@ -1,41 +1,24 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Loader2 } from "lucide-react";
 import Link from "next/link";
+import { Loader2 } from "lucide-react";
 
-import { useContract } from "@/hooks/use-context";
+import { useUser } from "@/hooks/use-context";
 
-import { getContractData } from "@/lib/stellar";
-
-import { ContractVariables } from "@/constants/contract";
-
-import VoterForm from "@/components/custom/Form/Voter";
+import VoterForm from "@/components/custom/CreateProfile/Voter";
 
 export default function CandidateRegistrationPage() {
-  const { publicKey } = useContract();
-  const [isRegistered, setIsRegistered] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const { isVoterLoading, userAsVoter } = useUser();
 
-  useEffect(() => {
-    const fetchData = async () =>
-      await getContractData([ContractVariables.Voter, publicKey])
-        .then(() => setIsRegistered(true))
-        .catch(() => setIsRegistered(false))
-        .finally(() => setLoading(false));
-
-    fetchData();
-  }, [publicKey]);
-
-  if (loading)
+  if (isVoterLoading)
     return (
-      <div className="w-full min-h-[650px] max-w-3xl flex justify-center items-center mx-auto md:bg-[#3c3b3b7b] bg-transparent p-8 rounded-lg shadow-lg">
+      <div className="w-full min-h-[650px] max-w-3xl flex justify-center items-center mx-auto bg-transparent p-8 rounded-lg shadow-lg">
         <Loader2 className="animate-spin size-24 text-primary" />
       </div>
     );
 
-  return isRegistered ? (
-    <div className="w-full min-h-[650px] max-w-3xl flex items-start flex-col justify-center md:items-center mx-auto md:bg-[#3c3b3b7b] bg-transparent p-8 rounded-lg shadow-lg">
+  return !!userAsVoter ? (
+    <div className="w-full min-h-[650px] max-w-3xl flex items-start flex-col justify-center md:items-center mx-auto  bg-transparent p-8 rounded-lg shadow-lg">
       <h2 className="text-3xl text-primary text-center">
         You have already been registered as a Voter
       </h2>

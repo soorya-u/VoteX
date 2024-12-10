@@ -1,4 +1,4 @@
 import { useContext } from "react";
-import { ContractContext } from "@/context/contract";
+import { UserContext } from "@/context/user";
 
-export const useContract = () => useContext(ContractContext);
+export const useUser = () => useContext(UserContext);

@@ -2,26 +2,14 @@
 
 import { Loader2 } from "lucide-react";
 
-import {
-  FormDate,
-  FormInput,
-  FormSelect,
-} from "@/components/custom/Form/Elements";
-import { Button } from "@/components/ui/button";
+import { useVoter } from "@/hooks/use-voter";
+import { TVoter } from "@/schema/voter";
 
-import { useCandidate } from "@/hooks/use-candidate";
-import { TCandidate } from "@/schema/candidate";
+import { FormDate, FormInput, FormSelect } from "@/components/custom/Elements";
+import { Button } from "@/components/ui/button";
 import FormModal from "./Modal";
 
-type CandidateFormProps = {
-  defaultValues?: TCandidate;
-  isUpdateForm?: boolean;
-};
-
-export default function CandidateForm({
-  defaultValues = undefined,
-  isUpdateForm = false,
-}: CandidateFormProps) {
+export default function VoterForm() {
   const {
     errors,
     handleSubmit,
@@ -30,28 +18,28 @@ export default function CandidateForm({
     genderController,
     phoneNumber,
     isSubmitting,
-  } = useCandidate(defaultValues);
+  } = useVoter();
 
   return (
     <>
-      <FormModal userType="candidate" phoneNumber={phoneNumber} />
+      <FormModal phoneNumber={phoneNumber} userType="voter" />
       <form
         onSubmit={handleSubmit}
         className="w-full max-w-3xl mx-auto md:bg-[#3c3b3b7b] bg-transparent p-8 rounded-lg shadow-lg"
       >
         <h2 className="text-4xl font-bold mb-8 text-primary text-center">
-          Candidate {isUpdateForm ? "Updation" : "Registration"} Form
+          Voter Registration Form
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <FormInput<TCandidate>
+          <FormInput<TVoter>
             id="name"
             label="Name"
             placeholder="Enter your name"
             register={register}
             errors={errors}
           />
-          <FormInput<TCandidate>
+          <FormInput<TVoter>
             id="email"
             label="Email"
             type="email"
@@ -59,88 +47,70 @@ export default function CandidateForm({
             register={register}
             errors={errors}
           />
-          <FormSelect<TCandidate>
+          <FormSelect<TVoter>
             id="gender"
             errors={errors}
             label="Select Gender"
             placeholder="Select Gender"
             control={genderController}
           />
-          <FormDate<TCandidate>
+          <FormDate<TVoter>
             placeholder="Pick a Date"
             id="dateOfBirth"
             label="Date of Birth"
             control={dateOfBirthController}
             errors={errors}
           />
-          <FormInput<TCandidate>
-            id="partyName"
-            label="Party Name"
-            placeholder="Enter party name"
+          <FormInput<TVoter>
+            id="voterId"
+            label="Voter ID"
+            placeholder="Enter Voter ID"
             register={register}
             errors={errors}
           />
-          <FormInput<TCandidate>
-            id="annualIncome"
-            label="Annual Income"
-            type="number"
-            placeholder="Enter your annual income"
+          <FormInput<TVoter>
+            id="occupation"
+            label="Occupation"
+            placeholder="Enter Occupation"
             register={register}
             errors={errors}
           />
-          <FormInput<TCandidate>
+          <FormInput<TVoter>
             id="city"
             label="City"
             placeholder="Enter your city"
             register={register}
             errors={errors}
           />
-          <FormInput<TCandidate>
+          <FormInput<TVoter>
             id="state"
             label="State"
             placeholder="Enter your state"
             register={register}
             errors={errors}
           />
-          <FormInput<TCandidate>
-            id="highestStudies"
-            label="Highest Studies"
-            placeholder="Enter your highest education"
+          <FormInput<TVoter>
+            id="profilePhoto"
+            label="Profile Photo"
+            type="file"
+            placeholder="Upload your profile photo"
             register={register}
             errors={errors}
           />
-          <FormInput<TCandidate>
-            id="specializationOfDegree"
-            label="Specialization of Degree"
-            placeholder="Enter your specialization"
+          <FormInput<TVoter>
+            id="aadhaarCardPhoto"
+            label="Aadhaar Card Photo"
+            type="file"
+            placeholder="Uplaod your aadhaar card photo"
             register={register}
             errors={errors}
           />
-          {!isUpdateForm && (
-            <>
-              <FormInput<TCandidate>
-                id="profilePhoto"
-                label="Profile Photo"
-                type="file"
-                placeholder="Upload your profile photo"
-                register={register}
-                errors={errors}
-              />
-              <FormInput<TCandidate>
-                id="aadhaarCardPhoto"
-                label="Aadhaar Card Photo"
-                type="file"
-                placeholder="Uplaod your aadhaar card photo"
-                register={register}
-                errors={errors}
-              />
-            </>
-          )}
         </div>
+
         <Button
+          disabled={isSubmitting}
           type="submit"
           className="w-full mt-8 bg-primary hover:bg-[#e62d4e] text-white transition-colors duration-200"
-          disabled={isSubmitting}
         >
           {isSubmitting ? <Loader2 className="animate-spin" /> : "Submit"}
         </Button>

@@ -1,26 +1,28 @@
 "use client";
 
-import { useContract } from "@/hooks/use-context";
-import { useToast } from "@/hooks/use-toast";
-import { useRouter } from "next/navigation";
-import { PropsWithChildren, useEffect } from "react";
+import { type PropsWithChildren } from "react";
+
+import { useUser } from "@/hooks/use-context";
+
+import { Button } from "@/components/ui/button";
 
 export default function AuthLayout({ children }: PropsWithChildren) {
-  const router = useRouter();
-  const { publicKey } = useContract();
-  const { toast } = useToast();
+  const { publicKey, connectWallet } = useUser();
 
-  useEffect(() => {
-    if (!publicKey) {
-      toast({
-        title: "Wallet hasn't been Connected",
-        description:
-          "Registration cannot proceed until the Wallet is Connected",
-        variant: "destructive",
-      });
-      router.replace("/");
-    }
-  }, [publicKey, toast, router]);
-
-  return children;
+  return !!publicKey ? (
+    children
+  ) : (
+    <div className="w-full min-h-[650px] max-w-3xl flex items-start flex-col justify-center md:items-center mx-auto bg-transparent p-8 rounded-lg shadow-lg">
+      <h2 className="text-3xl text-primary text-center">
+        You haven't Connected You Wallet yet! Please Connect your Wallet to
+        Register your Profile.
+      </h2>
+      <Button
+        onClick={connectWallet}
+        className="mt-8 mx-auto bg-primary rounded-md text-center py-2 px-4 hover:bg-[#e62d4e] text-white transition-colors duration-200"
+      >
+        Connect Wallet
+      </Button>
+    </div>
+  );
 }
