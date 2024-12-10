@@ -1,7 +1,14 @@
 "use client";
 
+import { useCallback, useRef, useState } from "react";
 import { Loader2 } from "lucide-react";
 import Webcam from "react-webcam";
+
+import { registerFace } from "@/api/face";
+
+import { useToast } from "@/hooks/use-toast";
+import { useOTP } from "@/hooks/use-otp";
+import { useUser } from "@/hooks/use-context";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -18,12 +25,8 @@ import {
   InputOTPSeparator,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
-import { useOTP } from "@/hooks/use-otp";
-import { useCallback, useRef, useState } from "react";
+
 import { bas64ToImage } from "@/utils/base64-image";
-import { useToast } from "@/hooks/use-toast";
-import { registerFace } from "@/api/face";
-import { useContract } from "@/hooks/use-context";
 
 type FormModalProps = {
   phoneNumber: string;
@@ -99,7 +102,7 @@ const WebCamModalContent = () => {
 
   console.log({ imageSrc });
 
-  const { publicKey } = useContract();
+  const { publicKey } = useUser();
   const { toast } = useToast();
 
   const capture = useCallback(() => {
