@@ -1,6 +1,8 @@
 "use client";
 
 import { useCallback, useRef, useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import Webcam from "react-webcam";
 
@@ -98,11 +100,10 @@ const WebCamModalContent = () => {
 
   const [isCapturedState, setIsCapturedState] = useState(false);
   const [imageSrc, setImageSrc] = useState("");
-  const [loading, setLoading] = useState(false);
 
-  console.log({ imageSrc });
+  const router = useRouter();
 
-  const { publicKey } = useUser();
+  const { publicKey, refetchUserVoter } = useUser();
   const { toast } = useToast();
 
   const capture = useCallback(() => {
@@ -116,9 +117,8 @@ const WebCamModalContent = () => {
     setIsCapturedState(false);
   };
 
-  const submitFunc = async () => {
+  const mutationFn = async () => {
     try {
-      setLoading(true);
       if (!imageSrc)
         return toast({
           title: "Invalid Image",
@@ -140,21 +140,25 @@ const WebCamModalContent = () => {
           variant: "destructive",
         });
 
-      return toast({
+      toast({
         title: "Face Registration Successfull",
         description: "Your face has been registered",
         variant: "default",
       });
+
+      await refetchUserVoter();
+
+      return router.push("/voters");
     } catch (err) {
       return toast({
         title: "Something went Wrong!",
         description: "Something went wrong while capturing Image",
         variant: "destructive",
       });
-    } finally {
-      setLoading(false);
     }
   };
+
+  const { isPending: loading, mutateAsync } = useMutation({ mutationFn });
 
   return (
     <>
@@ -187,7 +191,7 @@ const WebCamModalContent = () => {
             <Button disabled={loading} onClick={reCapture}>
               {loading ? <Loader2 className="animate-spin" /> : "Recapture"}
             </Button>
-            <Button disabled={loading} onClick={submitFunc}>
+            <Button disabled={loading} onClick={() => mutateAsync()}>
               {loading ? <Loader2 className="animate-spin" /> : "Submit"}
             </Button>
           </>

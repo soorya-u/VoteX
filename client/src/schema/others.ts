@@ -5,3 +5,9 @@ export const otpSchema = z.object({
 });
 
 export type TOtp = z.infer<typeof otpSchema>;
+
+export const paymentSchema = z.object({
+  amount: z.coerce.number(),
+});
+
+export type TPayment = z.infer<typeof paymentSchema>;

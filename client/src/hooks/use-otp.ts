@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { useController, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { TOtp, otpSchema } from "@/schema/otp";
+import { TOtp, otpSchema } from "@/schema/others";
 import { useUser } from "./use-context";
 import { verifyNumber } from "@/api/number";
 import { useToast } from "./use-toast";
-import { useRouter } from "next/navigation";
 
 type TUserType = "candidate" | "voter";
 
@@ -16,7 +16,7 @@ export const useOTP = (phoneNumber: string, userType: TUserType) => {
 
   const router = useRouter();
 
-  const { publicKey } = useUser();
+  const { publicKey, refetchUserCandidate, refetchUserVoter } = useUser();
   const { toast } = useToast();
 
   useEffect(() => {
@@ -45,8 +45,14 @@ export const useOTP = (phoneNumber: string, userType: TUserType) => {
       description: "Your Verification was Successfull",
     });
 
-    if (userType === "candidate") return router.push("/candidates");
-    if (userType === "voter") setIsVerificationCompleted(true);
+    if (userType === "candidate") {
+      await refetchUserCandidate();
+      return router.push("/candidates");
+    }
+    if (userType === "voter") {
+      await refetchUserVoter();
+      setIsVerificationCompleted(true);
+    }
   };
 
   return {

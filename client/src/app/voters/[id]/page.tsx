@@ -21,12 +21,10 @@ type VoterDetailsPageProp = {
 export default async function VoterDetailsPage({
   params: { id },
 }: VoterDetailsPageProp) {
-  const voter = (await getContractData([
-    ContractVariables.Voter,
-    id,
-  ])) as TContractVoter;
-
-  if (!voter) return notFound();
+  
+  const voter = await getContractData([ContractVariables.Voter, id])
+    .then((res) => res as TContractVoter)
+    .catch(() => notFound());
 
   return (
     <div className="w-full p-8">

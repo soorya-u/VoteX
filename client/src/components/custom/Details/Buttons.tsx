@@ -4,7 +4,7 @@ import { useCallback, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Webcam from "react-webcam";
-import { Loader2 } from "lucide-react";
+import { Loader2, SendHorizonal } from "lucide-react";
 
 import { callContract } from "@/lib/stellar";
 
@@ -19,7 +19,9 @@ import { compareFace } from "@/api/face";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -27,6 +29,10 @@ import {
 } from "@/components/ui/dialog";
 
 import { bas64ToImage } from "@/utils/base64-image";
+import { Input } from "@/components/ui/input";
+import { usePayment } from "@/hooks/use-payment";
+import { Label } from "@/components/ui/label";
+import { useMutation } from "@tanstack/react-query";
 
 export function CandidateDetailsButtons({
   status,
@@ -37,72 +43,96 @@ export function CandidateDetailsButtons({
 }) {
   const { admin, publicKey } = useUser();
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
-
   if (!publicKey) return;
 
-  const approveCandidateFunc = async () => {
-    try {
-      setLoading(true);
-      const res = await approveCandidate(publicKey);
-      if (res._tag === "error")
-        return toast({
-          title: res.title,
-          description: res.description,
-          variant: "destructive",
-        });
-
-      toast({
-        title: "Candidate has been Approved",
-        description: "Candidate has been Approved and can now recieve Votes",
+  const approveCandidateMutateFunc = async () => {
+    const res = await approveCandidate(publicKey);
+    if (res._tag === "error")
+      return toast({
+        title: res.title,
+        description: res.description,
+        variant: "destructive",
       });
 
-      return router.replace("/");
-    } finally {
-      setLoading(false);
-    }
+    toast({
+      title: "Candidate has been Approved",
+      description: "Candidate has been Approved and can now recieve Votes",
+    });
+
+    return router.replace("/candidates");
   };
 
-  const rejectCandidateFunc = async () => {
-    try {
-      setLoading(true);
-      const res = await rejectCandidate(publicKey);
-      if (res._tag === "error")
-        return toast({
-          title: res.title,
-          description: res.description,
-          variant: "destructive",
-        });
+  const approveCandidateFailure = (err: any) => {
+    console.log("Couldn't approve Candidate: ", err);
+    return toast({
+      title: "Candidate Approval Unsuccessfull",
+      description: "Failed to approve Candidate! Try again Later",
+    });
+  };
 
-      toast({
-        title: "Candidate has been Rejected",
-        description:
-          "Candidate has been Rejected and cannot participate in Election",
+  const rejectCandidateMutateFunc = async () => {
+    const res = await rejectCandidate(publicKey);
+    if (res._tag === "error")
+      return toast({
+        title: res.title,
+        description: res.description,
+        variant: "destructive",
       });
 
-      return router.replace("/");
-    } finally {
-      setLoading(false);
-    }
+    toast({
+      title: "Candidate has been Rejected",
+      description:
+        "Candidate has been Rejected and cannot participate in Election",
+    });
+
+    return router.replace("/candidates");
   };
+
+  const rejectCandidateFailure = (err: any) => {
+    console.log("Couldn't reject Candidate: ", err);
+    return toast({
+      title: "Candidate Rejection Unsuccessfull",
+      description: "Failed to reject Candidate! Try again Later",
+    });
+  };
+
+  const { mutateAsync: approveCandidateFn, isPending: isApprovalPending } =
+    useMutation({
+      mutationFn: approveCandidateMutateFunc,
+      onError: approveCandidateFailure,
+    });
+
+  const { mutateAsync: rejectCandidateFn, isPending: isRejectionPending } =
+    useMutation({
+      mutationFn: rejectCandidateMutateFunc,
+      onError: rejectCandidateFailure,
+    });
 
   return (
     <div className="flex flex-col justify-center item-center gap-4 pb-8">
       {admin === publicKey && status === "Pending" && (
         <div className="flex justify-center items-center gap-4">
           <Button
-            disabled={loading}
-            onClick={approveCandidateFunc}
+            disabled={isApprovalPending || isRejectionPending}
+            onClick={() => approveCandidateFn()}
             className="bg-green-500 hover:bg-green-600 text-white"
           >
-            {loading ? <Loader2 className="animate-spin" /> : "Approve"}
+            {isApprovalPending ? (
+              <Loader2 className="animate-spin" />
+            ) : (
+              "Approve"
+            )}
           </Button>
           <Button
-            disabled={loading}
-            onClick={rejectCandidateFunc}
+            disabled={isApprovalPending || isRejectionPending}
+            onClick={() => rejectCandidateFn()}
             className="bg-red-500 hover:bg-red-600 text-white"
           >
-            {loading ? <Loader2 className="animate-spin" /> : "Reject"}
+            {isRejectionPending ? (
+              <Loader2 className="animate-spin" />
+            ) : (
+              "Reject"
+            )}
           </Button>
         </div>
       )}
@@ -120,17 +150,77 @@ export function CandidateDetailsButtons({
         </Dialog>
       )}
 
-      {candidatePublicKey === publicKey && (
+      {candidatePublicKey === publicKey ? (
         <Link
           className="bg-primary text-secondary px-4 py-2 rounded-md"
           href="/update/voter"
         >
           Update your Profile
         </Link>
+      ) : (
+        <Dialog>
+          <DialogTrigger>
+            <Button className="bg-primary hover:bg-[#e62d4e] text-white">
+              Donate to Candidate
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[600px]">
+            <PaymentModal candidatePublicKey={candidatePublicKey} />
+          </DialogContent>
+        </Dialog>
       )}
     </div>
   );
 }
+
+const PaymentModal = ({
+  candidatePublicKey,
+}: {
+  candidatePublicKey: string;
+}) => {
+  const { register, errors, handleSubmit, isSubmitting } =
+    usePayment(candidatePublicKey);
+
+  return (
+    <DialogContent className="sm:max-w-md">
+      <DialogHeader>
+        <DialogTitle>Donate to Candidate</DialogTitle>
+        <DialogDescription>
+          Send Payments to Candidates Anonymously.
+        </DialogDescription>
+      </DialogHeader>
+      <form onSubmit={handleSubmit} className="flex items-center space-x-2">
+        <div className="grid flex-1 gap-2">
+          <Label htmlFor="amount" className="sr-only">
+            Amount
+          </Label>
+          <Input id="amount" {...register("amount")} />
+          {errors && errors.amount && (
+            <span className="text-red-500 text-xs">
+              {errors.amount.message}
+            </span>
+          )}
+        </div>
+        <Button
+          disabled={isSubmitting}
+          type="submit"
+          size="sm"
+          className="px-3 rounded-full"
+        >
+          <span className="sr-only">Pay</span>
+          <SendHorizonal />
+        </Button>
+      </form>
+      <DialogFooter className="sm:justify-start">
+        <DialogClose asChild>
+          <Button type="button" variant="secondary">
+            Close
+          </Button>
+        </DialogClose>
+      </DialogFooter>
+    </DialogContent>
+  );
+};
 
 export function VoterDetailButton({
   voterPublicKey,
