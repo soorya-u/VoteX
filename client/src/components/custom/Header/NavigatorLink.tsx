@@ -6,14 +6,14 @@ import { usePathname } from "next/navigation";
 
 import { NavigationMenuItem } from "@/components/ui/navigation-menu";
 import { cn } from "@/utils/cn";
-import { useContract } from "@/hooks/use-context";
+import { useUser } from "@/hooks/use-context";
 
 const outfit = Outfit({ weight: "400", subsets: ["latin"] });
 
 export default function NavigatorLink({ link }: { link: string }) {
   const pathname = usePathname();
 
-  const { admin, publicKey } = useContract();
+  const { admin, publicKey } = useUser();
 
   if (link === "admin" && (!publicKey || publicKey !== admin)) return;
   return (

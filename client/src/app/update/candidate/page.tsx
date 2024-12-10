@@ -4,18 +4,18 @@ import { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
 import Link from "next/link";
 
-import { useContract } from "@/hooks/use-context";
+import { useUser } from "@/hooks/use-context";
 
 import { getContractData } from "@/lib/stellar";
 
 import { ContractVariables } from "@/constants/contract";
 
-import CandidateForm from "@/components/custom/Form/Candidate";
+import CandidateForm from "@/components/custom/CreateProfile/Candidate";
 
 import { TContractCandidate } from "@/types/contract";
 
 export default function CandidateUpdationPage() {
-  const { publicKey } = useContract();
+  const { publicKey } = useUser();
   const [isRegistered, setIsRegistered] = useState(false);
   const [loading, setLoading] = useState(true);
   const [candidate, setCandidate] = useState<TContractCandidate | null>(null);

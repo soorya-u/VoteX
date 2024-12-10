@@ -3,7 +3,7 @@ import { useController, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { TOtp, otpSchema } from "@/schema/otp";
-import { useContract } from "./use-context";
+import { useUser } from "./use-context";
 import { verifyNumber } from "@/api/number";
 import { useToast } from "./use-toast";
 import { useRouter } from "next/navigation";
@@ -16,7 +16,7 @@ export const useOTP = (phoneNumber: string, userType: TUserType) => {
 
   const router = useRouter();
 
-  const { publicKey } = useContract();
+  const { publicKey } = useUser();
   const { toast } = useToast();
 
   useEffect(() => {

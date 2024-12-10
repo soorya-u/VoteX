@@ -9,7 +9,7 @@ import { resetContract, setVotingPeriod } from "@/api/contract";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 
-import { useContract } from "@/hooks/use-context";
+import { useUser } from "@/hooks/use-context";
 import { useToast } from "@/hooks/use-toast";
 
 
@@ -18,7 +18,7 @@ export default function AdminPage() {
   const [toDate, setToDate] = useState<Date | undefined>(new Date());
   const [loading, setLoading] = useState(false);
 
-  const { publicKey, admin } = useContract();
+  const { publicKey, admin } = useUser();
   const { toast } = useToast();
   const router = useRouter();
 

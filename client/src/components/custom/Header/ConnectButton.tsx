@@ -3,7 +3,7 @@
 import { Outfit } from "next/font/google";
 import Link from "next/link";
 
-import { useContract } from "@/hooks/use-context";
+import { useUser } from "@/hooks/use-context";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -20,7 +20,7 @@ import { cn } from "@/utils/cn";
 const outfit = Outfit({ weight: "500", subsets: ["latin"] });
 
 export default function ConnectButton() {
-  const { connectWallet, publicKey } = useContract();
+  const { connectWallet, publicKey } = useUser();
 
   return publicKey ? (
     <>

@@ -10,7 +10,7 @@ import { callContract } from "@/lib/stellar";
 
 import { ContractFunctions } from "@/constants/contract";
 
-import { useContract } from "@/hooks/use-context";
+import { useUser } from "@/hooks/use-context";
 import { toast, useToast } from "@/hooks/use-toast";
 
 import { approveCandidate, rejectCandidate } from "@/api/contract";
@@ -35,7 +35,7 @@ export function CandidateDetailsButtons({
   status: string;
   candidatePublicKey: string;
 }) {
-  const { admin, publicKey } = useContract();
+  const { admin, publicKey } = useUser();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
@@ -137,7 +137,7 @@ export function VoterDetailButton({
 }: {
   voterPublicKey: string;
 }) {
-  const { publicKey } = useContract();
+  const { publicKey } = useUser();
 
   console.log({ publicKey });
 
@@ -164,7 +164,7 @@ const WebCamModalContent = ({
   const [imageSrc, setImageSrc] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const { publicKey } = useContract();
+  const { publicKey } = useUser();
   const { toast } = useToast();
   const router = useRouter();
 
