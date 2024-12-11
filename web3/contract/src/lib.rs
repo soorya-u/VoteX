@@ -377,7 +377,7 @@ impl VotingOrganization {
 
     pub fn vote(env: Env, candidate_address: Address, voter_address: Address) {
         let voter_key = Voters::Voter(voter_address.clone());
-        let candidate_key = Voters::Voter(candidate_address.clone());
+        let candidate_key = Candidates::Candidate(candidate_address.clone());
 
         env.storage()
             .persistent()
