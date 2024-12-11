@@ -184,14 +184,18 @@ const WebCamModalContent = () => {
       <DialogFooter className="sm:justify-center">
         {!isCapturedState ? (
           <Button disabled={loading} onClick={capture}>
-            {loading ? <Loader2 className="animate-spin" /> : "Capture"}
+            Capture
           </Button>
         ) : (
           <>
             <Button disabled={loading} onClick={reCapture}>
-              {loading ? <Loader2 className="animate-spin" /> : "Recapture"}
+              Recapture
             </Button>
-            <Button disabled={loading} onClick={() => mutateAsync()}>
+            <Button
+              className="min-w-32"
+              disabled={loading}
+              onClick={async () => await mutateAsync()}
+            >
               {loading ? <Loader2 className="animate-spin" /> : "Submit"}
             </Button>
           </>

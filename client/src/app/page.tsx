@@ -1,6 +1,7 @@
 import { Outfit, Sarpanch } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
+import moment from "moment";
 
 import { Button } from "@/components/ui/button";
 
@@ -8,8 +9,8 @@ import { getContractData } from "@/lib/stellar";
 
 import { cn } from "@/utils/cn";
 import { ContractVariables } from "@/constants/contract";
-import moment from "moment";
 import Footer from "@/components/custom/Footer";
+import { TContractCandidate } from "@/types/contract";
 
 const outfit = Outfit({ weight: "400", subsets: ["latin"] });
 const sarpanch = Sarpanch({ weight: "500", subsets: ["latin"] });
@@ -19,6 +20,32 @@ export default async function HomePage() {
     ContractVariables.StartTime
   )) as number;
   const endTime = (await getContractData(ContractVariables.EndTime)) as number;
+
+  const candidatesAddress = await getContractData(ContractVariables.Candidates)
+    .then((res) => res as string[])
+    .catch(() => [] as string[]);
+
+  const candidatesPromise = candidatesAddress.map(async (address) => {
+    const c = (await getContractData([
+      ContractVariables.Candidate,
+      address,
+    ])) as TContractCandidate;
+
+    return {
+      address: c.candidateAddress,
+      voteCount: c.voteCount,
+    };
+  });
+
+  const candidates = await Promise.all(candidatesPromise);
+
+  const winningCandidate =
+    candidates.length > 0
+      ? candidates.reduce(
+          (max, curr) => (curr.voteCount > max.voteCount ? curr : max),
+          candidates[0]
+        )
+      : undefined;
 
   return (
     <>
@@ -32,7 +59,7 @@ export default async function HomePage() {
         />
         <h1
           className={cn(
-            "w-full px-3 text-wrap text-center text-5xl text-white 2xs:text-6xl 2xs:px-12",
+            "w-full px-3 text-wrap text-center text-5xl text-secondary 2xs:text-6xl 2xs:px-12",
             sarpanch.className
           )}
         >
@@ -72,17 +99,19 @@ export default async function HomePage() {
             ) : (
               moment() > moment(endTime) && (
                 <div className="flex flex-col justify-center items-center">
-                  <p>The Voting has been Completed.</p>
-                  <p>
-                    Click{" "}
-                    <Link
-                      className="underline hover:text-primary/60 transition-colors duration-300"
-                      href=""
-                    >
-                      here
-                    </Link>{" "}
-                    to see the Winning Candidate
-                  </p>
+                  <p className="text-lg">The Voting has been Completed.</p>
+                  {winningCandidate && (
+                    <p className="text-lg">
+                      Click{" "}
+                      <Link
+                        className="underline hover:text-primary transition-colors duration-300"
+                        href={`/candidates/${winningCandidate.address}`}
+                      >
+                        here
+                      </Link>{" "}
+                      to see the Winning Candidate
+                    </p>
+                  )}
                 </div>
               )
             )}

@@ -3,15 +3,21 @@
 import { useCallback, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import {
+  useMutation,
+  useQueries,
+  type UseQueryOptions,
+} from "@tanstack/react-query";
 import Webcam from "react-webcam";
 import { Loader2, SendHorizonal } from "lucide-react";
 
-import { callContract } from "@/lib/stellar";
+import { callContract, getContractData } from "@/lib/stellar";
 
-import { ContractFunctions } from "@/constants/contract";
+import { ContractFunctions, ContractVariables } from "@/constants/contract";
 
 import { useUser } from "@/hooks/use-context";
 import { toast, useToast } from "@/hooks/use-toast";
+import { usePayment } from "@/hooks/use-payment";
 
 import { approveCandidate, rejectCandidate } from "@/api/contract";
 import { compareFace } from "@/api/face";
@@ -27,12 +33,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 import { bas64ToImage } from "@/utils/base64-image";
-import { Input } from "@/components/ui/input";
-import { usePayment } from "@/hooks/use-payment";
-import { Label } from "@/components/ui/label";
-import { useMutation } from "@tanstack/react-query";
+import moment from "moment";
+
+type TQueries = UseQueryOptions<number>[];
 
 export function CandidateDetailsButtons({
   status,
@@ -41,9 +48,27 @@ export function CandidateDetailsButtons({
   status: string;
   candidatePublicKey: string;
 }) {
-  const { admin, publicKey } = useUser();
+  const { admin, publicKey, userAsVoter } = useUser();
   const router = useRouter();
-  if (!publicKey) return;
+
+  const [{ data: startTime }, { data: endTime }] = useQueries<TQueries>({
+    queries: [
+      {
+        queryKey: ["start-date"],
+        queryFn: async () => await getContractData(ContractVariables.StartTime),
+      },
+      {
+        queryKey: ["end-date"],
+        queryFn: async () => await getContractData(ContractVariables.EndTime),
+      },
+    ],
+  });
+
+  const isVotingPeriod =
+    !!startTime &&
+    !!endTime &&
+    moment().toDate().getTime() > startTime &&
+    moment().toDate().getTime() < endTime;
 
   const approveCandidateMutateFunc = async () => {
     const res = await approveCandidate(publicKey);
@@ -60,14 +85,6 @@ export function CandidateDetailsButtons({
     });
 
     return router.replace("/candidates");
-  };
-
-  const approveCandidateFailure = (err: any) => {
-    console.log("Couldn't approve Candidate: ", err);
-    return toast({
-      title: "Candidate Approval Unsuccessfull",
-      description: "Failed to approve Candidate! Try again Later",
-    });
   };
 
   const rejectCandidateMutateFunc = async () => {
@@ -88,25 +105,13 @@ export function CandidateDetailsButtons({
     return router.replace("/candidates");
   };
 
-  const rejectCandidateFailure = (err: any) => {
-    console.log("Couldn't reject Candidate: ", err);
-    return toast({
-      title: "Candidate Rejection Unsuccessfull",
-      description: "Failed to reject Candidate! Try again Later",
-    });
-  };
-
   const { mutateAsync: approveCandidateFn, isPending: isApprovalPending } =
-    useMutation({
-      mutationFn: approveCandidateMutateFunc,
-      onError: approveCandidateFailure,
-    });
+    useMutation({ mutationFn: approveCandidateMutateFunc });
 
   const { mutateAsync: rejectCandidateFn, isPending: isRejectionPending } =
-    useMutation({
-      mutationFn: rejectCandidateMutateFunc,
-      onError: rejectCandidateFailure,
-    });
+    useMutation({ mutationFn: rejectCandidateMutateFunc });
+
+  if (!publicKey) return;
 
   return (
     <div className="flex flex-col justify-center item-center gap-4 pb-8">
@@ -137,23 +142,27 @@ export function CandidateDetailsButtons({
         </div>
       )}
 
-      {status === "Approved" && (
-        <Dialog>
-          <DialogTrigger>
-            <Button className="bg-primary hover:bg-[#e62d4e] text-white">
-              Vote Candidate
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-[600px]">
-            <WebCamModalContent candidatePublicKey={candidatePublicKey} />
-          </DialogContent>
-        </Dialog>
-      )}
+      {status === "Approved" &&
+        userAsVoter &&
+        userAsVoter.status === "Approved" &&
+        isVotingPeriod &&
+        !userAsVoter.hasVoted && (
+          <Dialog>
+            <DialogTrigger>
+              <Button className="bg-primary hover:bg-[#e62d4e] text-white">
+                Vote Candidate
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[600px]">
+              <WebCamModalContent candidatePublicKey={candidatePublicKey} />
+            </DialogContent>
+          </Dialog>
+        )}
 
       {candidatePublicKey === publicKey ? (
         <Link
-          className="bg-primary text-secondary px-4 py-2 rounded-md"
-          href="/update/voter"
+          className="bg-primary text-secondary text-sm px-4 py-2 rounded-md"
+          href="/update/candidate"
         >
           Update your Profile
         </Link>
@@ -194,7 +203,13 @@ const PaymentModal = ({
           <Label htmlFor="amount" className="sr-only">
             Amount
           </Label>
-          <Input id="amount" {...register("amount")} />
+          <Input
+            type="number"
+            placeholder="Enter Amount in XLM"
+            className="border-primary"
+            id="amount"
+            {...register("amount")}
+          />
           {errors && errors.amount && (
             <span className="text-red-500 text-xs">
               {errors.amount.message}
@@ -205,15 +220,19 @@ const PaymentModal = ({
           disabled={isSubmitting}
           type="submit"
           size="sm"
-          className="px-3 rounded-full"
+          className="aspect-square rounded-full"
         >
           <span className="sr-only">Pay</span>
-          <SendHorizonal />
+          {isSubmitting ? <Loader2 /> : <SendHorizonal />}
         </Button>
       </form>
       <DialogFooter className="sm:justify-start">
         <DialogClose asChild>
-          <Button type="button" variant="secondary">
+          <Button
+            className="bg-primary hover:bg-primary/75"
+            type="button"
+            variant="secondary"
+          >
             Close
           </Button>
         </DialogClose>
@@ -228,8 +247,6 @@ export function VoterDetailButton({
   voterPublicKey: string;
 }) {
   const { publicKey } = useUser();
-
-  console.log({ publicKey });
 
   if (voterPublicKey !== publicKey) return;
 
@@ -252,7 +269,6 @@ const WebCamModalContent = ({
 
   const [isCapturedState, setIsCapturedState] = useState(false);
   const [imageSrc, setImageSrc] = useState("");
-  const [loading, setLoading] = useState(false);
 
   const { publicKey } = useUser();
   const { toast } = useToast();
@@ -269,9 +285,8 @@ const WebCamModalContent = ({
     setIsCapturedState(false);
   };
 
-  const submitFunc = async () => {
+  const mutationFn = async () => {
     try {
-      setLoading(true);
       if (!imageSrc)
         return toast({
           title: "Invalid Image",
@@ -318,10 +333,10 @@ const WebCamModalContent = ({
         description: "Something went wrong while capturing Image",
         variant: "destructive",
       });
-    } finally {
-      setLoading(false);
     }
   };
+
+  const { mutateAsync, isPending: loading } = useMutation({ mutationFn });
 
   return (
     <>
@@ -347,14 +362,18 @@ const WebCamModalContent = ({
       <DialogFooter className="sm:justify-center">
         {!isCapturedState ? (
           <Button disabled={loading} onClick={capture}>
-            {loading ? <Loader2 className="animate-spin" /> : "Capture"}
+            Capture
           </Button>
         ) : (
           <>
             <Button disabled={loading} onClick={reCapture}>
-              {loading ? <Loader2 className="animate-spin" /> : "Recapture"}
+              Recapture
             </Button>
-            <Button disabled={loading} onClick={submitFunc}>
+            <Button
+              disabled={loading}
+              onClick={async () => await mutateAsync()}
+              className="min-w-32"
+            >
               {loading ? <Loader2 className="animate-spin" /> : "Submit"}
             </Button>
           </>

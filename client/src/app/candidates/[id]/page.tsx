@@ -33,6 +33,13 @@ export default async function CandidateDetailsPage({
     moment().toDate().getTime() > startTime &&
     moment().toDate().getTime() < endTime;
 
+  console.log(
+    startTime,
+    endTime,
+    moment().toDate().getTime() > startTime,
+    moment().toDate().getTime() < endTime
+  );
+
   return (
     <div className="w-full p-8">
       <h1 className="text-4xl font-bold mb-8 text-primary text-center">
@@ -75,18 +82,19 @@ export default async function CandidateDetailsPage({
                   <p className="font-semibold">Gender</p>
                   <p>{candidate.gender}</p>
                 </div>
-                {candidate.status === "Approved" && shouldDisplayVoteCount && (
-                  <>
-                    <Separator
-                      className="bg-secondary/45 h-10 hidden xs:block"
-                      orientation="vertical"
-                    />
-                    <div className="text-secondary flex flex-col justify-center items-center">
-                      <p className="font-semibold">Vote Count</p>
-                      <p>{candidate.voteCount}</p>
-                    </div>
-                  </>
-                )}
+                {candidate.status === "Approved" &&
+                  !!shouldDisplayVoteCount && (
+                    <>
+                      <Separator
+                        className="bg-secondary/45 h-10 hidden xs:block"
+                        orientation="vertical"
+                      />
+                      <div className="text-secondary flex flex-col justify-center items-center">
+                        <p className="font-semibold">Vote Count</p>
+                        <p>{candidate.voteCount}</p>
+                      </div>
+                    </>
+                  )}
                 <Separator
                   className="bg-secondary/45 h-10 hidden xs:block"
                   orientation="vertical"

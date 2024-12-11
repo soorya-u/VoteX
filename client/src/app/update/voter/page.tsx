@@ -7,7 +7,7 @@ import { useUser } from "@/hooks/use-context";
 
 import VoterUpdateForm from "@/components/custom/UpdateProfile/Voter";
 
-export default function CandidateUpdationPage() {
+export default function VoterUpdationPage() {
   const { isVoterLoading, userAsVoter } = useUser();
 
   if (isVoterLoading)
