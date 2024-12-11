@@ -5,7 +5,7 @@ from fastapi import HTTPException, UploadFile, status
 from ..lib.pinata import pin_file_to_ipfs, get_file_from_ipfs
 from ..lib.stellar import invoke_contract_functions, get_contract_data, admin_keypair
 
-from ..helpers import image_to_array_transformer, get_file_payload, bytes_to_array_transformer, image_base64_transformer
+from ..helpers import get_file_payload, image_base64_transformer, image_base64_bytes_transformer
 
 
 async def face_registration_handler(
@@ -56,7 +56,7 @@ async def face_verification_handler(
             "Unable to find the Saved Image or it is corrupted")
 
     file_bytes = await get_file_from_ipfs(voter["face_ipfs_hash"])
-    saved_image_array = bytes_to_array_transformer(file_bytes)
+    saved_image_array = await image_base64_bytes_transformer(file_bytes)
 
     saved_image_encoding = fr.face_encodings(saved_image_array)
 
