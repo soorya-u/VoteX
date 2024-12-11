@@ -63,7 +63,7 @@ export const resetContract = async (): Promise<
   TAPIResponseWithTag | TAPIError
 > => {
   try {
-    const { data } = await api.get<TAPIResponse>(`/contract/period`);
+    const { data } = await api.get<TAPIResponse>(`/contract/reset`);
     return { ...data, _tag: "success" };
   } catch (err) {
     console.log("Error Resetting Contract: ", err);

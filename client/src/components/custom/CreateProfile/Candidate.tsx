@@ -2,15 +2,12 @@
 
 import { Loader2 } from "lucide-react";
 
-import {
-  FormDate,
-  FormInput,
-  FormSelect,
-} from "@/components/custom/Elements";
+import { FormDate, FormInput, FormSelect } from "@/components/custom/Elements";
 import { Button } from "@/components/ui/button";
 
 import { useCandidate } from "@/hooks/use-candidate";
 import { TCandidate } from "@/schema/candidate";
+
 import FormModal from "./Modal";
 
 export default function CandidateForm() {

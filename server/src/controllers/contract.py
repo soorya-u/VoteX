@@ -20,5 +20,6 @@ async def voting_period_setter_handler(start_date: int, end_date: int):
 
 
 async def contract_resetter_handler():
-    await invoke_contract_functions("reset_contract")
+    await invoke_contract_functions("reset_contract",
+                                    [admin_keypair.public_key])
     return {"message": "Contract has been successfully Reset"}

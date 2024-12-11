@@ -149,7 +149,7 @@ export const sendPayment = async (
 
     const buildTx = transaction
       .addOperation(paymentOperation)
-      .addMemo(Memo.text("Anonymous Donation from DemocraChain"))
+      .addMemo(Memo.text("Donation:VoteX"))
       .setTimeout(180)
       .build();
 

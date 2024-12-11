@@ -15,7 +15,7 @@ type User = {
 
 export default async function VotersPage() {
   const votersAddress = await getContractData(ContractVariables.Voters)
-    .then((res) => res as string[])
+    .then((res) => Array.from(new Set(res)) as string[])
     .catch(() => [] as string[]);
 
   const voterFields: Promise<User>[] = votersAddress.map(async (voter) => {

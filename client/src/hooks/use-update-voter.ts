@@ -48,12 +48,21 @@ export const useUpdateVoter = () => {
           variant: "destructive",
         });
 
-      const { name, email, gender, dateOfBirth, city, state, voterId } = val;
+      const {
+        name,
+        email,
+        gender,
+        dateOfBirth,
+        city,
+        state,
+        voterId,
+        occupation,
+      } = val;
 
       const location = `${city}, ${state}`;
 
       await callContract(
-        ContractFunctions.UpdateCandidate,
+        ContractFunctions.UpdateVoter,
         [
           publicKey,
           name,
@@ -62,6 +71,7 @@ export const useUpdateVoter = () => {
           dateOfBirth.getTime(),
           location,
           voterId,
+          occupation,
         ],
         publicKey
       );

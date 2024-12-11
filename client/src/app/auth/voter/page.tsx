@@ -17,7 +17,7 @@ export default function CandidateRegistrationPage() {
       </div>
     );
 
-  return !!userAsVoter ? (
+  return userAsVoter && userAsVoter.status === "Approved" ? (
     <div className="w-full min-h-[650px] max-w-3xl flex items-start flex-col justify-center md:items-center mx-auto  bg-transparent p-8 rounded-lg shadow-lg">
       <h2 className="text-3xl text-primary text-center">
         You have already been registered as a Voter

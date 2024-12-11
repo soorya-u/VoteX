@@ -33,7 +33,7 @@ export const compareFace = async (
   publicKey: string
 ): Promise<TAPIResponseWithTag | TAPIError> => {
   try {
-    const { status, data } = await api.post(
+    const { data } = await api.post<TAPIResponse>(
       `/face/compare/${publicKey}`,
       formData
     );

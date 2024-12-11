@@ -26,7 +26,7 @@ export const useCandidate = () => {
     resolver: zodResolver(candidateSchema),
   });
 
-  const { publicKey, refetchUserCandidate } = useUser();
+  const { publicKey } = useUser();
 
   const { field: genderController } = useController<TCandidate>({
     control,
@@ -98,8 +98,6 @@ export const useCandidate = () => {
         ],
         publicKey
       );
-
-      await refetchUserCandidate();
     } catch (err) {
       console.error("Unable to Call Contract: ", err);
       return toast({
