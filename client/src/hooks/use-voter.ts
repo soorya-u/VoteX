@@ -13,7 +13,7 @@ import { identifyNumber } from "@/api/number";
 export const useVoter = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const { toast } = useToast();
-  const { publicKey, refetchUserVoter } = useUser();
+  const { publicKey } = useUser();
 
   const {
     register,
@@ -83,8 +83,6 @@ export const useVoter = () => {
         ],
         publicKey
       );
-
-      await refetchUserVoter();
     } catch (err) {
       console.error("Unable to Call Contract: ", err);
       return toast({

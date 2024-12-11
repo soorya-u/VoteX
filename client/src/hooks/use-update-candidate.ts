@@ -90,7 +90,7 @@ export const useUpdateCandidate = () => {
 
       await refetchUserVoter();
 
-      router.push(`/voters/${publicKey}`);
+      router.push(`/candidates/${publicKey}`);
     } catch (err) {
       console.log("Unable to Update Voter: ", err);
       return toast({

@@ -16,7 +16,7 @@ export const useOTP = (phoneNumber: string, userType: TUserType) => {
 
   const router = useRouter();
 
-  const { publicKey, refetchUserCandidate, refetchUserVoter } = useUser();
+  const { publicKey, refetchUserCandidate } = useUser();
   const { toast } = useToast();
 
   useEffect(() => {
@@ -50,7 +50,6 @@ export const useOTP = (phoneNumber: string, userType: TUserType) => {
       return router.push("/candidates");
     }
     if (userType === "voter") {
-      await refetchUserVoter();
       setIsVerificationCompleted(true);
     }
   };
