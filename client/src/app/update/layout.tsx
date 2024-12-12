@@ -19,7 +19,7 @@ export default function UpdateLayout({ children }: PropsWithChildren) {
       </h2>
       <Button
         onClick={connectWallet}
-        className="mt-8 mx-auto bg-primary rounded-md text-center py-2 px-4 hover:bg-[#e62d4e] text-white transition-colors duration-200"
+        className="mt-8 mx-auto bg-primary rounded-md text-center py-2 px-4 hover:bg-[#129992] text-white transition-colors duration-200"
       >
         Connect Wallet
       </Button>

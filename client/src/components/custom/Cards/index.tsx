@@ -134,7 +134,7 @@ const UserCard = ({
       </p>
       <Link
         href={`/${userType.toLowerCase()}/${user.address}`}
-        className="w-full rounded-md py-2 bg-primary hover:bg-[#e62d4e] text-white transition-colors duration-200"
+        className="w-full rounded-md py-2 bg-primary hover:bg-[#129992] text-white transition-colors duration-200"
       >
         View Profile
       </Link>

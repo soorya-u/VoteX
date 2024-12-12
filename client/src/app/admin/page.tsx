@@ -47,7 +47,7 @@ export default function AdminPage() {
             isFetching && isResetContractLoading && isSetVotingPeriodLoading
           }
           onClick={setVotingPeriod}
-          className="min-w-32 flex-1 mx-auto bg-primary rounded-md text-center py-2 px-4 hover:bg-[#e62d4e] text-white transition-colors duration-200 disabled:opacity-50"
+          className="min-w-32 flex-1 mx-auto bg-primary rounded-md text-center py-2 px-4 hover:bg-[#129992] text-white transition-colors duration-200 disabled:opacity-50"
         >
           {isSetVotingPeriodLoading ? (
             <Loader2 className="animate-spin" />
@@ -60,7 +60,7 @@ export default function AdminPage() {
             isFetching && isResetContractLoading && isSetVotingPeriodLoading
           }
           onClick={resetContract}
-          className="min-w-32 mx-auto bg-primary rounded-md text-center py-2 px-4 hover:bg-[#e62d4e] text-white transition-colors duration-200 disabled:opacity-50"
+          className="min-w-32 mx-auto bg-primary rounded-md text-center py-2 px-4 hover:bg-[#129992] text-white transition-colors duration-200 disabled:opacity-50"
         >
           {isResetContractLoading ? (
             <Loader2 className="animate-spin" />

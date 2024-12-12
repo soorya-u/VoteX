@@ -71,9 +71,9 @@ export default async function HomePage() {
             "w-2/3 text-center text-xl text-[#ccccd2]"
           )}
         >
-          Take a panoramic dive into your academic progress by effortlessly
-          reviewing, analyzing and tracking every mark and grade earned
-          throughout each semester.
+          Embark on a seamless journey of secure and transparent voting by
+          harnessing the power of Stellar blockchain technology and AI-driven
+          models for flawless authentication and tamper-proof results.
         </h2>
         {startTime && endTime ? (
           <div>
@@ -99,7 +99,9 @@ export default async function HomePage() {
             ) : (
               moment() > moment(endTime) && (
                 <div className="flex flex-col justify-center items-center">
-                  <p className="text-lg text-center">The Voting has been Completed.</p>
+                  <p className="text-lg text-center">
+                    The Voting has been Completed.
+                  </p>
                   {winningCandidate && (
                     <p className="text-lg text-center">
                       Click{" "}

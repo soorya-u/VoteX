@@ -26,7 +26,7 @@ export default function CandidateUpdationPage() {
       </h2>
       <Link
         href="/auth/candidate"
-        className="w-full mt-8 bg-primary hover:bg-[#e62d4e] text-white transition-colors duration-200"
+        className="w-full mt-8 bg-primary hover:bg-[#129992] text-white transition-colors duration-200"
       >
         Register as a Candidate
       </Link>

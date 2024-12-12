@@ -149,7 +149,7 @@ export function CandidateDetailsButtons({
         !userAsVoter.hasVoted && (
           <Dialog>
             <DialogTrigger>
-              <Button className="bg-primary hover:bg-[#e62d4e] text-white">
+              <Button className="bg-primary hover:bg-[#129992] text-white">
                 Vote Candidate
               </Button>
             </DialogTrigger>
@@ -169,7 +169,7 @@ export function CandidateDetailsButtons({
       ) : (
         <Dialog>
           <DialogTrigger>
-            <Button className="bg-primary hover:bg-[#e62d4e] text-white">
+            <Button className="bg-primary hover:bg-[#129992] text-white">
               Donate to Candidate
             </Button>
           </DialogTrigger>

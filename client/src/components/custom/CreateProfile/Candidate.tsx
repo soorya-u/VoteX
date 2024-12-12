@@ -124,7 +124,7 @@ export default function CandidateForm() {
         </div>
         <Button
           type="submit"
-          className="w-full mt-8 bg-primary hover:bg-[#e62d4e] text-white transition-colors duration-200"
+          className="w-full mt-8 bg-primary hover:bg-[#129992] text-white transition-colors duration-200"
           disabled={isSubmitting}
         >
           {isSubmitting ? <Loader2 className="animate-spin" /> : "Submit"}
