@@ -1,11 +1,11 @@
 import { Metadata } from "next";
 
 const domain =
-  process.env.NEXT_PUBLIC_URL || "https://democrachain.soorya-u.dev";
+  process.env.NEXT_PUBLIC_URL || "https://votex.soorya-u.dev";
 
 export const defaultMetadata: Metadata = {
-  title: "DemocraChain",
-  applicationName: "DemocraChain",
+  title: "VoteX",
+  applicationName: "VoteX",
   icons: {
     apple: {
       url: `${domain}/apple-touch-icon.png`,
@@ -32,9 +32,9 @@ export const defaultMetadata: Metadata = {
       url: "https://saanvi-mj.github.io",
     },
   ],
-  metadataBase: new URL("https://democrachain.soorya-u.dev"),
+  metadataBase: new URL("https://votex.soorya-u.dev"),
   appleWebApp: {
-    title: "DemocraChain",
+    title: "VoteX",
     statusBarStyle: "default",
     startupImage: `${domain}/apple-touch-icon.png`,
   },

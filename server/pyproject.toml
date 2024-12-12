@@ -1,12 +1,12 @@
 [tool.poetry]
-name = "democrachain-server"
+name = "votex-server"
 version = "0.1.0"
 description = ""
 authors = ["Soorya U <sooryau7@gmail.com>"]
 readme = "README.md"
 package-mode = false
-repository = "https://github.com/soorya-u/DemocraChain"
-homepage = "https://democrachain.soorya-u.dev"
+repository = "https://github.com/soorya-u/VoteX"
+homepage = "https://votex.soorya-u.dev"
 
 [tool.poetry.dependencies]
 python = "^3.11"

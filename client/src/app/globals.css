@@ -20,7 +20,7 @@ body {
     --card-foreground: 0 0% 95%;
     --popover: 0 0% 9%;
     --popover-foreground: 0 0% 95%;
-    --primary: 350 92% 59%;
+    --primary: 177 62% 48%;
     --primary-foreground: 355.7 100% 97.3%;
     --secondary: 35 100% 96%;
     --secondary-foreground: 0 0% 98%;
@@ -32,7 +32,7 @@ body {
     --destructive-foreground: 0 85.7% 97.3%;
     --border: 35 100% 96%;
     --input: 35 100% 96%;
-    --ring: 350 92% 59%;
+    --ring: 177 62% 48%;
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;
@@ -76,6 +76,6 @@ input[type="number"] {
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #f73859;
+  background-color: #2ec7bf;
   border-radius: 100px;
 }

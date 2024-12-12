@@ -10,7 +10,7 @@ try {
   exit
 }
 
-$build_path = "target\wasm32-unknown-unknown\release\democrachain.wasm"
+$build_path = "target\wasm32-unknown-unknown\release\votex_contract.wasm"
 
 $admin_address = stellar keys address $Source
 
