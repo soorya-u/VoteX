@@ -1,5 +1,5 @@
 const domain =
-  process.env.NEXT_PUBLIC_URL || `https://democrachain.soorya-u.dev`;
+  process.env.NEXT_PUBLIC_URL || `https://votex.soorya-u.dev`;
 
 export default async function sitemap() {
   const routes = [""].map((route) => ({

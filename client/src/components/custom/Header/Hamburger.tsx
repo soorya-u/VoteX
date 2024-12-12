@@ -1,6 +1,6 @@
 import { Menu } from "lucide-react";
 import Link from "next/link";
-import { Audiowide } from "next/font/google";
+import { Fondamento } from "next/font/google";
 
 import {
   Sheet,
@@ -13,7 +13,7 @@ import HamburgerLink from "./HamburgerLink";
 
 import { cn } from "@/utils/cn";
 
-const audiowide = Audiowide({ weight: "400", subsets: ["latin"] });
+const fondamento = Fondamento({ weight: "400", subsets: ["latin"] });
 
 export default async function Hamburger({ className }: { className: string }) {
   return (
@@ -28,9 +28,9 @@ export default async function Hamburger({ className }: { className: string }) {
         <SheetTitle className="mt-8 mb-4">
           <Link
             href="/"
-            className={cn(audiowide.className, "text-nowrap text-2xl")}
+            className={cn(fondamento.className, "text-nowrap text-2xl")}
           >
-            DemocraChain
+            VoteX
           </Link>
         </SheetTitle>
         <SheetDescription className=" flex  flex-col justify-between ">

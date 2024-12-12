@@ -19,7 +19,7 @@ stellar --version > /dev/null 2>&1 || {
   exit
 }
 
-build_path="target/wasm32-unknown-unknown/release/democrachain.wasm"
+build_path="target/wasm32-unknown-unknown/release/votex_contract.wasm"
 admin_address=$(stellar keys address $SOURCE)
 
 echo "Building Contract..."

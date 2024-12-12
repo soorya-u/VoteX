@@ -14,5 +14,5 @@ async def send_message_via_twilio(number: str, otp: str):
         to=f"+91{number}",
         from_=sender_phone_number,
         body=
-        f"Your OTP for DemocraChain is {otp}.\nThis OTP is valid for 10 minutes.\nPlease keep your OTP confidential and do not share it with anyone for your account's security."
+        f"Your OTP for VoteX is {otp}.\nThis OTP is valid for 10 minutes.\nPlease keep your OTP confidential and do not share it with anyone for your account's security."
     )

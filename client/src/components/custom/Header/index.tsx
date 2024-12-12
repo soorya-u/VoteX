@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Kode_Mono } from "next/font/google";
+import { Fondamento } from "next/font/google";
 
 import Navigator from "./Navigator";
 import Hamburger from "./Hamburger";
@@ -7,7 +7,7 @@ import ConnectButton from "./ConnectButton";
 
 import { cn } from "@/utils/cn";
 
-const kode = Kode_Mono({ weight: "400", subsets: ["latin"] });
+const fondamento = Fondamento({ weight: "400", subsets: ["latin"] });
 
 export default async function Header() {
   return (
@@ -18,11 +18,11 @@ export default async function Header() {
           <Link
             href="/"
             className={cn(
-              kode.className,
-              "text-nowrap text-3xl hidden sm:flex"
+              fondamento.className,
+              "text-nowrap text-4xl text-[#33DEDF] hidden sm:flex"
             )}
           >
-            DemocraChain
+            VoteX
           </Link>
           <Navigator className="hidden lg:flex" />
         </div>

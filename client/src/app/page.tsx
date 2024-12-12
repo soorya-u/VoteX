@@ -1,4 +1,4 @@
-import { Outfit, Sarpanch } from "next/font/google";
+import { Outfit, El_Messiri } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
 import moment from "moment";
@@ -13,7 +13,7 @@ import Footer from "@/components/custom/Footer";
 import { TContractCandidate } from "@/types/contract";
 
 const outfit = Outfit({ weight: "400", subsets: ["latin"] });
-const sarpanch = Sarpanch({ weight: "500", subsets: ["latin"] });
+const elMessiri = El_Messiri({ weight: "600", subsets: ["arabic"] });
 
 export default async function HomePage() {
   const startTime = (await getContractData(
@@ -49,7 +49,7 @@ export default async function HomePage() {
 
   return (
     <>
-      <section className="flex flex-1 max-w-full flex-col flex-wrap items-center justify-center gap-6">
+      <section className="flex flex-1 max-w-full flex-col flex-wrap items-center mt-6 justify-center gap-6">
         <Image
           priority
           src="/logo.png"
@@ -60,7 +60,7 @@ export default async function HomePage() {
         <h1
           className={cn(
             "w-full px-3 text-wrap text-center text-5xl text-secondary 2xs:text-6xl 2xs:px-12",
-            sarpanch.className
+            elMessiri.className
           )}
         >
           Tamper-Proof Elections for a Brighter Democracy{" "}
@@ -85,8 +85,8 @@ export default async function HomePage() {
               </p>
             ) : moment() > moment(startTime) && moment() < moment(endTime) ? (
               <div className="flex flex-col justify-center items-center">
-                <p>Voting Period has been started</p>
-                <p>
+                <p className="text-center">Voting Period has been started</p>
+                <p className="text-center">
                   <Link
                     href="/candidates"
                     className="underline hover:text-primary transition-all"
@@ -99,9 +99,9 @@ export default async function HomePage() {
             ) : (
               moment() > moment(endTime) && (
                 <div className="flex flex-col justify-center items-center">
-                  <p className="text-lg">The Voting has been Completed.</p>
+                  <p className="text-lg text-center">The Voting has been Completed.</p>
                   {winningCandidate && (
-                    <p className="text-lg">
+                    <p className="text-lg text-center">
                       Click{" "}
                       <Link
                         className="underline hover:text-primary transition-colors duration-300"
@@ -128,7 +128,7 @@ export default async function HomePage() {
               className="text-md hover:translate-x-1 hover:-translate-y-1 transition-all"
               variant="outline"
             >
-              <Link href="https://github.com/soorya-u/DemocraChain">
+              <Link href="https://github.com/soorya-u/VoteX">
                 View Source Code
               </Link>
             </Button>
