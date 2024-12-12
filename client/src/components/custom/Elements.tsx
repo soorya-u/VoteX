@@ -60,7 +60,7 @@ export function FormInput<T extends Record<string, any>>({
         id={String(id)}
         type={type}
         placeholder={placeholder}
-        // @ts-ignore
+        // @ts-expect-error Some Random Error
         {...register(String(id))}
         className="bg-[#2a2a2a] text-white border-secondary focus:border-primary rounded-md"
       />
