@@ -43,7 +43,7 @@ export default async function CandidateDetailsPage({
   return (
     <div className="w-full p-8">
       <h1 className="text-4xl font-bold mb-8 text-primary text-center">
-        {candidate.name}'s Profile as a Candidate
+        {candidate.name}&apos;s Profile as a Candidate
       </h1>
       <div className="flex w-full justify-center items-center min-h-[calc(100vh-12rem)]">
         <div className="flex md:flex-row flex-grow justify-center items-center w-full max-w-6xl mx-auto">

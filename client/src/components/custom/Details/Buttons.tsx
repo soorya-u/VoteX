@@ -275,7 +275,8 @@ const WebCamModalContent = ({
   const router = useRouter();
 
   const capture = useCallback(() => {
-    const imageSource = webCamRef.current?.getScreenshot()!;
+    const imageSource = webCamRef.current && webCamRef.current.getScreenshot()!;
+    if (!imageSource) return;
     setImageSrc(imageSource);
     setIsCapturedState(true);
   }, [webCamRef]);
@@ -327,7 +328,7 @@ const WebCamModalContent = ({
           });
         });
       router.replace("/");
-    } catch (err) {
+    } catch {
       return toast({
         title: "Something went Wrong!",
         description: "Something went wrong while capturing Image",

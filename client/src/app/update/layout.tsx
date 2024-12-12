@@ -14,7 +14,7 @@ export default function UpdateLayout({ children }: PropsWithChildren) {
   ) : (
     <div className="w-full min-h-[650px] max-w-3xl flex items-start flex-col justify-center md:items-center mx-auto bg-transparent p-8 rounded-lg shadow-lg">
       <h2 className="text-3xl text-primary text-center">
-        You haven't Connected You Wallet yet! Please Connect your Wallet to
+        You haven&apos;t Connected You Wallet yet! Please Connect your Wallet to
         Update your Profile.
       </h2>
       <Button

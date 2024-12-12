@@ -29,7 +29,7 @@ export default async function VoterDetailsPage({
   return (
     <div className="w-full p-8">
       <h1 className="text-4xl font-bold mb-8 text-primary text-center">
-        {voter.name}'s Profile as a Voter
+        {voter.name}&apos;s Profile as a Voter
       </h1>
       <div className="flex w-full justify-center items-center min-h-[calc(100vh-12rem)]">
         <div className="flex md:flex-row flex-grow justify-center items-center w-full max-w-6xl mx-auto">

@@ -107,7 +107,8 @@ const WebCamModalContent = () => {
   const { toast } = useToast();
 
   const capture = useCallback(() => {
-    const imageSource = webCamRef.current?.getScreenshot()!;
+    const imageSource = webCamRef.current && webCamRef.current.getScreenshot()!;
+    if (!imageSource) return;
     setImageSrc(imageSource);
     setIsCapturedState(true);
   }, [webCamRef]);
@@ -149,7 +150,7 @@ const WebCamModalContent = () => {
       await refetchUserVoter();
 
       return router.push("/voters");
-    } catch (err) {
+    } catch {
       return toast({
         title: "Something went Wrong!",
         description: "Something went wrong while capturing Image",
