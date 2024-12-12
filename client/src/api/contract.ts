@@ -1,5 +1,6 @@
 import { TAPIError, TAPIResponse, TAPIResponseWithTag } from "@/types/api";
 import { api } from ".";
+import { AxiosError } from "axios";
 
 export const approveCandidate = async (
   address: string
@@ -11,6 +12,13 @@ export const approveCandidate = async (
     return { ...data, _tag: "success" };
   } catch (err) {
     console.log("Error Approving Candidate: ", err);
+
+    if (err instanceof AxiosError && err.response)
+      return {
+        title: "Could not Approve Candidate.",
+        _tag: "error",
+        description: err.response.data?.error,
+      };
 
     return {
       title: "Something went Wrong!",
@@ -30,6 +38,13 @@ export const rejectCandidate = async (
     return { ...data, _tag: "success" };
   } catch (err) {
     console.log("Error Rejecting Candidate: ", err);
+
+    if (err instanceof AxiosError && err.response)
+      return {
+        title: "Could not Reject Candidate.",
+        _tag: "error",
+        description: err.response.data?.error,
+      };
 
     return {
       title: "Something went Wrong!",
@@ -51,6 +66,13 @@ export const setVotingPeriod = async (
   } catch (err) {
     console.log("Error Setting Voting Period: ", err);
 
+    if (err instanceof AxiosError && err.response)
+      return {
+        title: "Could not Set Voting Period.",
+        _tag: "error",
+        description: err.response.data?.error,
+      };
+
     return {
       title: "Something went Wrong!",
       _tag: "error",
@@ -67,6 +89,13 @@ export const resetContract = async (): Promise<
     return { ...data, _tag: "success" };
   } catch (err) {
     console.log("Error Resetting Contract: ", err);
+
+    if (err instanceof AxiosError && err.response)
+      return {
+        title: "Could not Reset Contract.",
+        _tag: "error",
+        description: err.response.data?.error,
+      };
 
     return {
       title: "Something went Wrong!",

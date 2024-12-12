@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import { api } from ".";
 
 import {
@@ -20,6 +21,13 @@ export const registerFace = async (
   } catch (err) {
     console.log("Error Registering Face: ", err);
 
+    if (err instanceof AxiosError && err.response)
+      return {
+        title: "Could not Register Face.",
+        _tag: "error",
+        description: err.response.data?.error,
+      };
+
     return {
       title: "Something went Wrong!",
       _tag: "error",
@@ -40,6 +48,13 @@ export const compareFace = async (
     return { ...data, _tag: "success" };
   } catch (err) {
     console.log("Error Comparing Face: ", err);
+
+    if (err instanceof AxiosError && err.response)
+      return {
+        title: "Could not Compare Faces!",
+        _tag: "error",
+        description: err.response.data?.error,
+      };
 
     return {
       title: "Something went Wrong!",

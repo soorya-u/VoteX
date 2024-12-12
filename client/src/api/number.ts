@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import { api } from ".";
 
 import {
@@ -21,6 +22,13 @@ export const identifyNumber = async (
     return { _tag: "success", ...data };
   } catch (err) {
     console.log("Error Identifying number: ", err);
+
+    if (err instanceof AxiosError && err.response)
+      return {
+        title: "Could not Identify Phone Number.",
+        _tag: "error",
+        description: err.response.data?.error,
+      };
 
     return {
       _tag: "error",
@@ -46,6 +54,13 @@ export const verifyNumber = async (
     return { _tag: "success", ...data };
   } catch (err) {
     console.log("Error Verifying Number: ", err);
+
+    if (err instanceof AxiosError && err.response)
+      return {
+        title: "Could not Verify Phone Number.",
+        _tag: "error",
+        description: err.response.data?.error,
+      };
 
     return {
       _tag: "error",

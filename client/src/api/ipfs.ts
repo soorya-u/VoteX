@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import { api } from ".";
 
 import {
@@ -19,6 +20,13 @@ export const pinProfilePhoto = async (
     return { _tag: "success", ...data };
   } catch (err) {
     console.log("Error while Pinning File: ", err);
+
+    if (err instanceof AxiosError && err.response)
+      return {
+        title: "Could not Pin File to Pinata.",
+        _tag: "error",
+        description: err.response.data?.error,
+      };
 
     return {
       title: "Something went Wrong!",
