@@ -53,7 +53,7 @@ export default async function VoterDetailsPage({
                 alt={`${voter.name}'s Profile`}
                 width={140}
                 height={140}
-                className="rounded-full"
+                className="rounded-full object-cover aspect-square"
               />
               <div className="flex justify-center flex-col items-center gap-2">
                 <h2 className="text-3xl text-center font-bold text-primary">

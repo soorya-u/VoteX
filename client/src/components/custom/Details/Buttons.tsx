@@ -71,7 +71,7 @@ export function CandidateDetailsButtons({
     moment().toDate().getTime() < endTime;
 
   const approveCandidateMutateFunc = async () => {
-    const res = await approveCandidate(publicKey);
+    const res = await approveCandidate(candidatePublicKey);
     if (res._tag === "error")
       return toast({
         title: res.title,
@@ -88,7 +88,7 @@ export function CandidateDetailsButtons({
   };
 
   const rejectCandidateMutateFunc = async () => {
-    const res = await rejectCandidate(publicKey);
+    const res = await rejectCandidate(candidatePublicKey);
     if (res._tag === "error")
       return toast({
         title: res.title,

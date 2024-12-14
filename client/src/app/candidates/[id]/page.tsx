@@ -33,13 +33,6 @@ export default async function CandidateDetailsPage({
     moment().toDate().getTime() > startTime &&
     moment().toDate().getTime() < endTime;
 
-  console.log(
-    startTime,
-    endTime,
-    moment().toDate().getTime() > startTime,
-    moment().toDate().getTime() < endTime
-  );
-
   return (
     <div className="w-full p-8">
       <h1 className="text-4xl font-bold mb-8 text-primary text-center">
@@ -67,7 +60,7 @@ export default async function CandidateDetailsPage({
                 alt={`${candidate.name}'s Profile`}
                 width={140}
                 height={140}
-                className="rounded-full aspect-square"
+                className="rounded-full object-cover aspect-square"
               />
               <div className="flex justify-center flex-col items-center gap-2">
                 <h2 className="text-3xl text-center font-bold text-primary">
