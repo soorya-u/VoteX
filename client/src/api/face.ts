@@ -10,12 +10,12 @@ import {
 
 export const registerFace = async (
   formData: FormData,
-  publicKey: string
+  publicKey: string,
 ): Promise<(TAPIResponseWithTag & TFaceRegistration) | TAPIError> => {
   try {
     const { data } = await api.post<TAPIResponse & TFaceRegistration>(
       `/face/register/${publicKey}`,
-      formData
+      formData,
     );
     return { ...data, _tag: "success" };
   } catch (err) {
@@ -38,12 +38,12 @@ export const registerFace = async (
 
 export const compareFace = async (
   formData: FormData,
-  publicKey: string
+  publicKey: string,
 ): Promise<TAPIResponseWithTag | TAPIError> => {
   try {
     const { data } = await api.post<TAPIResponse>(
       `/face/compare/${publicKey}`,
-      formData
+      formData,
     );
     return { ...data, _tag: "success" };
   } catch (err) {

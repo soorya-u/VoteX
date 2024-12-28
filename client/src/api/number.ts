@@ -11,12 +11,12 @@ import {
 
 export const identifyNumber = async (
   formData: FormData,
-  publicKey: string
+  publicKey: string,
 ): Promise<(TAPIResponseWithTag & TPhoneIdentification) | TAPIError> => {
   try {
     const { data } = await api.post<TAPIResponse & TPhoneIdentification>(
       `/number/identify/${publicKey}`,
-      formData
+      formData,
     );
 
     return { _tag: "success", ...data };
@@ -41,14 +41,14 @@ export const identifyNumber = async (
 export const verifyNumber = async (
   otp: string,
   publicKey: string,
-  user_type: TUserType
+  user_type: TUserType,
 ): Promise<TAPIResponseWithTag | TAPIError> => {
   try {
     const { data } = await api.get<TAPIResponse>(
       `/number/verify/${publicKey}`,
       {
         params: { otp, user_type },
-      }
+      },
     );
 
     return { _tag: "success", ...data };

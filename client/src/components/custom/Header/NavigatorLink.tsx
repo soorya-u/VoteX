@@ -22,8 +22,8 @@ export default function NavigatorLink({ link }: { link: string }) {
         href={`/${link}`}
         className={cn(
           outfit.className,
-          "text-xl hover:text-white capitalize",
-          pathname === `/${link}` ? "text-primary" : "text-[#ccccd2]"
+          "text-xl capitalize hover:text-white",
+          pathname === `/${link}` ? "text-primary" : "text-[#ccccd2]",
         )}
       >
         {link}

@@ -33,7 +33,7 @@ export default async function CandidatesPage() {
         name: c.name,
         status: c.status,
       };
-    }
+    },
   );
 
   const candidates = await Promise.all(candidateFields);

@@ -21,29 +21,28 @@ type VoterDetailsPageProp = {
 export default async function VoterDetailsPage({
   params: { id },
 }: VoterDetailsPageProp) {
-  
   const voter = await getContractData([ContractVariables.Voter, id])
     .then((res) => res as TContractVoter)
     .catch(() => notFound());
 
   return (
     <div className="w-full p-8">
-      <h1 className="text-4xl font-bold mb-8 text-primary text-center">
+      <h1 className="mb-8 text-center text-4xl font-bold text-primary">
         {voter.name}&apos;s Profile as a Voter
       </h1>
-      <div className="flex w-full justify-center items-center min-h-[calc(100vh-12rem)]">
-        <div className="flex md:flex-row flex-grow justify-center items-center w-full max-w-6xl mx-auto">
-          <div className="w-full relative md:w-1/2 p-6 bg-[#00000060] backdrop-blur-sm rounded-lg flex flex-col">
-            <div className="flex-grow flex flex-col justify-center gap-6 items-center w-full">
+      <div className="flex min-h-[calc(100vh-12rem)] w-full items-center justify-center">
+        <div className="mx-auto flex w-full max-w-6xl flex-grow items-center justify-center md:flex-row">
+          <div className="relative flex w-full flex-col rounded-lg bg-[#00000060] p-6 backdrop-blur-sm md:w-1/2">
+            <div className="flex w-full flex-grow flex-col items-center justify-center gap-6">
               <Badge
-                className={`text-sm absolute top-3 right-2 px-3 py-1 ${
+                className={`absolute right-2 top-3 px-3 py-1 text-sm ${
                   voter.status === "Approved"
                     ? "bg-green-500"
                     : voter.status === "Pending"
-                    ? "bg-yellow-600"
-                    : voter.status === "Rejected"
-                    ? "bg-red-500"
-                    : "bg-gray-400"
+                      ? "bg-yellow-600"
+                      : voter.status === "Rejected"
+                        ? "bg-red-500"
+                        : "bg-gray-400"
                 }`}
               >
                 {voter.status}
@@ -53,46 +52,46 @@ export default async function VoterDetailsPage({
                 alt={`${voter.name}'s Profile`}
                 width={140}
                 height={140}
-                className="rounded-full object-cover aspect-square"
+                className="aspect-square rounded-full object-cover"
               />
-              <div className="flex justify-center flex-col items-center gap-2">
-                <h2 className="text-3xl text-center font-bold text-primary">
+              <div className="flex flex-col items-center justify-center gap-2">
+                <h2 className="text-center text-3xl font-bold text-primary">
                   {voter.name}
                 </h2>
                 <h3 className="text-md text-center text-secondary/75">
                   {voter.occupation}
                 </h3>
               </div>
-              <div className="flex flex-wrap w-full justify-center items-center gap-y-2 gap-x-6">
-                <div className="text-secondary flex flex-col justify-center items-center">
+              <div className="flex w-full flex-wrap items-center justify-center gap-x-6 gap-y-2">
+                <div className="flex flex-col items-center justify-center text-secondary">
                   <p className="font-semibold">Gender</p>
                   <p>{voter.gender}</p>
                 </div>
                 <Separator
-                  className="bg-secondary/45 h-10 hidden xs:block"
+                  className="hidden h-10 bg-secondary/45 xs:block"
                   orientation="vertical"
                 />
-                <div className="text-secondary flex flex-col justify-center items-center">
+                <div className="flex flex-col items-center justify-center text-secondary">
                   <p className="font-semibold">Date of Birth</p>
                   <p>{moment(voter.dateOfBirth).format("MMM DD, YYYY")}</p>
                 </div>
                 <Separator
-                  className="bg-secondary/45 h-10 hidden xs:block"
+                  className="hidden h-10 bg-secondary/45 xs:block"
                   orientation="vertical"
                 />
-                <div className="text-secondary flex flex-col justify-center items-center">
+                <div className="flex flex-col items-center justify-center text-secondary">
                   <p className="font-semibold">Voter ID</p>
                   <p>{voter.voterId}</p>
                 </div>
               </div>
-              <div className="space-y-2 flex justify-center items-center flex-col">
-                <div className="flex justify-center items-center gap-1">
+              <div className="flex flex-col items-center justify-center space-y-2">
+                <div className="flex items-center justify-center gap-1">
                   <Mail className="size-4" />
-                  <p className="text-secondary text-lg">{voter.email}</p>
+                  <p className="text-lg text-secondary">{voter.email}</p>
                 </div>
-                <div className="flex justify-center items-center gap-1">
+                <div className="flex items-center justify-center gap-1">
                   <MapPin className="size-4" />
-                  <p className="text-secondary text-lg">{voter.location}</p>
+                  <p className="text-lg text-secondary">{voter.location}</p>
                 </div>
               </div>
               <VoterDetailButton voterPublicKey={voter.voterAddress} />

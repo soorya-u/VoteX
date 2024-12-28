@@ -29,12 +29,12 @@ export default function ConnectButton() {
         <DialogTrigger asChild>
           <Button
             size="xs"
-            className={cn(outfit.className, "text-sm flex 2xs:hidden")}
+            className={cn(outfit.className, "flex text-sm 2xs:hidden")}
           >
             Register
           </Button>
         </DialogTrigger>
-        <DialogContent className="rounded-md mx-auto">
+        <DialogContent className="mx-auto rounded-md">
           <DialogHeader>
             <DialogDescription>
               <RegisterButtons isInsideDialog className="flex flex-col" />
@@ -49,7 +49,7 @@ export default function ConnectButton() {
       onClick={connectWallet}
       className={cn(
         outfit.className,
-        "text-sm flex hover:translate-x-1 hover:-translate-y-1 transition-all"
+        "flex text-sm transition-all hover:-translate-y-1 hover:translate-x-1",
       )}
     >
       Connect Wallet
@@ -67,7 +67,7 @@ const RegisterButtons = ({ className = "", isInsideDialog = false }) => (
             variant="outline"
             className={cn(
               outfit.className,
-              "text-sm hover:translate-x-1 hover:-translate-y-1 transition-all"
+              "text-sm transition-all hover:-translate-y-1 hover:translate-x-1",
             )}
           >
             Register as Candidate
@@ -81,7 +81,7 @@ const RegisterButtons = ({ className = "", isInsideDialog = false }) => (
           variant="outline"
           className={cn(
             outfit.className,
-            "text-sm hover:translate-x-1 hover:-translate-y-1 transition-all"
+            "text-sm transition-all hover:-translate-y-1 hover:translate-x-1",
           )}
         >
           Register as Candidate
@@ -95,7 +95,7 @@ const RegisterButtons = ({ className = "", isInsideDialog = false }) => (
             size="xs"
             className={cn(
               outfit.className,
-              "text-sm hover:bg-secondary hover:text-primary hover:translate-x-1 hover:-translate-y-1 transition-all"
+              "text-sm transition-all hover:-translate-y-1 hover:translate-x-1 hover:bg-secondary hover:text-primary",
             )}
           >
             Register as Voter
@@ -109,7 +109,7 @@ const RegisterButtons = ({ className = "", isInsideDialog = false }) => (
             size="xs"
             className={cn(
               outfit.className,
-              "text-sm hover:bg-secondary hover:text-primary hover:translate-x-1 hover:-translate-y-1 transition-all"
+              "text-sm transition-all hover:-translate-y-1 hover:translate-x-1 hover:bg-secondary hover:text-primary",
             )}
           >
             Register as Voter

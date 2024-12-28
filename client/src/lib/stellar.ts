@@ -32,14 +32,14 @@ export const server = new rpc.Server(RPC_URL, { allowHttp: true });
 export const contract = new Contract(process.env.NEXT_PUBLIC_CONTRACT_ID!);
 
 export const getContractData = async (
-  nativeKey: ContractVariables | [ContractVariables, string]
+  nativeKey: ContractVariables | [ContractVariables, string],
 ) => {
   const key = await getContractKey(nativeKey);
 
   const res = await server.getContractData(
     contract,
     key,
-    rpc.Durability.Persistent
+    rpc.Durability.Persistent,
   );
 
   const contract_data = res.val.value() as xdr.ContractDataEntry;
@@ -61,7 +61,7 @@ export const getContractData = async (
 export const callContract = async (
   functionName: ContractFunctions,
   values: any = null,
-  publicKey: string
+  publicKey: string,
 ) => {
   if (!publicKey) throw new Error("Wallet not connected");
 
@@ -70,8 +70,8 @@ export const callContract = async (
   const parsedValues = Array.isArray(values)
     ? values.map((v: any) => nativeToScVal(v))
     : values === null
-    ? null
-    : nativeToScVal(values);
+      ? null
+      : nativeToScVal(values);
 
   const params = {
     fee: BASE_FEE,
@@ -85,14 +85,14 @@ export const callContract = async (
           .setTimeout(30)
           .build()
       : Array.isArray(parsedValues)
-      ? new TransactionBuilder(account, params)
-          .addOperation(contract.call(functionName, ...parsedValues))
-          .setTimeout(30)
-          .build()
-      : new TransactionBuilder(account, params)
-          .addOperation(contract.call(functionName, parsedValues))
-          .setTimeout(30)
-          .build();
+        ? new TransactionBuilder(account, params)
+            .addOperation(contract.call(functionName, ...parsedValues))
+            .setTimeout(30)
+            .build()
+        : new TransactionBuilder(account, params)
+            .addOperation(contract.call(functionName, parsedValues))
+            .setTimeout(30)
+            .build();
 
   const prepareTx = await server.prepareTransaction(buildTx);
   const xdrTx = prepareTx.toXDR();
@@ -122,7 +122,7 @@ export const callContract = async (
 export const sendPayment = async (
   sourceAddress: string,
   destinationAddress: string,
-  amount: string
+  amount: string,
 ): Promise<{ tag: "NotFoundError" | "Error" | "Ok" }> => {
   try {
     await horizonServer.loadAccount(destinationAddress);
@@ -158,7 +158,7 @@ export const sendPayment = async (
     const signedXdrTx = await signTransaction(
       xdrTx,
       networkPassphrase,
-      sourceAddress
+      sourceAddress,
     );
 
     const signedTx = TransactionBuilder.fromXDR(signedXdrTx, networkPassphrase);
@@ -172,7 +172,7 @@ export const sendPayment = async (
 };
 
 const getContractKey = async (
-  key: ContractVariables | [ContractVariables, string]
+  key: ContractVariables | [ContractVariables, string],
 ) => {
   if (Array.isArray(key)) {
     const [symbolString, addressString] = key;

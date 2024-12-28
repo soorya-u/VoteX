@@ -73,7 +73,7 @@ export const useUpdateVoter = () => {
           voterId,
           occupation,
         ],
-        publicKey
+        publicKey,
       );
 
       toast({

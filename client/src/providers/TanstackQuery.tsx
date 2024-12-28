@@ -11,8 +11,8 @@ export default function TanstackQueryProvider({ children }: PropsWithChildren) {
       ? () => null
       : lazy(() =>
           import("@tanstack/react-query-devtools").then(
-            ({ ReactQueryDevtools }) => ({ default: ReactQueryDevtools })
-          )
+            ({ ReactQueryDevtools }) => ({ default: ReactQueryDevtools }),
+          ),
         );
 
   return (

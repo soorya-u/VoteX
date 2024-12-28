@@ -1,7 +1,6 @@
 import { Metadata } from "next";
 
-const domain =
-  process.env.NEXT_PUBLIC_URL || "https://votex.soorya-u.dev";
+const domain = process.env.NEXT_PUBLIC_URL || "https://votex.soorya-u.dev";
 
 export const defaultMetadata: Metadata = {
   title: "VoteX",

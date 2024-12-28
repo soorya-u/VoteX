@@ -17,7 +17,7 @@ const elMessiri = El_Messiri({ weight: "600", subsets: ["arabic"] });
 
 export default async function HomePage() {
   const startTime = (await getContractData(
-    ContractVariables.StartTime
+    ContractVariables.StartTime,
   )) as number;
   const endTime = (await getContractData(ContractVariables.EndTime)) as number;
 
@@ -43,13 +43,13 @@ export default async function HomePage() {
     candidates.length > 0
       ? candidates.reduce(
           (max, curr) => (curr.voteCount > max.voteCount ? curr : max),
-          candidates[0]
+          candidates[0],
         )
       : undefined;
 
   return (
     <>
-      <section className="flex flex-1 max-w-full flex-col flex-wrap items-center mt-6 justify-center gap-6">
+      <section className="mt-6 flex max-w-full flex-1 flex-col flex-wrap items-center justify-center gap-6">
         <Image
           priority
           src="/logo.png"
@@ -59,8 +59,8 @@ export default async function HomePage() {
         />
         <h1
           className={cn(
-            "w-full px-3 text-wrap text-center text-5xl text-secondary 2xs:text-6xl 2xs:px-12",
-            elMessiri.className
+            "w-full text-wrap px-3 text-center text-5xl text-secondary 2xs:px-12 2xs:text-6xl",
+            elMessiri.className,
           )}
         >
           Tamper-Proof Elections for a Brighter Democracy{" "}
@@ -68,7 +68,7 @@ export default async function HomePage() {
         <h2
           className={cn(
             outfit.className,
-            "w-2/3 text-center text-xl text-[#ccccd2]"
+            "w-2/3 text-center text-xl text-[#ccccd2]",
           )}
         >
           Embark on a seamless journey of secure and transparent voting by
@@ -84,12 +84,12 @@ export default async function HomePage() {
                 {moment(endTime).format("MMM DD, YYYY")}
               </p>
             ) : moment() > moment(startTime) && moment() < moment(endTime) ? (
-              <div className="flex flex-col justify-center items-center">
+              <div className="flex flex-col items-center justify-center">
                 <p className="text-center">Voting Period has been started</p>
                 <p className="text-center">
                   <Link
                     href="/candidates"
-                    className="underline hover:text-primary transition-all"
+                    className="underline transition-all hover:text-primary"
                   >
                     Cast you vote
                   </Link>{" "}
@@ -98,15 +98,15 @@ export default async function HomePage() {
               </div>
             ) : (
               moment() > moment(endTime) && (
-                <div className="flex flex-col justify-center items-center">
-                  <p className="text-lg text-center">
+                <div className="flex flex-col items-center justify-center">
+                  <p className="text-center text-lg">
                     The Voting has been Completed.
                   </p>
                   {winningCandidate && (
-                    <p className="text-lg text-center">
+                    <p className="text-center text-lg">
                       Click{" "}
                       <Link
-                        className="underline hover:text-primary transition-colors duration-300"
+                        className="underline transition-colors duration-300 hover:text-primary"
                         href={`/candidates/${winningCandidate.address}`}
                       >
                         here
@@ -121,13 +121,13 @@ export default async function HomePage() {
         ) : (
           <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-5">
             <Button
-              className="text-md hover:-translate-x-1 hover:-translate-y-1 transition-all"
+              className="text-md transition-all hover:-translate-x-1 hover:-translate-y-1"
               variant="outline"
             >
               <Link href="/candidates">Check out Candidates</Link>
             </Button>
             <Button
-              className="text-md hover:translate-x-1 hover:-translate-y-1 transition-all"
+              className="text-md transition-all hover:-translate-y-1 hover:translate-x-1"
               variant="outline"
             >
               <Link href="https://github.com/soorya-u/VoteX">

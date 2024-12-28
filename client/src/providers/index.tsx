@@ -7,7 +7,7 @@ import TanstackQueryProvider from "./TanstackQuery";
 
 export default async function Providers({ children }: PropsWithChildren) {
   const adminAddress = (await getContractData(
-    ContractVariables.Admin
+    ContractVariables.Admin,
   )) as string;
 
   return (

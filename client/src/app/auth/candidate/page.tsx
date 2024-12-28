@@ -12,19 +12,19 @@ export default function CandidateRegistrationPage() {
 
   if (isCandidateLoading)
     return (
-      <div className="w-full min-h-[650px] max-w-3xl flex justify-center items-center mx-auto bg-transparent p-8 rounded-lg shadow-lg">
-        <Loader2 className="animate-spin size-24 text-primary" />
+      <div className="mx-auto flex min-h-[650px] w-full max-w-3xl items-center justify-center rounded-lg bg-transparent p-8 shadow-lg">
+        <Loader2 className="size-24 animate-spin text-primary" />
       </div>
     );
 
   return userAsCandidate && !(userAsCandidate.status === "NotVer") ? (
-    <div className="w-full min-h-[650px] max-w-3xl flex items-start flex-col justify-center md:items-center mx-auto  bg-transparent p-8 rounded-lg shadow-lg">
-      <h2 className="text-3xl text-primary text-center">
+    <div className="mx-auto flex min-h-[650px] w-full max-w-3xl flex-col items-start justify-center rounded-lg bg-transparent p-8 shadow-lg md:items-center">
+      <h2 className="text-center text-3xl text-primary">
         You have already been registered as a Candidate
       </h2>
       <Link
         href="/candidates"
-        className="mt-8 mx-auto bg-primary rounded-md text-center py-2 px-4 hover:bg-[#129992] text-white transition-colors duration-200"
+        className="mx-auto mt-8 rounded-md bg-primary px-4 py-2 text-center text-white transition-colors duration-200 hover:bg-[#129992]"
       >
         View Candidate List
       </Link>

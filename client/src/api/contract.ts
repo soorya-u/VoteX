@@ -3,7 +3,7 @@ import { api } from ".";
 import { AxiosError } from "axios";
 
 export const approveCandidate = async (
-  address: string
+  address: string,
 ): Promise<TAPIResponseWithTag | TAPIError> => {
   try {
     const { data } = await api.get<TAPIResponse>(`/contract/approve`, {
@@ -29,7 +29,7 @@ export const approveCandidate = async (
 };
 
 export const rejectCandidate = async (
-  address: string
+  address: string,
 ): Promise<TAPIResponseWithTag | TAPIError> => {
   try {
     const { data } = await api.get<TAPIResponse>(`/contract/reject`, {
@@ -56,7 +56,7 @@ export const rejectCandidate = async (
 
 export const setVotingPeriod = async (
   start: number,
-  end: number
+  end: number,
 ): Promise<TAPIResponseWithTag | TAPIError> => {
   try {
     const { data } = await api.get<TAPIResponse>(`/contract/period`, {

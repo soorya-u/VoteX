@@ -96,7 +96,7 @@ export const useCandidate = () => {
           location,
           photoIpfsHash,
         ],
-        publicKey
+        publicKey,
       );
     } catch (err) {
       console.error("Unable to Call Contract: ", err);

@@ -20,7 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${outfit.className} flex flex-col bg-img text-secondary min-h-screen`}
+        className={`${outfit.className} bg-img flex min-h-screen flex-col text-secondary`}
       >
         <Providers>
           <Header />

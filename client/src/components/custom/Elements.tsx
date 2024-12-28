@@ -62,10 +62,10 @@ export function FormInput<T extends Record<string, any>>({
         placeholder={placeholder}
         // @ts-expect-error Some Random Error
         {...register(String(id))}
-        className="bg-[#2a2a2a] text-white border-secondary focus:border-primary rounded-md"
+        className="rounded-md border-secondary bg-[#2a2a2a] text-white focus:border-primary"
       />
       {errors[id] && (
-        <span className="text-red-500 text-sm">
+        <span className="text-sm text-red-500">
           {errors[id]?.message as string}
         </span>
       )}
@@ -91,7 +91,7 @@ export const FormDate = <T extends Record<string, any>>({
             variant={"outline"}
             className={cn(
               "w-full justify-start text-left font-normal",
-              !control.value && "text-muted-foreground"
+              !control.value && "text-muted-foreground",
             )}
           >
             <CalendarIcon />
@@ -104,7 +104,7 @@ export const FormDate = <T extends Record<string, any>>({
             }
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-auto p-0 bg-transparent">
+        <PopoverContent className="w-auto bg-transparent p-0">
           <Calendar
             mode="single"
             selected={control.value as Date | undefined}
@@ -116,7 +116,7 @@ export const FormDate = <T extends Record<string, any>>({
         </PopoverContent>
       </Popover>
       {errors[id] && (
-        <span className="text-red-500 text-sm">
+        <span className="text-sm text-red-500">
           {errors[id]?.message as string}
         </span>
       )}
@@ -138,7 +138,7 @@ export const FormSelect = <T extends Record<string, any>>({
     <Select value={control.value as string} onValueChange={control.onChange}>
       <SelectTrigger
         id={String(id)}
-        className="bg-[#2a2a2a] text-white border-secondary focus:border-primary"
+        className="border-secondary bg-[#2a2a2a] text-white focus:border-primary"
       >
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
@@ -149,7 +149,7 @@ export const FormSelect = <T extends Record<string, any>>({
       </SelectContent>
     </Select>
     {errors[id] && (
-      <span className="text-red-500 text-sm">
+      <span className="text-sm text-red-500">
         {errors[id]?.message as string}
       </span>
     )}

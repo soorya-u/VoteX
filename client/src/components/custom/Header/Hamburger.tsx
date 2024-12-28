@@ -23,9 +23,9 @@ export default async function Hamburger({ className }: { className: string }) {
       </SheetTrigger>
       <SheetContent
         side="left"
-        className="bg-[#00000040] backdrop-blur-sm min-h-[80vh]"
+        className="min-h-[80vh] bg-[#00000040] backdrop-blur-sm"
       >
-        <SheetTitle className="mt-8 mb-4">
+        <SheetTitle className="mb-4 mt-8">
           <Link
             href="/"
             className={cn(fondamento.className, "text-nowrap text-2xl")}
@@ -33,7 +33,7 @@ export default async function Hamburger({ className }: { className: string }) {
             VoteX
           </Link>
         </SheetTitle>
-        <SheetDescription className=" flex  flex-col justify-between ">
+        <SheetDescription className="flex flex-col justify-between">
           <div className="flex flex-col gap-1">
             {["candidates", "voters", "admin", "about"].map((link, idx) => (
               <HamburgerLink link={link} key={idx} />

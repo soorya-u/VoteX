@@ -18,7 +18,7 @@ export const retrievePublicKey = async () => {
 export const signTransaction = async (
   xdr: string,
   networkPassphrase: string,
-  address: string
+  address: string,
 ) => {
   const { signedTxXdr, error } = await frieghterSignTransaction(xdr, {
     networkPassphrase,

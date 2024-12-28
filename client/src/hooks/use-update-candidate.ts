@@ -80,7 +80,7 @@ export const useUpdateCandidate = () => {
           location,
           currentIncome,
         ],
-        publicKey
+        publicKey,
       );
 
       toast({

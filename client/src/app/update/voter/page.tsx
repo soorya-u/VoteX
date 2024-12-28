@@ -12,21 +12,21 @@ export default function VoterUpdationPage() {
 
   if (isVoterLoading)
     return (
-      <div className="w-full min-h-[650px] max-w-3xl flex justify-center items-center mx-auto md:bg-[#3c3b3b7b] bg-transparent p-8 rounded-lg shadow-lg">
-        <Loader2 className="animate-spin size-24 text-primary" />
+      <div className="mx-auto flex min-h-[650px] w-full max-w-3xl items-center justify-center rounded-lg bg-transparent p-8 shadow-lg md:bg-[#3c3b3b7b]">
+        <Loader2 className="size-24 animate-spin text-primary" />
       </div>
     );
 
   return userAsVoter ? (
     <VoterUpdateForm />
   ) : (
-    <div className="w-full min-h-[650px] max-w-3xl flex items-start flex-col justify-center md:items-center mx-auto bg-transparent p-8 rounded-lg shadow-lg">
-      <h2 className="text-3xl text-primary text-center">
+    <div className="mx-auto flex min-h-[650px] w-full max-w-3xl flex-col items-start justify-center rounded-lg bg-transparent p-8 shadow-lg md:items-center">
+      <h2 className="text-center text-3xl text-primary">
         You have not been registered as a Voter
       </h2>
       <Link
         href="/auth/voter"
-        className="w-full mt-8 bg-primary hover:bg-[#129992] text-white transition-colors duration-200"
+        className="mt-8 w-full bg-primary text-white transition-colors duration-200 hover:bg-[#129992]"
       >
         Register as a Voter
       </Link>

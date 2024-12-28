@@ -25,13 +25,13 @@ export default function VoterForm() {
       <FormModal phoneNumber={phoneNumber} userType="voter" />
       <form
         onSubmit={handleSubmit}
-        className="w-full max-w-3xl mx-auto md:bg-[#3c3b3b7b] bg-transparent p-8 rounded-lg shadow-lg"
+        className="mx-auto w-full max-w-3xl rounded-lg bg-transparent p-8 shadow-lg md:bg-[#3c3b3b7b]"
       >
-        <h2 className="text-4xl font-bold mb-8 text-primary text-center">
+        <h2 className="mb-8 text-center text-4xl font-bold text-primary">
           Voter Registration Form
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <FormInput<TVoter>
             id="name"
             label="Name"
@@ -110,7 +110,7 @@ export default function VoterForm() {
         <Button
           disabled={isSubmitting}
           type="submit"
-          className="w-full mt-8 bg-primary hover:bg-[#129992] text-white transition-colors duration-200"
+          className="mt-8 w-full bg-primary text-white transition-colors duration-200 hover:bg-[#129992]"
         >
           {isSubmitting ? <Loader2 className="animate-spin" /> : "Submit"}
         </Button>

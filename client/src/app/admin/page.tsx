@@ -22,8 +22,8 @@ export default function AdminPage() {
   } = useAdmin();
 
   return (
-    <div className="w-full mt-8 max-w-3xl flex items-center gap-6 flex-col justify-start mx-auto md:bg-[#3c3b3b7b] bg-transparent p-8 rounded-lg shadow-lg">
-      <h2 className="text-3xl text-primary text-center w-full">Admin Page</h2>
+    <div className="mx-auto mt-8 flex w-full max-w-3xl flex-col items-center justify-start gap-6 rounded-lg bg-transparent p-8 shadow-lg md:bg-[#3c3b3b7b]">
+      <h2 className="w-full text-center text-3xl text-primary">Admin Page</h2>
       <Calendar
         disabled={!!startTime && !!endTime}
         classNames={{
@@ -38,16 +38,16 @@ export default function AdminPage() {
         selected={{ from: fromDate, to: toDate }}
         onSelect={setDates}
         numberOfMonths={2}
-        className="border rounded-md border-secondary"
+        className="rounded-md border border-secondary"
       />
 
-      <div className="flex justify-center items-center flex-col w-full gap-8">
+      <div className="flex w-full flex-col items-center justify-center gap-8">
         <Button
           disabled={
             isFetching && isResetContractLoading && isSetVotingPeriodLoading
           }
           onClick={setVotingPeriod}
-          className="min-w-32 flex-1 mx-auto bg-primary rounded-md text-center py-2 px-4 hover:bg-[#129992] text-white transition-colors duration-200 disabled:opacity-50"
+          className="mx-auto min-w-32 flex-1 rounded-md bg-primary px-4 py-2 text-center text-white transition-colors duration-200 hover:bg-[#129992] disabled:opacity-50"
         >
           {isSetVotingPeriodLoading ? (
             <Loader2 className="animate-spin" />
@@ -60,7 +60,7 @@ export default function AdminPage() {
             isFetching && isResetContractLoading && isSetVotingPeriodLoading
           }
           onClick={resetContract}
-          className="min-w-32 mx-auto bg-primary rounded-md text-center py-2 px-4 hover:bg-[#129992] text-white transition-colors duration-200 disabled:opacity-50"
+          className="mx-auto min-w-32 rounded-md bg-primary px-4 py-2 text-center text-white transition-colors duration-200 hover:bg-[#129992] disabled:opacity-50"
         >
           {isResetContractLoading ? (
             <Loader2 className="animate-spin" />

@@ -19,7 +19,7 @@ export default async function Header() {
             href="/"
             className={cn(
               fondamento.className,
-              "text-nowrap text-4xl text-[#33DEDF] hidden sm:flex"
+              "hidden text-nowrap text-4xl text-[#33DEDF] sm:flex",
             )}
           >
             VoteX

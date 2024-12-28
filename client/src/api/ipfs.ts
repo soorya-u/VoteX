@@ -9,12 +9,12 @@ import {
 } from "@/types/api";
 
 export const pinProfilePhoto = async (
-  formData: FormData
+  formData: FormData,
 ): Promise<(TAPIResponseWithTag & TFaceRegistration) | TAPIError> => {
   try {
     const { data } = await api.post<TAPIResponse & TFaceRegistration>(
       `/ipfs/pin`,
-      formData
+      formData,
     );
 
     return { _tag: "success", ...data };

@@ -3,7 +3,7 @@ import { TVoterUpdate } from "@/schema/voter";
 import { TContractCandidate, TContractVoter } from "@/types/contract";
 
 export const getUpdateVoterFromContract = (
-  v: TContractVoter | undefined
+  v: TContractVoter | undefined,
 ): TVoterUpdate | undefined => {
   if (!v) return undefined;
 
@@ -24,7 +24,7 @@ export const getUpdateVoterFromContract = (
 };
 
 export const getUpdateCandidateFromContract = (
-  v: TContractCandidate | undefined
+  v: TContractCandidate | undefined,
 ): TCandidateUpdate | undefined => {
   if (!v) return undefined;
 

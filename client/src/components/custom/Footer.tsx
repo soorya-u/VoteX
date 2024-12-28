@@ -8,7 +8,7 @@ const outfit = Outfit({ weight: "400", subsets: ["latin"] });
 
 export default function Footer() {
   return (
-    <footer className="m-auto flex min-h-16 w-[85vw] flex-col items-center justify-between gap-y-4 border-t-[2px] border-t-[#33DEDF]/85 py-3 mt-5 md-lg:flex-row">
+    <footer className="m-auto mt-5 flex min-h-16 w-[85vw] flex-col items-center justify-between gap-y-4 border-t-[2px] border-t-[#33DEDF]/85 py-3 md-lg:flex-row">
       <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1">
         <Image src="/logo.png" width={28} height={28} alt="Elite-AIML-Logo" />
         <p className={cn(outfit.className, "text-center text-gray-200")}>

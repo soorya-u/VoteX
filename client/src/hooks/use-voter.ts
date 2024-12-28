@@ -81,7 +81,7 @@ export const useVoter = () => {
           occupation,
           photoIpfsHash,
         ],
-        publicKey
+        publicKey,
       );
     } catch (err) {
       console.error("Unable to Call Contract: ", err);

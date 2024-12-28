@@ -34,10 +34,10 @@ export const useAdmin = () => {
   });
 
   const [fromDate, setFromDate] = useState(
-    !!startTime ? new Date(startTime) : undefined
+    !!startTime ? new Date(startTime) : undefined,
   );
   const [toDate, setToDate] = useState(
-    !!endTime ? new Date(endTime) : undefined
+    !!endTime ? new Date(endTime) : undefined,
   );
 
   const setDates = (d: DateRange | undefined) => {
@@ -77,7 +77,7 @@ export const useAdmin = () => {
     toast({
       title: "Voting Period has been set Successfully",
       description: `Voting Period is set between ${moment(fromDate).format(
-        "MMM DD, YYYY"
+        "MMM DD, YYYY",
       )} and ${moment(toDate).format("MMM DD, YYYY")}`,
     });
 

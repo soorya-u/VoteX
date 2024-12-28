@@ -20,7 +20,7 @@ export const usePayment = (candidateAddress: string) => {
     const { tag } = await sendPayment(
       publicKey,
       candidateAddress,
-      `${val.amount}`
+      `${val.amount}`,
     );
     if (tag === "NotFoundError")
       return toast({

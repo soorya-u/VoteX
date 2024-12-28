@@ -38,14 +38,14 @@ export default function UserCards({ users, userType }: CardsProps) {
 
   useEffect(() => {
     setCurrentUsers(
-      selected === "All" ? users : users.filter((v) => v.status === selected)
+      selected === "All" ? users : users.filter((v) => v.status === selected),
     );
   }, [selected]);
 
   return (
     <>
-      <div className="flex w-full justify-center gap-4 xs-sm:justify-between items-center px-12 mb-8 flex-col xs-sm:flex-row">
-        <h1 className="text-4xl font-bold text-primary text-center">
+      <div className="mb-8 flex w-full flex-col items-center justify-center gap-4 px-12 xs-sm:flex-row xs-sm:justify-between">
+        <h1 className="text-center text-4xl font-bold text-primary">
           {selected} {userType} List
         </h1>
         <Select
@@ -68,21 +68,21 @@ export default function UserCards({ users, userType }: CardsProps) {
                     <SelectItem key={v} value={v}>
                       {v} {userType}
                     </SelectItem>
-                  )
+                  ),
               )}
             </SelectGroup>
           </SelectContent>
         </Select>
       </div>
       {currentUsers.length > 0 ? (
-        <div className="grid place-items-center grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-8">
+        <div className="grid grid-cols-1 place-items-center gap-x-4 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
           {currentUsers.map((user, index) => (
             <UserCard userType={userType} key={index} user={user} />
           ))}
         </div>
       ) : (
-        <div className="w-full mt-20">
-          <h2 className="text-secondary text-center text-3xl">
+        <div className="mt-20 w-full">
+          <h2 className="text-center text-3xl text-secondary">
             No {userType} Found
           </h2>
         </div>
@@ -98,25 +98,25 @@ const UserCard = ({
   user: User;
   userType: "Candidates" | "Voters";
 }) => (
-  <Card className="w-full max-w-sm bg-[#3c3b3b7b] border-secondary overflow-hidden flex flex-col relative">
-    <div className="absolute top-2 right-2 z-10">
+  <Card className="relative flex w-full max-w-sm flex-col overflow-hidden border-secondary bg-[#3c3b3b7b]">
+    <div className="absolute right-2 top-2 z-10">
       <Badge
         variant="default"
-        className={`text-xs px-2 py-1 ${
+        className={`px-2 py-1 text-xs ${
           user.status === "Approved"
             ? "bg-green-500"
             : user.status === "Pending"
-            ? "bg-yellow-600"
-            : user.status === "Rejected"
-            ? "bg-red-500"
-            : "bg-gray-400"
+              ? "bg-yellow-600"
+              : user.status === "Rejected"
+                ? "bg-red-500"
+                : "bg-gray-400"
         }`}
       >
         {user.status}
       </Badge>
     </div>
     <div className="p-6">
-      <div className="relative w-full pt-[100%] rounded-lg overflow-hidden">
+      <div className="relative w-full overflow-hidden rounded-lg pt-[100%]">
         <Image
           src={user.image}
           alt={`${user.name}'s profile`}
@@ -125,15 +125,15 @@ const UserCard = ({
         />
       </div>
     </div>
-    <CardContent className="px-6 pb-4 flex-grow flex flex-col justify-center items-center text-center">
-      <h3 className="text-xl font-semibold text-primary mb-2">{user.name}</h3>
-      <p className="text-secondary mb-1">Gender: {user.gender}</p>
-      <p className="text-secondary mb-2">
+    <CardContent className="flex flex-grow flex-col items-center justify-center px-6 pb-4 text-center">
+      <h3 className="mb-2 text-xl font-semibold text-primary">{user.name}</h3>
+      <p className="mb-1 text-secondary">Gender: {user.gender}</p>
+      <p className="mb-2 text-secondary">
         Date of Birth: {moment(user.dateOfBirth).format("MMM DD, YYYY")}
       </p>
       <Link
         href={`/${userType.toLowerCase()}/${user.address}`}
-        className="w-full rounded-md py-2 bg-primary hover:bg-[#129992] text-white transition-colors duration-200"
+        className="w-full rounded-md bg-primary py-2 text-white transition-colors duration-200 hover:bg-[#129992]"
       >
         View Profile
       </Link>

@@ -47,9 +47,9 @@ export default function FormModal({ phoneNumber, userType }: FormModalProps) {
 
   return (
     <Dialog open={modalOpen}>
-      <DialogContent className="sm:max-w-[600px] disable-close">
+      <DialogContent className="disable-close sm:max-w-[600px]">
         {!isVerificationCompleted ? (
-          <form className="grid gap-4 w-full" onSubmit={handleSubmit}>
+          <form className="grid w-full gap-4" onSubmit={handleSubmit}>
             <DialogHeader>
               <DialogTitle>Verify your Aadhaar Card</DialogTitle>
               <DialogDescription>
@@ -57,7 +57,7 @@ export default function FormModal({ phoneNumber, userType }: FormModalProps) {
                 the OTP below:
               </DialogDescription>
             </DialogHeader>
-            <div className="flex justify-center items-center flex-col gap-2">
+            <div className="flex flex-col items-center justify-center gap-2">
               <InputOTP
                 value={String(control.value || "")}
                 onChange={control.onChange}
@@ -168,7 +168,7 @@ const WebCamModalContent = () => {
           Register your Face Verification
         </DialogTitle>
       </DialogHeader>
-      <div className="flex justify-center items-center flex-col gap-2">
+      <div className="flex flex-col items-center justify-center gap-2">
         {imageSrc ? (
           <img src={imageSrc} />
         ) : (

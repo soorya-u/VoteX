@@ -114,13 +114,13 @@ export function CandidateDetailsButtons({
   if (!publicKey) return;
 
   return (
-    <div className="flex flex-col justify-center item-center gap-4 pb-8">
+    <div className="item-center flex flex-col justify-center gap-4 pb-8">
       {admin === publicKey && status === "Pending" && (
-        <div className="flex justify-center items-center gap-4">
+        <div className="flex items-center justify-center gap-4">
           <Button
             disabled={isApprovalPending || isRejectionPending}
             onClick={() => approveCandidateFn()}
-            className="bg-green-500 hover:bg-green-600 text-white"
+            className="bg-green-500 text-white hover:bg-green-600"
           >
             {isApprovalPending ? (
               <Loader2 className="animate-spin" />
@@ -131,7 +131,7 @@ export function CandidateDetailsButtons({
           <Button
             disabled={isApprovalPending || isRejectionPending}
             onClick={() => rejectCandidateFn()}
-            className="bg-red-500 hover:bg-red-600 text-white"
+            className="bg-red-500 text-white hover:bg-red-600"
           >
             {isRejectionPending ? (
               <Loader2 className="animate-spin" />
@@ -149,7 +149,7 @@ export function CandidateDetailsButtons({
         !userAsVoter.hasVoted && (
           <Dialog>
             <DialogTrigger>
-              <Button className="bg-primary hover:bg-[#129992] text-white">
+              <Button className="bg-primary text-white hover:bg-[#129992]">
                 Vote Candidate
               </Button>
             </DialogTrigger>
@@ -161,7 +161,7 @@ export function CandidateDetailsButtons({
 
       {candidatePublicKey === publicKey ? (
         <Link
-          className="bg-primary text-secondary text-sm px-4 py-2 rounded-md"
+          className="rounded-md bg-primary px-4 py-2 text-sm text-secondary"
           href="/update/candidate"
         >
           Update your Profile
@@ -169,7 +169,7 @@ export function CandidateDetailsButtons({
       ) : (
         <Dialog>
           <DialogTrigger>
-            <Button className="bg-primary hover:bg-[#129992] text-white">
+            <Button className="bg-primary text-white hover:bg-[#129992]">
               Donate to Candidate
             </Button>
           </DialogTrigger>
@@ -211,7 +211,7 @@ const PaymentModal = ({
             {...register("amount")}
           />
           {errors && errors.amount && (
-            <span className="text-red-500 text-xs">
+            <span className="text-xs text-red-500">
               {errors.amount.message}
             </span>
           )}
@@ -252,7 +252,7 @@ export function VoterDetailButton({
 
   return (
     <Link
-      className="bg-primary text-secondary px-4 py-2 rounded-md"
+      className="rounded-md bg-primary px-4 py-2 text-secondary"
       href="/update/voter"
     >
       Update your Profile
@@ -312,7 +312,7 @@ const WebCamModalContent = ({
       await callContract(
         ContractFunctions.GiveVote,
         [candidatePublicKey, publicKey],
-        publicKey
+        publicKey,
       )
         .then(() => {
           toast({
@@ -346,7 +346,7 @@ const WebCamModalContent = ({
           Verify your Face Verification
         </DialogTitle>
       </DialogHeader>
-      <div className="flex justify-center items-center flex-col gap-2">
+      <div className="flex flex-col items-center justify-center gap-2">
         {imageSrc ? (
           <img src={imageSrc} />
         ) : (
