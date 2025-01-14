@@ -13,7 +13,7 @@ homepage = "https://votex.soorya-u.dev"
 python = "3.10"
 fastapi = {extras = ["standard"], version = "^0.115.3"}
 uvicorn = {extras = ["standard"], version = "^0.32.0"}
-rasa = "^3.6.20"
+rasa = "^3.6.21"
 python-dotenv = "^1.0.1"
 
 
