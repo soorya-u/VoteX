@@ -5,7 +5,7 @@ import { Loader2 } from "lucide-react";
 
 import { useUser } from "@/hooks/use-context";
 
-import VoterForm from "@/components/custom/create-profile/voter";
+import VoterForm from "@/components/modules/create-profile/voter";
 
 export default function CandidateRegistrationPage() {
   const { isVoterLoading, userAsVoter } = useUser();
