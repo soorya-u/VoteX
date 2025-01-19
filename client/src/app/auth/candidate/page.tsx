@@ -5,7 +5,7 @@ import { Loader2 } from "lucide-react";
 
 import { useUser } from "@/hooks/use-context";
 
-import CandidateForm from "@/components/custom/CreateProfile/Candidate";
+import CandidateForm from "@/components/custom/create-profile/candidate";
 
 export default function CandidateRegistrationPage() {
   const { isCandidateLoading, userAsCandidate } = useUser();

@@ -12,7 +12,7 @@ import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 
 import { TContractVoter } from "@/types/contract";
-import { VoterDetailButton } from "@/components/custom/Details/Buttons";
+import { VoterDetailButton } from "@/components/details-button";
 
 type VoterDetailsPageProp = {
   params: { id: string };

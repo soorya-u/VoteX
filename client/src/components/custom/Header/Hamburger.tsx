@@ -9,7 +9,7 @@ import {
   SheetDescription,
   SheetTitle,
 } from "@/components/ui/sheet";
-import HamburgerLink from "./HamburgerLink";
+import HamburgerLink from "./hamburger-link";
 
 import { cn } from "@/utils/cn";
 

@@ -2,13 +2,13 @@
 
 import { Loader2 } from "lucide-react";
 
-import { TCandidateUpdate } from "@/schema/candidate";
-import { useUpdateCandidate } from "@/hooks/use-update-candidate";
+import { TVoterUpdate } from "@/schema/voter";
+import { useUpdateVoter } from "@/hooks/use-update-voter";
 
-import { FormDate, FormInput, FormSelect } from "@/components/custom/Elements";
+import { FormDate, FormInput, FormSelect } from "@/components/elements";
 import { Button } from "@/components/ui/button";
 
-export default function CandidateUpdateForm() {
+export default function VoterUpdateForm() {
   const {
     errors,
     handleSubmit,
@@ -16,7 +16,7 @@ export default function CandidateUpdateForm() {
     dateOfBirthController,
     genderController,
     isSubmitting,
-  } = useUpdateCandidate();
+  } = useUpdateVoter();
 
   return (
     <form
@@ -24,18 +24,18 @@ export default function CandidateUpdateForm() {
       className="mx-auto w-full max-w-3xl rounded-lg bg-transparent p-8 shadow-lg md:bg-[#3c3b3b7b]"
     >
       <h2 className="mb-8 text-center text-4xl font-bold text-primary">
-        Update your Candidate Profile
+        Voter Registration Form
       </h2>
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-        <FormInput<TCandidateUpdate>
+        <FormInput<TVoterUpdate>
           id="name"
           label="Name"
           placeholder="Enter your name"
           register={register}
           errors={errors}
         />
-        <FormInput<TCandidateUpdate>
+        <FormInput<TVoterUpdate>
           id="email"
           label="Email"
           type="email"
@@ -43,68 +43,54 @@ export default function CandidateUpdateForm() {
           register={register}
           errors={errors}
         />
-        <FormSelect<TCandidateUpdate>
+        <FormSelect<TVoterUpdate>
           id="gender"
           errors={errors}
           label="Select Gender"
           placeholder="Select Gender"
           control={genderController}
         />
-        <FormDate<TCandidateUpdate>
+        <FormDate<TVoterUpdate>
           placeholder="Pick a Date"
           id="dateOfBirth"
           label="Date of Birth"
           control={dateOfBirthController}
           errors={errors}
         />
-        <FormInput<TCandidateUpdate>
-          id="partyName"
-          label="Party Name"
-          placeholder="Enter party name"
+        <FormInput<TVoterUpdate>
+          id="voterId"
+          label="Voter ID"
+          placeholder="Enter Voter ID"
           register={register}
           errors={errors}
         />
-        <FormInput<TCandidateUpdate>
-          id="currentIncome"
-          label="Annual Income"
-          type="number"
-          placeholder="Enter your annual income"
+        <FormInput<TVoterUpdate>
+          id="occupation"
+          label="Occupation"
+          placeholder="Enter Occupation"
           register={register}
           errors={errors}
         />
-        <FormInput<TCandidateUpdate>
+        <FormInput<TVoterUpdate>
           id="city"
           label="City"
           placeholder="Enter your city"
           register={register}
           errors={errors}
         />
-        <FormInput<TCandidateUpdate>
+        <FormInput<TVoterUpdate>
           id="state"
           label="State"
           placeholder="Enter your state"
           register={register}
           errors={errors}
         />
-        <FormInput<TCandidateUpdate>
-          id="highestStudies"
-          label="Highest Studies"
-          placeholder="Enter your highest education"
-          register={register}
-          errors={errors}
-        />
-        <FormInput<TCandidateUpdate>
-          id="specializationOfDegree"
-          label="Specialization of Degree"
-          placeholder="Enter your specialization"
-          register={register}
-          errors={errors}
-        />
       </div>
+
       <Button
+        disabled={isSubmitting}
         type="submit"
         className="mt-8 w-full bg-primary text-white transition-colors duration-200 hover:bg-[#129992]"
-        disabled={isSubmitting}
       >
         {isSubmitting ? <Loader2 className="animate-spin" /> : "Submit"}
       </Button>

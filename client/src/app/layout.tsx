@@ -2,7 +2,7 @@ import { Outfit } from "next/font/google";
 
 import { defaultMetadata } from "@/constants/metadata";
 
-import Header from "@/components/custom/Header";
+import Header from "@/components/custom/header";
 
 import Providers from "@/providers";
 

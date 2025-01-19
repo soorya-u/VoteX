@@ -5,7 +5,7 @@ import { Loader2 } from "lucide-react";
 
 import { useUser } from "@/hooks/use-context";
 
-import VoterUpdateForm from "@/components/custom/UpdateProfile/Voter";
+import VoterUpdateForm from "@/components/custom/update-profile/voter";
 
 export default function VoterUpdationPage() {
   const { isVoterLoading, userAsVoter } = useUser();

@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { Fondamento } from "next/font/google";
 
-import Navigator from "./Navigator";
-import Hamburger from "./Hamburger";
-import ConnectButton from "./ConnectButton";
+import Navigator from "./navigator";
+import Hamburger from "./hamburger";
+import ConnectButton from "./connect-button";
 
 import { cn } from "@/utils/cn";
 
