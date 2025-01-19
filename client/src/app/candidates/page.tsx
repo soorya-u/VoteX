@@ -1,4 +1,4 @@
-import UserCards from "@/components/custom/Cards";
+import UserCards from "@/components/cards";
 import { ContractVariables } from "@/constants/contract";
 import { PinataGateway } from "@/constants/pinata";
 import { getContractData } from "@/lib/stellar";

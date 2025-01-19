@@ -3,7 +3,7 @@ import {
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
 
-import NavigatorLink from "./NavigatorLink";
+import NavigatorLink from "./navigator-link";
 
 export default function Navigator({ className }: { className: string }) {
   return (

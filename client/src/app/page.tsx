@@ -9,7 +9,7 @@ import { getContractData } from "@/lib/stellar";
 
 import { cn } from "@/utils/cn";
 import { ContractVariables } from "@/constants/contract";
-import Footer from "@/components/custom/Footer";
+import Footer from "@/components/footer";
 import { TContractCandidate } from "@/types/contract";
 
 const outfit = Outfit({ weight: "400", subsets: ["latin"] });

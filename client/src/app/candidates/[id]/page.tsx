@@ -9,7 +9,7 @@ import { PinataGateway } from "@/constants/pinata";
 import { Badge } from "@/components/ui/badge";
 import moment from "moment";
 import { Separator } from "@/components/ui/separator";
-import { CandidateDetailsButtons } from "@/components/custom/Details/Buttons";
+import { CandidateDetailsButtons } from "@/components/details-button";
 
 type CandidateDetailsPageProp = {
   params: { id: string };

@@ -5,9 +5,9 @@ import { Loader2 } from "lucide-react";
 import { useVoter } from "@/hooks/use-voter";
 import { TVoter } from "@/schema/voter";
 
-import { FormDate, FormInput, FormSelect } from "@/components/custom/Elements";
+import { FormDate, FormInput, FormSelect } from "@/components/elements";
 import { Button } from "@/components/ui/button";
-import FormModal from "./Modal";
+import FormModal from "./modal";
 
 export default function VoterForm() {
   const {
