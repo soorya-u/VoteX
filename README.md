@@ -1,8 +1,7 @@
 <a id="readme-top"></a>
 
-<br />
 <div align="center">
-  <img src="https://votex.soorya-u.dev/logo.webp" alt="Logo" width="80" height="80">
+  <img src="https://votex.soorya-u.dev/logo.webp" alt="Logo" width="120" height="120">
 
   <h1 align="center">VoteX</h1>
 
