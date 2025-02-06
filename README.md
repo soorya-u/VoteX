@@ -57,8 +57,6 @@ This system guarantees secure, verifiable, and tamper-proof elections with the p
   <img src="https://votex.soorya-u.dev/architecture-light.png" alt="architecture" align="center" style="filter: invert(0);" />
 </picture>
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 ## Getting Started
 
 This is a set of instructions on how to set up your project locally.
