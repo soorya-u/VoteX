@@ -42,9 +42,7 @@
 
 ## About The Project
 
-<video src="https://soorya-u.dev/videos/democrachain.mp4"></video>
-
-[video](https://soorya-u.dev/videos/democrachain.mp4)
+![video](https://soorya-u.dev/videos/democrachain.mp4)
 
 This project is a secure, AI-driven, decentralized voting application built on the Stellar blockchain with Soroban smart contracts to ensure transparency and immutability. The system leverages Next.js for the frontend, a Python-based proxy server, and Redis as the database.
 
