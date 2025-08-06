@@ -1,8 +1,5 @@
-<a id="readme-top"></a>
-
-<br />
 <div align="center">
-  <img src="https://votex.soorya-u.dev/logo.webp" alt="Logo" width="80" height="80">
+  <img src="https://votex.soorya-u.dev/logo.webp" alt="Logo" width="120" height="120">
 
   <h1 align="center">VoteX</h1>
 
@@ -16,35 +13,11 @@
   </p>
 </div>
 
-<!-- TABLE OF CONTENTS -->
-<details>
-  <summary><strong>Table of Contents</strong></summary>
-  <ol>
-    <li>
-      <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#built-with">Built With</a></li>
-      </ul>
-      <ul>
-        <li><a href="#architecture">Architecture</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="#getting-started">Getting Started</a>
-      <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
-      </ul>
-    </li>
-    <li><a href="#roadmap">Roadmap</a></li>
-  </ol>
-</details>
-
 ## About The Project
 
 This project is a secure, AI-driven, decentralized voting application built on the Stellar blockchain with Soroban smart contracts to ensure transparency and immutability. The system leverages Next.js for the frontend, a Python-based proxy server, and Redis as the database.
 
-#### Key Features
+### Key Features
 
 - Decentralized & Secure – Built on Stellar blockchain with Soroban smart contracts for transparent voting.
 - AI-Powered Authentication – Uses OCR for Aadhaar card recognition and face recognition models for enhanced security.
@@ -52,8 +25,6 @@ This project is a secure, AI-driven, decentralized voting application built on t
 - User-Friendly Interface – A seamless Next.js frontend for an intuitive voting experience.
 
 This system guarantees secure, verifiable, and tamper-proof elections with the power of AI and blockchain.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Built With
 
@@ -79,16 +50,12 @@ This system guarantees secure, verifiable, and tamper-proof elections with the p
 [![Stellar][stellar-badge]][stellar-url]
 [![Pinata][pinata-badge]][pinata-url]
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-### Architecture
+## Architecture
 
 <picture>
   <source srcset="https://votex.soorya-u.dev/architecture-dark.png" media="(prefers-color-scheme: dark)" style="filter: invert(1);" />
   <img src="https://votex.soorya-u.dev/architecture-light.png" alt="architecture" align="center" style="filter: invert(0);" />
 </picture>
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Getting Started
 
@@ -146,39 +113,35 @@ These are the softwares required to run the project locally.
    ```
 
 10. Run the FastAPI Server
-   ```sh
-   poetry run fastapi dev src
-   ```
+    ```sh
+    poetry run fastapi dev src
+    ```
 
 11. Navigate to Client
-   ```sh
-   cd client
-   ```
+    ```sh
+    cd client
+    ```
 
 12. Create .env and fill the required variables
-   ```sh
-   cp .env.example .env
-   ```
+    ```sh
+    cp .env.example .env
+    ```
 
 13. Install Dependencies
-   ```sh
-   bun install
-   ```
+    ```sh
+    bun install
+    ```
 
 13. Run the Development Server
-   ```sh
-   bun dev
-   ```
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+    ```sh
+    bun dev
+    ```
 
 ## Roadmap
 
 - [ ] Rasa Chatbot Integration
 
 See the [open issues](https://github.com/soorya-u/votex/issues) for a full list of proposed features (and known issues).
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 [typescript-badge]: https://img.shields.io/badge/Typescript-3178C6?style=for-the-badge&logo=typescript&logoColor=white
 [typescript-url]: https://www.typescriptlang.org/
