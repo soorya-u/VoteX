@@ -10,9 +10,10 @@ import { PinataGateway } from "@/constants/pinata";
 
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
+import { VoterDetailButton } from "@/components/details-button";
 
 import { TContractVoter } from "@/types/contract";
-import { VoterDetailButton } from "@/components/details-button";
+import { tryCatch } from "@/utils/error";
 
 type VoterDetailsPageProp = {
   params: { id: string };
@@ -21,9 +22,11 @@ type VoterDetailsPageProp = {
 export default async function VoterDetailsPage({
   params: { id },
 }: VoterDetailsPageProp) {
-  const voter = await getContractData([ContractVariables.Voter, id])
-    .then((res) => res as TContractVoter)
-    .catch(() => notFound());
+  const [voter, voterErr] = await tryCatch<TContractVoter>(
+    getContractData([ContractVariables.Voter, id]),
+  );
+
+  if (voterErr) notFound();
 
   return (
     <div className="w-full p-8">

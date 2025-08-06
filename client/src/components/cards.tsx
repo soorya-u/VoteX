@@ -40,7 +40,7 @@ export default function UserCards({ users, userType }: CardsProps) {
     setCurrentUsers(
       selected === "All" ? users : users.filter((v) => v.status === selected),
     );
-  }, [selected]);
+  }, [selected, users]);
 
   return (
     <>

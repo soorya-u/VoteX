@@ -1,0 +1,79 @@
+services:
+  client:
+    build:
+      context: client
+      args:
+        NEXT_PUBLIC_CONTRACT_ID: ${NEXT_PUBLIC_CONTRACT_ID}
+        NEXT_PUBLIC_BACKEND_URL: ${NEXT_PUBLIC_BACKEND_URL}
+    container_name: client
+    env_file:
+      - client/.env.docker
+    ports:
+      - 3000:3000
+    networks:
+      - app-network
+    depends_on:
+      - server
+
+  server:
+    build:
+      context: server
+    container_name: server
+    env_file:
+      - server/.env.docker
+    networks:
+      - app-network
+    ports:
+      - 8000:8000
+    depends_on:
+      - redis
+      - stellar
+
+  stellar:
+    image: stellar/quickstart:v455-latest
+    container_name: stellar
+    ports:
+      # Horizon HTTP/Stellar RPC: Main entry point for applications to interact with the Stellar network.
+      - "8000:8000" 
+      # Stellar Core PEER_PORT: For peer-to-peer communication within the Stellar network.
+      - "11625:11625"
+      # Stellar Core HTTP_PORT: Used by Horizon to submit transactions and for administrative commands.
+      - "11626:11626"
+      # PostgreSQL Database: The database used by Stellar Core and Horizon.
+      - "5432:5432"
+      # Horizon Admin Port (Prometheus metrics, Go pprof)
+      - "6060:6060"
+      # Stellar RPC Admin Port (Prometheus metrics, Go pprof) - often enabled with --enable-soroban-rpc-admin-endpoint
+      # If you use Soroban, you'll likely want the Stellar RPC, and thus this port.
+      - "6061:6061" 
+    volumes:
+      - stellar_data:/opt/stellar 
+      - ./web3/config/history-archive.conf:/opt/stellar/supervisor/etc/supervisord.conf.d/history-archive.conf
+    command: [
+      "--local", 
+      "--enable-soroban-rpc",
+      "--enable-soroban-rpc-admin-endpoint", 
+      "--protocol-version", "22"
+    ] 
+    networks:
+      - app-network
+  
+  redis:
+    image: redis/redis-stack:latest
+    container_name: redis
+    ports:
+      - 6379:6379
+      - 8001:8001
+    volumes:
+      - redis_data:/data
+    networks:
+      - app-network
+    
+volumes:
+  redis_data:
+  stellar_data:
+
+networks:
+  app-network:
+    driver: bridge
+    

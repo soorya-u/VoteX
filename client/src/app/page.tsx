@@ -11,33 +11,42 @@ import { cn } from "@/utils/cn";
 import { ContractVariables } from "@/constants/contract";
 import Footer from "@/components/footer";
 import { TContractCandidate } from "@/types/contract";
+import { tryCatch } from "@/utils/error";
+import { notFound } from "next/navigation";
 
 const outfit = Outfit({ weight: "400", subsets: ["latin"] });
 const elMessiri = El_Messiri({ weight: "600", subsets: ["arabic"] });
 
 export default async function HomePage() {
-  const startTime = (await getContractData(
-    ContractVariables.StartTime,
-  )) as number;
-  const endTime = (await getContractData(ContractVariables.EndTime)) as number;
+  const [startTime, startTimeError] = await tryCatch<number>(
+    getContractData(ContractVariables.StartTime),
+  );
+
+  if (startTimeError) notFound();
+
+  const [endTime, endTimeError] = await tryCatch<number>(
+    getContractData(ContractVariables.EndTime),
+  );
+
+  if (endTimeError) notFound();
 
   const candidatesAddress = await getContractData(ContractVariables.Candidates)
     .then((res) => res as string[])
     .catch(() => [] as string[]);
 
   const candidatesPromise = candidatesAddress.map(async (address) => {
-    const c = (await getContractData([
-      ContractVariables.Candidate,
-      address,
-    ])) as TContractCandidate;
+    const [c, err] = await tryCatch<TContractCandidate>(
+      getContractData([ContractVariables.Candidate, address]),
+    );
 
-    return {
-      address: c.candidateAddress,
-      voteCount: c.voteCount,
-    };
+    if (err) return null;
+
+    return { address: c.candidateAddress, voteCount: c.voteCount };
   });
 
-  const candidates = await Promise.all(candidatesPromise);
+  const candidates = (await Promise.all(candidatesPromise)).filter(
+    (c) => c !== null,
+  );
 
   const winningCandidate =
     candidates.length > 0
@@ -45,7 +54,7 @@ export default async function HomePage() {
           (max, curr) => (curr.voteCount > max.voteCount ? curr : max),
           candidates[0],
         )
-      : undefined;
+      : null;
 
   return (
     <>

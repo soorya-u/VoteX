@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import moment from "moment";
 import { Separator } from "@/components/ui/separator";
 import { CandidateDetailsButtons } from "@/components/details-button";
+import { tryCatch } from "@/utils/error";
 
 type CandidateDetailsPageProp = {
   params: { id: string };
@@ -18,14 +19,23 @@ type CandidateDetailsPageProp = {
 export default async function CandidateDetailsPage({
   params: { id },
 }: CandidateDetailsPageProp) {
-  const candidate = await getContractData([ContractVariables.Candidate, id])
-    .then((res) => res as TContractCandidate)
-    .catch(() => notFound());
+  const [candidate, candidateErr] = await tryCatch<TContractCandidate>(
+    getContractData([ContractVariables.Candidate, id]),
+  );
 
-  const startTime = (await getContractData(
-    ContractVariables.StartTime,
-  )) as number;
-  const endTime = (await getContractData(ContractVariables.EndTime)) as number;
+  if (candidateErr) notFound();
+
+  const [startTime, startTimeError] = await tryCatch<number>(
+    getContractData(ContractVariables.StartTime),
+  );
+
+  if (startTimeError) notFound();
+
+  const [endTime, endTimeError] = await tryCatch<number>(
+    getContractData(ContractVariables.EndTime),
+  );
+
+  if (endTimeError) notFound();
 
   const shouldDisplayVoteCount =
     startTime &&
