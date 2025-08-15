@@ -1,7 +1,8 @@
-export const networkPassphrase = "Test SDF Network ; September 2015";
+export const networkPassphrase = process.env.NETWORK_PASSPHASE ?? "Test SDF Network ; September 2015";
+export const SOROBAN_RPC_URL = process.env.SOROBAN_RPC_URL ?? "https://soroban-testnet.stellar.org";
+export const HORIZON_URL = process.env.HORIZON_URL ?? "https://horizon-testnet.stellar.org";
 
-export const RPC_URL = "https://soroban-testnet.stellar.org";
-export const HORIZON_URL = "https://horizon-testnet.stellar.org";
+console.log({ NETWORK_PASSPHASE: process.env.NETWORK_PASSPHASE, SOROBAN_RPC_URL: process.env.SOROBAN_RPC_URL, HORIZON_URL: process.env.HORIZON_URL })
 
 export enum ContractFunctions {
   RegisterVoter = "register_voter",

@@ -29,4 +29,4 @@ ENV TESSERACT_PATH=/usr/bin/tesseract
 
 EXPOSE 8000
 
-ENTRYPOINT [ "poetry", "run", "fastapi", "run", "src" ]
+ENTRYPOINT [ "poetry", "run", "fastapi", "run", "src", "--port", "8080" ]
