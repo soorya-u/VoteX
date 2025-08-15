@@ -20,15 +20,15 @@ import {
   ContractFunctions,
   ContractVariables,
   HORIZON_URL,
-  RPC_URL,
+  SOROBAN_RPC_URL,
 } from "@/constants/contract";
 
 import { snakeToCamelConvertor } from "@/utils/case-convertor";
 
 import { signTransaction } from "@/lib/freighter";
 
-const horizonServer = new Horizon.Server(HORIZON_URL);
-export const server = new rpc.Server(RPC_URL, { allowHttp: true });
+const horizonServer = new Horizon.Server(HORIZON_URL, { allowHttp: true });
+export const server = new rpc.Server(SOROBAN_RPC_URL, { allowHttp: true });
 export const contract = new Contract(process.env.NEXT_PUBLIC_CONTRACT_ID!);
 
 export const getContractData = async (
@@ -81,18 +81,18 @@ export const callContract = async (
   const buildTx =
     parsedValues === null
       ? new TransactionBuilder(account, params)
-          .addOperation(contract.call(functionName))
-          .setTimeout(30)
-          .build()
+        .addOperation(contract.call(functionName))
+        .setTimeout(30)
+        .build()
       : Array.isArray(parsedValues)
         ? new TransactionBuilder(account, params)
-            .addOperation(contract.call(functionName, ...parsedValues))
-            .setTimeout(30)
-            .build()
+          .addOperation(contract.call(functionName, ...parsedValues))
+          .setTimeout(30)
+          .build()
         : new TransactionBuilder(account, params)
-            .addOperation(contract.call(functionName, parsedValues))
-            .setTimeout(30)
-            .build();
+          .addOperation(contract.call(functionName, parsedValues))
+          .setTimeout(30)
+          .build();
 
   const prepareTx = await server.prepareTransaction(buildTx);
   const xdrTx = prepareTx.toXDR();

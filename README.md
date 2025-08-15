@@ -64,13 +64,22 @@ To get a local copy up and running follow these simple example steps.
 
 ### Prerequisites
 
-These are the softwares required to run the project locally.
+These are the softwares required to run the project.
+
+#### Local Prerequisites
 
 - [Node.js](https://nodejs.org/en/download)
 - [Python](https://www.python.org/downloads/release/python-3124/)
 - [Rust](https://www.rust-lang.org/tools/install)
+- [Redis](https://redis.io/docs/latest/operate/oss_and_stack/install/archive/install-redis/)
+
+#### Docker Prerequisites
+
+- [Docker](https://docs.docker.com/get-started/get-docker/)
 
 ### Installation
+
+#### Run Docker
 
 1. Clone the repository
 
@@ -78,9 +87,120 @@ These are the softwares required to run the project locally.
    git clone https://github.com/soorya-u/votex.git
    ```
 
-2. Install Stellar CLI
+2. Install [Stellar CLI](https://developers.stellar.org/docs/tools/cli/install-cli)
 
-3. Create a new Account in any Stellar Network
+3. Start the Stellar Service
+
+   ```
+   docker compose up stellar --build
+   ```
+
+4. Create a new Local Network
+
+   ```sh
+   stellar network add <network-name> --rpc-url <rpc-url> --network-passphrase <passphase>
+   # for local network, rpc-url: `http://localhost:8000/soroban/rpc` and passphase: `"Standalone Network ; February 2017"`
+   ```
+
+   - To check the health of Stellar, run
+
+     ```sh
+     docker exec votex-stellar /opt/stellar/bin/health-check.sh
+     ```
+
+   - To check the running processes in Stellar, run
+
+     ```sh
+     docker exec votex-stellar supervisorctl status
+     ```
+
+   - If any of the process is not running, run
+
+     ```sh
+     docker exec votex-stellar supervisorctl start <process-name>[friendbot, postgresql, ...]
+     ```
+
+5. Create a new Account using Stellar CLI
+
+   ```sh
+   stellar keys generate <your-username> --network <network-name> --fund
+   ```
+
+6. Connect to Freighter Wallet by importing the account using the secret key
+
+   ```sh
+   stellar keys show <your-username>
+   ```
+
+7. Navigate to _web3_ Directory
+
+   ```sh
+   cd web3
+   ```
+
+8. Run the Deploy Command with Username and Network Options as Parameters to get the Deployed Contract Address
+
+   ```ps1
+   .\scripts\deploy.ps1 -Source <your-username> -Network <your-network>
+   ```
+
+   ```sh
+   ./scripts/deploy.sh SOURCE=<your-username> NETWORK=<your-network>
+   ```
+
+9. Create `.env` at the root of the project and fill the required variables
+
+   ```sh
+   # root .env
+   cp .env.example .env
+   ```
+
+10. Navigate to Client
+
+    ```sh
+    cd client
+    ```
+
+11. Create `.env` and fill the required variables
+
+    ```sh
+    cp .env.example .env.docker
+    ```
+
+12. Navigate to Server
+
+    ```sh
+    cd server
+    ```
+
+13. Create `.env` and fill the required variables
+
+    ```sh
+    cp .env.example .env.docker
+    ```
+
+14. Run the Client and Server Docker Images
+
+```sh
+# Starts up redis as well
+docker compose up client server --build
+```
+
+#### Run Locally
+
+1. Clone the repository
+
+   ```sh
+   git clone https://github.com/soorya-u/votex.git
+   ```
+
+2. Install [Stellar CLI](https://developers.stellar.org/docs/tools/cli/install-cli)
+
+3. Create a new Account using Stellar CLI
+
+   ```
+   stellar keys generate <name> --network testnet --fund
+   ```
 
 4. Navigate to _web3_ Directory
 
@@ -91,48 +211,64 @@ These are the softwares required to run the project locally.
 5. Run the Deploy Command with Username and Network Options as Parameters to get the Deployed Contract Address
 
    ```ps1
-   .\scripts\deploy.ps1 -Source <your-username> -Network <your-network>
+   .\scripts\deploy.ps1 -Source <your-username> -Network testnet
    ```
 
-6. Retrieve API Keys from Pinata and Twilio
+   ```sh
+   ./scripts/deploy.sh SOURCE=<your-username> NETWORK=testnet
+   ```
 
-7. Navigate to Server
+6. Connect to Freighter Wallet by importing the account using the secrets
+
+   ```sh
+   stellar keys show <your-username>
+   ```
+
+7. Retrieve API Keys from Pinata and Twilio
+
+8. Navigate to Server
 
    ```sh
    cd server
    ```
 
-8. Create .env and fill the required variables
+9. Create `.env` and fill the required variables
+
    ```sh
    cp .env.example .env
    ```
 
-9. Install all the required packages
-   ```sh
-   poetry install
-   ```
+10. Install all the required packages
 
-10. Run the FastAPI Server
+    ```sh
+    poetry install
+    ```
+
+11. Run the FastAPI Server
+
     ```sh
     poetry run fastapi dev src
     ```
 
-11. Navigate to Client
+12. Navigate to Client
+
     ```sh
     cd client
     ```
 
-12. Create .env and fill the required variables
+13. Create `.env` and fill the required variables
+
     ```sh
     cp .env.example .env
     ```
 
-13. Install Dependencies
+14. Install Dependencies
+
     ```sh
     bun install
     ```
 
-13. Run the Development Server
+15. Run the Development Server
     ```sh
     bun dev
     ```

@@ -20,7 +20,7 @@ stellar --version > /dev/null 2>&1 || {
 }
 
 build_path="target/wasm32-unknown-unknown/release/votex_contract.wasm"
-admin_address=$(stellar keys address $SOURCE)
+admin_address=$(stellar keys show $SOURCE)
 
 echo "Building Contract..."
 stellar contract build > /dev/null 2>&1

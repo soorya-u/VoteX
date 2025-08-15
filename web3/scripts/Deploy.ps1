@@ -12,7 +12,7 @@ try {
 
 $build_path = "target\wasm32-unknown-unknown\release\votex_contract.wasm"
 
-$admin_address = stellar keys address $Source
+$admin_address = stellar keys show $Source
 
 Write-Host "Building Contract..."
 
